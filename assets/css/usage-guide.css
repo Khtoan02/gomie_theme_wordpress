@@ -1,0 +1,113 @@
+/**
+ * Usage Guide Styling - GOMIE CERAMIC
+ * Modern guide layout for /huong-dan-su-dung/
+ *
+ * @package Gomie
+ * @version 1.0.0
+ */
+
+.gomie-usage-page {
+  background: #fdfdfc;
+  min-height: 80vh;
+}
+
+/* Fix double breadcrumb slash */
+.gomie-breadcrumb .breadcrumb-item::after {
+  display: none !important;
+}
+
+.usage-hero-header {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.usage-eyebrow {
+  font-size: 0.825rem;
+  letter-spacing: 0.1em;
+}
+
+.usage-title {
+  font-size: 2.25rem;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+@media (max-width: 768px) {
+  .usage-title {
+    font-size: 1.65rem;
+  }
+}
+
+.usage-subtitle {
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+/* Quick Nav Pills */
+.usage-nav-link {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 9999px;
+  padding: 6px 14px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.usage-nav-link:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #0f172a;
+  transform: translateY(-1px);
+}
+
+.usage-nav-link-warn {
+  color: #dc2626;
+  border-color: #fecaca;
+  background: #fef2f2;
+}
+
+.usage-nav-link-warn:hover {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* Section Cards */
+.usage-section-card {
+  scroll-margin-top: 100px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.usage-section-card:hover {
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.06) !important;
+}
+
+.section-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Tea Step Card */
+.tea-step-card {
+  transition: transform 0.2s ease;
+}
+
+.tea-step-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Bottom CTA */
+.usage-bottom-cta {
+  box-shadow: 0 15px 35px -10px rgba(15, 23, 42, 0.35);
+}

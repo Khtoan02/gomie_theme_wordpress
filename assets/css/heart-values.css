@@ -1,0 +1,244 @@
+/**
+ * GOMIE HEART Core Values Infographic - CSS
+ * Full-container 5-column grid with 2-tier split white cards
+ * and protruding 3D rolled-paper vector badges.
+ *
+ * @package Gomie
+ * @version 2.2.0
+ */
+
+.heart-values-section {
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Match 100% of the parent Bootstrap .container width */
+.heart-values-container {
+  max-width: 100% !important;
+  width: 100% !important;
+  margin: 0 auto;
+  padding: 0 !important;
+  position: relative;
+  z-index: 1;
+  background: transparent !important;
+  border-radius: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  font-family: 'Montserrat', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.heart-values-section .heart-grid {
+  display: grid !important;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  gap: 32px 26px !important;
+  width: 100% !important;
+  align-items: start !important;
+  justify-items: stretch !important;
+  margin-top: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Outer Column Wrapper (Reset legacy .heart-card in style.css) */
+.heart-values-section .heart-card {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  overflow: visible !important;
+  animation: none !important;
+  transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1) !important;
+  user-select: none;
+}
+
+.heart-values-section .heart-card::before,
+.heart-values-section .heart-card::after {
+  display: none !important;
+  content: none !important;
+}
+
+.heart-values-section .heart-card:hover {
+  transform: translateY(-6px) !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+/* 1. Top White Rounded Box (Letter + English Title) */
+.heart-values-section .heart-top-box {
+  width: 100% !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border-radius: 18px !important;
+  padding: 28px 12px 28px !important;
+  margin-bottom: 20px !important;
+  box-shadow: 0 10px 28px rgba(175, 105, 50, 0.09), 0 2px 6px rgba(0, 0, 0, 0.03) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: box-shadow 0.35s ease, transform 0.35s ease;
+}
+
+.heart-values-section .heart-card:hover .heart-top-box {
+  box-shadow: 0 14px 34px rgba(175, 105, 50, 0.15), 0 4px 10px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Large Letter (H, E, A, R, T) */
+.heart-values-section .heart-card .heart-letter {
+  font-size: clamp(68px, 5.2vw, 82px) !important;
+  line-height: 0.85 !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+  margin: 0 0 24px 0 !important;
+  padding: 0 !important;
+  transition: transform 0.3s ease;
+}
+
+.heart-values-section .heart-card:hover .heart-letter {
+  transform: scale(1.04);
+}
+
+/* English Uppercase Title */
+.heart-values-section .heart-card .heart-en-title {
+  font-size: clamp(13px, 1.05vw, 15px) !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+}
+
+/* 2. Bottom White Rounded Box (Vietnamese Title + Protruding Rolled Badge) */
+.heart-values-section .heart-bottom-box {
+  width: 100% !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border-radius: 18px !important;
+  padding: 18px 12px 0 !important;
+  margin-bottom: 48px !important;
+  box-shadow: 0 10px 28px rgba(175, 105, 50, 0.09), 0 2px 6px rgba(0, 0, 0, 0.03) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  position: relative !important;
+  transition: box-shadow 0.35s ease, transform 0.35s ease;
+}
+
+.heart-values-section .heart-card:hover .heart-bottom-box {
+  box-shadow: 0 14px 34px rgba(175, 105, 50, 0.15), 0 4px 10px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Vietnamese Subtitle */
+.heart-values-section .heart-card .heart-vi-sub {
+  color: #222222 !important;
+  font-size: clamp(16px, 1.25vw, 18.5px) !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.01em !important;
+  margin: 0 0 15px 0 !important;
+  padding: 0 !important;
+  line-height: 1.25 !important;
+}
+
+/* Protruding 3D Rolled-Paper Badge (Curl sits cleanly below the bottom card edge) */
+.heart-values-section .heart-card .heart-badge-box {
+  width: 132px;
+  height: 138px;
+  margin-bottom: -48px;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heart-values-section .heart-card .badge-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.35s ease;
+  filter: drop-shadow(0 8px 13px rgba(110, 45, 10, 0.18));
+}
+
+.heart-values-section .heart-card:hover .badge-svg {
+  transform: translateY(-2px) scale(1.04);
+  filter: drop-shadow(0 13px 20px rgba(110, 45, 10, 0.24));
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1199.98px) {
+  .heart-values-section .heart-grid {
+    gap: 28px 18px !important;
+  }
+  .heart-values-section .heart-top-box {
+    padding: 22px 10px 22px !important;
+    margin-bottom: 16px !important;
+  }
+  .heart-values-section .heart-card .heart-letter {
+    font-size: 64px !important;
+    margin-bottom: 18px !important;
+  }
+  .heart-values-section .heart-bottom-box {
+    padding: 15px 10px 0 !important;
+    margin-bottom: 40px !important;
+  }
+  .heart-values-section .heart-card .heart-badge-box {
+    width: 110px;
+    height: 115px;
+    margin-bottom: -40px;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .heart-values-section .heart-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 32px 20px !important;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .heart-values-section .heart-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 24px 14px !important;
+  }
+  .heart-values-section .heart-card:nth-child(5) {
+    grid-column: span 2;
+    max-width: calc(50% - 7px) !important;
+    margin: 0 auto !important;
+  }
+  .heart-values-section .heart-top-box {
+    padding: 18px 8px 18px !important;
+    margin-bottom: 12px !important;
+    border-radius: 14px !important;
+  }
+  .heart-values-section .heart-card .heart-letter {
+    font-size: 56px !important;
+    margin-bottom: 14px !important;
+  }
+  .heart-values-section .heart-bottom-box {
+    padding: 13px 8px 0 !important;
+    margin-bottom: 34px !important;
+    border-radius: 14px !important;
+  }
+  .heart-values-section .heart-card .heart-badge-box {
+    width: 96px;
+    height: 100px;
+    margin-bottom: -34px;
+  }
+}

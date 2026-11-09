@@ -1,0 +1,598 @@
+/**
+ * Shop Page CSS - Gomie Theme
+ * Reuses and optimizes existing styles from homepage-products.css and restaurant-category.css
+ * Minimal spacing design with consistent color scheme
+ */
+
+/* ===== SHOP PAGE SPECIFIC STYLES ===== */
+
+/* Shop Hero Section - Clean Restaurant Style Design */
+.shop-hero {
+  position: relative;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+}
+
+.shop-hero .hero-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.shop-hero .hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(44, 62, 80, 0.8) 0%,
+    rgba(230, 126, 34, 0.6) 100%
+  );
+  z-index: 2;
+}
+
+.shop-hero .hero-bg-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.7) saturate(1.2);
+}
+
+/* Hero Content - Restaurant Style - Specific to Shop Hero */
+.shop-hero .hero-content {
+  position: relative;
+  z-index: 3;
+  color: #ffffff;
+  text-align: center;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Breadcrumb - Specific to Shop Hero only */
+.shop-hero .breadcrumb-nav {
+  margin-bottom: 2rem;
+}
+
+.shop-hero .breadcrumb-nav .breadcrumb {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.9rem;
+}
+
+.shop-hero .breadcrumb-nav .breadcrumb li {
+  display: flex;
+  align-items: center;
+}
+
+.shop-hero .breadcrumb-nav .breadcrumb li:not(:last-child)::after {
+  content: "/";
+  margin: 0 0.5rem;
+  opacity: 0.6;
+}
+
+.shop-hero .breadcrumb-nav .breadcrumb a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.shop-hero .breadcrumb-nav .breadcrumb a:hover {
+  color: #f39c12;
+}
+
+.shop-hero .breadcrumb-nav .breadcrumb .current {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* Category Badge */
+.shop-hero .category-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.shop-hero .category-badge:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Category Title */
+.shop-hero .category-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f39c12 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+}
+
+/* Category Description */
+.shop-hero .category-description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Category Stats - Restaurant Style */
+.shop-hero .category-stats {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.shop-hero .stat-item {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 1rem 1.5rem;
+  border-radius: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.shop-hero .stat-item:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-4px);
+}
+
+.shop-hero .stat-number {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #f39c12;
+  margin-bottom: 0.25rem;
+}
+
+.shop-hero .stat-label {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* Category Sections Wrapper */
+.shop-categories-wrapper {
+  background: var(--color-background);
+  padding: 2rem 0; /* Minimal padding as requested */
+}
+
+.category-section {
+  padding: 3rem 0; /* Reduced from default section padding */
+  position: relative;
+}
+
+.category-section-featured {
+  background: linear-gradient(
+    135deg,
+    var(--ceramic-warm) 0%,
+    var(--ceramic-beige) 100%
+  );
+}
+
+/* Section Heading - Reuse with minimal spacing */
+.category-section .section-heading {
+  margin-bottom: 2rem; /* Reduced from 4rem */
+  text-align: center;
+}
+
+.category-section .section-heading .title {
+  font-size: clamp(1.8rem, 3.5vw, 2.5rem); /* Smaller than homepage */
+  margin-bottom: 0.8rem; /* Reduced spacing */
+}
+
+.category-section .section-heading .sub {
+  margin-bottom: 1.5rem; /* Reduced spacing */
+}
+
+.category-section .section-heading .cat-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* Badge Category */
+.badge-cat {
+  background: var(--gomie-white);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 0.5rem 1rem; /* Minimal padding */
+  border-radius: 12px;
+  font-weight: 600;
+  color: var(--gomie-dark);
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* Product Grid - Reuse existing grid with minimal gaps */
+.category-section .gomie-product-grid {
+  gap: 1rem; /* Reduced from 1.5rem for minimal spacing */
+  margin-top: 1.5rem; /* Reduced spacing */
+}
+
+/* WooCommerce Integration */
+.woocommerce-products-wrapper {
+  margin-top: 2rem;
+}
+
+.woocommerce-products-wrapper .woocommerce-result-count,
+.woocommerce-products-wrapper .woocommerce-ordering {
+  margin-bottom: 1rem; /* Minimal spacing */
+}
+
+/* Shop Ordering and Results */
+.woocommerce-ordering select,
+.woocommerce-result-count {
+  font-family: var(--font-primary);
+  color: var(--gomie-dark);
+}
+
+.woocommerce-ordering select {
+  background: var(--gomie-white);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+/* No Products Found */
+.no-products-found {
+  text-align: center;
+  padding: 3rem 1rem;
+  background: var(--gomie-white);
+  border-radius: 20px;
+  box-shadow: var(--shadow-light);
+  margin: 2rem 0;
+}
+
+.no-products-content i {
+  font-size: 3rem;
+  color: var(--gomie-gray-light);
+  margin-bottom: 1rem;
+}
+
+.no-products-content h3 {
+  color: var(--gomie-dark);
+  margin-bottom: 0.5rem;
+}
+
+.no-products-content p {
+  color: var(--gomie-gray);
+  margin-bottom: 1.5rem;
+}
+
+/* SEO Content Section */
+.shop-seo-content {
+  background: var(--gomie-white);
+  padding: 3rem 0; /* Minimal padding */
+}
+
+.seo-content-wrapper {
+  background: var(--ceramic-cream);
+  border-radius: 20px;
+  padding: 2.5rem; /* Reduced padding */
+  box-shadow: var(--shadow-light);
+}
+
+.seo-content-text h2 {
+  color: var(--gomie-dark);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  margin-bottom: 1rem; /* Minimal spacing */
+  line-height: 1.3;
+}
+
+.seo-content-text p {
+  color: var(--gomie-gray);
+  line-height: 1.7;
+  margin-bottom: 1rem; /* Reduced spacing */
+}
+
+.seo-highlights {
+  margin-top: 1.5rem;
+}
+
+.highlight-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem; /* Minimal spacing */
+  color: var(--gomie-dark);
+  font-size: 0.95rem;
+}
+
+.highlight-item i {
+  color: var(--gomie-primary);
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.seo-content-image img {
+  box-shadow: var(--shadow-medium);
+}
+
+/* Shop CTA Section */
+.shop-cta-section {
+  background: linear-gradient(
+    135deg,
+    var(--gomie-dark) 0%,
+    var(--gomie-dark-light) 100%
+  );
+  padding: 2.5rem 0; /* Minimal padding */
+  color: var(--gomie-white);
+}
+
+.shop-cta-section .cta-final {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 2rem; /* Reduced padding */
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.shop-cta-section h3 {
+  color: var(--gomie-white);
+  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+  margin-bottom: 0.5rem; /* Minimal spacing */
+}
+
+.shop-cta-section p {
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 0;
+}
+
+/* Pagination - Reuse existing styles with minimal spacing */
+.woocommerce-pagination {
+  margin-top: 2rem; /* Reduced spacing */
+  text-align: center;
+}
+
+.woocommerce-pagination .page-numbers {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; /* Smaller pagination buttons */
+  height: 40px;
+  margin: 0 0.25rem; /* Minimal spacing */
+  border-radius: 8px;
+  background: var(--gomie-white);
+  color: var(--gomie-dark);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.875rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  transition: all var(--transition-fast);
+}
+
+.woocommerce-pagination .page-numbers:hover,
+.woocommerce-pagination .page-numbers.current {
+  background: var(--gradient-button);
+  color: var(--gomie-white);
+  border-color: transparent;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-light);
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Tablet */
+@media (max-width: 992px) {
+  .shop-hero {
+    min-height: 50vh;
+  }
+
+  .shop-hero .hero-content {
+    padding: 1.5rem 1rem;
+  }
+
+  .shop-hero .category-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+  }
+
+  .shop-hero .category-stats {
+    gap: 1.5rem;
+  }
+
+  .category-section {
+    padding: 2rem 0;
+  }
+
+  .category-section .section-heading {
+    margin-bottom: 1.5rem;
+  }
+
+  .seo-content-wrapper {
+    padding: 2rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .shop-hero {
+    min-height: 50vh;
+  }
+
+  .shop-hero .hero-content {
+    padding: 1rem;
+  }
+
+  .shop-hero .category-title {
+    font-size: clamp(1.8rem, 6vw, 2.5rem);
+  }
+
+  .shop-hero .category-description {
+    font-size: 1rem;
+  }
+
+  .shop-hero .category-stats {
+    gap: 1rem;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .shop-hero .stat-item {
+    min-width: 120px;
+  }
+
+  .shop-categories-wrapper {
+    padding: 1rem 0;
+  }
+
+  .category-section {
+    padding: 1.5rem 0;
+  }
+
+  .category-section .section-heading {
+    margin-bottom: 1rem;
+  }
+
+  .category-section .section-heading .cat-cta {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .category-section .gomie-product-grid {
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+
+  .seo-content-wrapper {
+    padding: 1.5rem;
+  }
+
+  .shop-cta-section {
+    padding: 2rem 0;
+  }
+
+  .shop-cta-section .cta-final {
+    padding: 1.5rem;
+  }
+
+  .shop-cta-section .cta-actions {
+    margin-top: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .shop-hero {
+    min-height: 50vh;
+  }
+
+  .shop-hero .hero-content {
+    padding: 1rem 0.5rem;
+  }
+
+  .shop-hero .category-title {
+    font-size: clamp(1.5rem, 8vw, 2rem);
+  }
+
+  .shop-hero .category-badge {
+    font-size: 0.8rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .shop-hero .breadcrumb {
+    font-size: 0.8rem;
+  }
+
+  .category-section .gomie-product-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .badge-cat {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* ===== ACCESSIBILITY & PERFORMANCE ===== */
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .shop-hero .category-badge,
+  .shop-hero .stat-item {
+    transition: none;
+  }
+
+  .shop-hero .category-badge:hover,
+  .shop-hero .stat-item:hover {
+    transform: none;
+  }
+
+  .category-section,
+  .seo-content-wrapper,
+  .shop-cta-section {
+    animation: none;
+  }
+
+  .gomie-product-card.apple-style {
+    transition: none;
+  }
+
+  .gomie-product-card.apple-style:hover {
+    transform: none;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .category-section-light,
+  .category-section-dark {
+    border: 2px solid var(--gomie-dark);
+  }
+
+  .badge-cat {
+    border: 2px solid var(--gomie-dark);
+  }
+}
+
+/* Print styles */
+@media print {
+  .shop-hero,
+  .shop-cta-section {
+    display: none;
+  }
+
+  .category-section {
+    padding: 1rem 0;
+    background: white !important;
+  }
+
+  .gomie-product-card.apple-style {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+}

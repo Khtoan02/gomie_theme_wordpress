@@ -1,0 +1,352 @@
+/**
+ * Add to Cart Button States - Gomie Theme
+ * Unified styling for consistent button behavior across all pages
+ */
+
+/* ===== GLOBAL ADD TO CART BUTTON STATES ===== */
+
+/* Error State */
+.btn-add-to-cart-apple.error {
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%) !important;
+  color: white !important;
+  animation: errorShake 0.5s ease-in-out;
+}
+
+.btn-add-to-cart-apple.error:hover {
+  background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%) !important;
+  transform: translateY(-1px) !important;
+}
+
+@keyframes errorShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+/* Loading State */
+.btn-add-to-cart-apple.loading {
+  background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%) !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+}
+
+.btn-add-to-cart-apple.loading:hover {
+  transform: none !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Success State */
+.btn-add-to-cart-apple.success {
+  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%) !important;
+  color: white !important;
+}
+
+.btn-add-to-cart-apple.success:hover {
+  background: linear-gradient(135deg, #229954 0%, #28b463 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(39, 174, 96, 0.3) !important;
+}
+
+/* Added to Cart State */
+.btn-add-to-cart-apple.added_to_cart {
+  background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%) !important;
+  color: white !important;
+  animation: addedPulse 1s ease-in-out;
+}
+
+@keyframes addedPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* WC Forward (View Cart) State */
+.btn-add-to-cart-apple.wc-forward {
+  background: linear-gradient(
+    135deg,
+    var(--gomie-secondary, #3498db) 0%,
+    var(--gomie-secondary-dark, #2980b9) 100%
+  ) !important;
+  color: white !important;
+  cursor: pointer !important;
+  pointer-events: auto !important;
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+.btn-add-to-cart-apple.wc-forward:hover {
+  background: linear-gradient(
+    135deg,
+    var(--gomie-secondary-dark, #2980b9) 0%,
+    #1f5582 100%
+  ) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3) !important;
+}
+
+.btn-add-to-cart-apple.wc-forward:active {
+  transform: translateY(0) !important;
+  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.2) !important;
+}
+
+.btn-add-to-cart-apple.wc-forward i {
+  transform: rotate(0deg) !important;
+  transition: transform 0.2s ease !important;
+}
+
+.btn-add-to-cart-apple.wc-forward:hover i {
+  transform: translateX(3px) !important;
+}
+
+/* Disabled State */
+.btn-add-to-cart-apple:disabled {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  pointer-events: none !important;
+}
+
+.btn-add-to-cart-apple:disabled:hover {
+  transform: none !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* ===== ICON ANIMATIONS ===== */
+
+/* Spinner Animation */
+.btn-add-to-cart-apple.loading i.fa-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Success Checkmark Animation */
+.btn-add-to-cart-apple.success i.fa-check {
+  animation: checkmarkPop 0.6s ease-in-out;
+}
+
+@keyframes checkmarkPop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Cart Icon Bounce Animation */
+.btn-add-to-cart-apple.wc-forward i.fa-shopping-cart {
+  animation: cartBounce 0.5s ease-in-out;
+}
+
+@keyframes cartBounce {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+/* Error Icon Pulse */
+.btn-add-to-cart-apple.error i.fa-exclamation-triangle,
+.btn-add-to-cart-apple.error i.fa-wifi {
+  animation: errorPulse 0.8s ease-in-out;
+}
+
+@keyframes errorPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* ===== CART COUNT ANIMATIONS ===== */
+
+/* Cart count update animation */
+.cart-count.updated,
+.badge.updated {
+  animation: cartCountPulse 0.6s ease-in-out;
+}
+
+@keyframes cartCountPulse {
+  0% {
+    transform: scale(1);
+    background-color: var(--gomie-secondary, #3498db);
+  }
+  50% {
+    transform: scale(1.3);
+    background-color: var(--gomie-primary, #e67e22);
+  }
+  100% {
+    transform: scale(1);
+    background-color: var(--gomie-secondary, #3498db);
+  }
+}
+
+/* Header cart count specific animations */
+#cart-header-btn .cart-count.updated {
+  animation: headerCartPulse 0.8s ease-in-out;
+}
+
+@keyframes headerCartPulse {
+  0% {
+    transform: scale(1);
+    border-color: #f06619;
+    background-color: #fff;
+  }
+  25% {
+    transform: scale(1.2);
+    border-color: #e67e22;
+    background-color: #f8f9fa;
+  }
+  50% {
+    transform: scale(1.4);
+    border-color: #d35400;
+    background-color: #e8f4fd;
+  }
+  75% {
+    transform: scale(1.2);
+    border-color: #e67e22;
+    background-color: #f8f9fa;
+  }
+  100% {
+    transform: scale(1);
+    border-color: #f06619;
+    background-color: #fff;
+  }
+}
+
+/* Mobile cart count animation */
+.offcanvas-body .btn-primary .badge.updated {
+  animation: mobileCartPulse 0.6s ease-in-out;
+}
+
+@keyframes mobileCartPulse {
+  0% {
+    transform: scale(1);
+    background-color: #f8f9fa;
+    color: #0d6efd;
+  }
+  50% {
+    transform: scale(1.3);
+    background-color: #e67e22;
+    color: white;
+  }
+  100% {
+    transform: scale(1);
+    background-color: #f8f9fa;
+    color: #0d6efd;
+  }
+}
+
+/* ===== RESPONSIVE ADJUSTMENTS ===== */
+
+@media (max-width: 768px) {
+  .btn-add-to-cart-apple {
+    padding: 10px 16px !important;
+    font-size: 13px !important;
+  }
+
+  .btn-add-to-cart-apple .button-text {
+    font-size: 13px !important;
+  }
+
+  .btn-add-to-cart-apple i {
+    font-size: 11px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .btn-add-to-cart-apple {
+    padding: 8px 14px !important;
+    font-size: 12px !important;
+  }
+
+  .btn-add-to-cart-apple .button-text {
+    font-size: 12px !important;
+  }
+}
+
+/* ===== ACCESSIBILITY IMPROVEMENTS ===== */
+
+.btn-add-to-cart-apple:focus {
+  outline: 2px solid var(--gomie-primary, #e67e22) !important;
+  outline-offset: 2px !important;
+}
+
+.btn-add-to-cart-apple:focus:not(:focus-visible) {
+  outline: none !important;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .btn-add-to-cart-apple {
+    border: 2px solid currentColor !important;
+  }
+
+  .btn-add-to-cart-apple.loading {
+    background: #666 !important;
+    color: white !important;
+  }
+
+  .btn-add-to-cart-apple.success {
+    background: #008000 !important;
+    color: white !important;
+  }
+
+  .btn-add-to-cart-apple.error {
+    background: #cc0000 !important;
+    color: white !important;
+  }
+
+  .btn-add-to-cart-apple.wc-forward {
+    background: #0066cc !important;
+    color: white !important;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .btn-add-to-cart-apple,
+  .btn-add-to-cart-apple * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+  .btn-add-to-cart-apple {
+    display: none !important;
+  }
+}

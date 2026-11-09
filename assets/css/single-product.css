@@ -1,0 +1,1452 @@
+/**
+ * Single Product Styling - GOMIE CERAMIC
+ * Editorial Collection & SEO V11 Luxury Aesthetic
+ *
+ * @package Gomie
+ * @version 1.2.0
+ */
+
+/* ==========================================================================
+   Page Container & Background
+   ========================================================================== */
+
+.gomie-single-product-page {
+  --orange: #f47a20;
+  --orange-deep: #e86b14;
+  --blue: #168fd2;
+  --blue-deep: #0873b6;
+  --ink: #252c32;
+  --muted: #667078;
+  --warm: #fcfaf7;
+  --line: #e9edf0;
+  font-family: inherit;
+  color: var(--ink);
+  background-color: #fffdf9;
+  background-image: url("../images/glazes/Background-1.png");
+  background-position: 47% 0%;
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  min-height: 80vh;
+}
+
+.gomie-single-product-container {
+  max-width: 1350px;
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   WooCommerce Notices & Add-to-cart Banner
+   ========================================================================== */
+
+.gomie-notices-row {
+  width: 100%;
+  clear: both;
+}
+
+.woocommerce-notices-wrapper {
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.woocommerce-message,
+.woocommerce-info,
+.woocommerce-error {
+  background: #ffffff !important;
+  border: 1px solid #e7e5e4 !important;
+  border-radius: 99px !important;
+  padding: 10px 24px !important;
+  margin: 0 0 24px 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-wrap: wrap !important;
+  gap: 12px !important;
+  color: var(--ink) !important;
+  font-weight: 500 !important;
+  font-size: 0.9rem !important;
+  box-shadow: 0 8px 24px rgba(45, 30, 15, 0.05) !important;
+  line-height: 1.5 !important;
+  outline: none !important;
+}
+
+.woocommerce-message:focus,
+.woocommerce-message:focus-visible,
+.woocommerce-message *:focus,
+.woocommerce-message *:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.woocommerce-message a.button.wc-forward,
+.woocommerce-info a.button.wc-forward {
+  float: none !important;
+  margin: 0 !important;
+  background: var(--blue) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 99px !important;
+  padding: 8px 22px !important;
+  font-size: 0.825rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  box-shadow: 0 4px 12px rgba(22, 143, 210, 0.25) !important;
+  transition: all 0.25s ease !important;
+  order: 2 !important;
+}
+
+.woocommerce-message a.button.wc-forward:hover,
+.woocommerce-info a.button.wc-forward:hover {
+  background: var(--blue-deep) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 16px rgba(22, 143, 210, 0.35) !important;
+  color: #ffffff !important;
+}
+
+/* ==========================================================================
+   Breadcrumb
+   ========================================================================== */
+
+.gomie-product-breadcrumb .breadcrumb {
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  font-size: 0.825rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  list-style: none;
+}
+
+.gomie-product-breadcrumb .breadcrumb-item::after {
+  display: none !important;
+}
+
+.gomie-product-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+  content: "/" !important;
+  color: #d6d3d1 !important;
+  padding: 0 8px !important;
+}
+
+.gomie-product-breadcrumb .breadcrumb-item a {
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.gomie-product-breadcrumb .breadcrumb-item a:hover {
+  color: var(--blue);
+}
+
+.gomie-product-breadcrumb .breadcrumb-item.active {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   Left Column: Gallery & Media
+   ========================================================================== */
+
+.gomie-product-gallery-wrapper {
+  position: sticky;
+  top: 100px;
+}
+
+.gomie-main-gallery-card {
+  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 16px 40px rgba(45, 30, 15, 0.05);
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  height: 100%;
+}
+
+.gomie-main-gallery-card:hover {
+  box-shadow: 0 22px 48px rgba(45, 30, 15, 0.09);
+  border-color: rgba(244, 122, 32, 0.35);
+}
+
+.gomie-badge-wrap {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.gomie-badge {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 14px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #ffffff;
+  background: var(--orange);
+  box-shadow: 0 4px 12px rgba(244, 122, 32, 0.3);
+  line-height: 1;
+}
+
+.badge-sale {
+  background: var(--orange-deep);
+}
+
+.badge-hot {
+  background: var(--orange);
+}
+
+.badge-new {
+  background: var(--blue);
+}
+
+.gomie-zoom-button {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  color: #475569;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  z-index: 10;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.gomie-zoom-button:hover {
+  background: var(--orange);
+  color: #ffffff;
+  border-color: var(--orange);
+  transform: scale(1.12);
+  box-shadow: 0 6px 18px rgba(244, 122, 32, 0.35);
+}
+
+.main-image-viewport {
+  width: 100%;
+  height: 100%;
+  min-height: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: #ffffff;
+  overflow: hidden;
+  position: relative;
+}
+
+.main-image-viewport a.gomie-zoom-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  cursor: zoom-in;
+}
+
+.main-product-img {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: cover !important;
+  display: block;
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform;
+}
+
+.gomie-main-gallery-card:hover .main-product-img {
+  transform: scale(1.04);
+}
+
+.gomie-thumbnails-strip {
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.gomie-thumbnails-strip::-webkit-scrollbar {
+  height: 4px;
+}
+
+.gomie-thumbnails-strip::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 4px;
+}
+
+.thumb-item {
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  background: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 2px;
+}
+
+.thumb-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.thumb-item:hover {
+  border-color: #cbd5e1;
+  transform: translateY(-2px);
+}
+
+.thumb-item.active {
+  border-color: var(--orange);
+  box-shadow: 0 4px 14px rgba(244, 122, 32, 0.25);
+}
+
+/* ==========================================================================
+   Right Column: Product Details & Purchase
+   ========================================================================== */
+
+.gomie-product-details {
+  padding-left: 0;
+}
+
+@media (min-width: 992px) {
+  .gomie-product-details {
+    padding-left: 12px;
+  }
+}
+
+.gomie-product-header-meta {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.product-brand-category .brand-tag {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--orange-deep);
+}
+
+.product-brand-category .meta-dot {
+  margin: 0 6px;
+  color: #d6d3d1;
+}
+
+.product-brand-category .category-text {
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.8rem;
+  transition: color 0.15s ease;
+}
+
+.product-brand-category .category-text:hover {
+  color: var(--blue);
+}
+
+.sku-text {
+  color: #a8a29e;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+}
+
+.gomie-product-title {
+  font-size: clamp(22px, 2vw, 28px);
+  font-weight: 750;
+  color: var(--ink);
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  margin-bottom: 8px !important;
+}
+
+.product-meta-row {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.meta-rating .text-amber {
+  color: #f59e0b;
+  font-size: 0.85rem;
+}
+
+.meta-rating .rating-score {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.meta-rating .rating-count {
+  font-size: 0.825rem;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.meta-rating .rating-count:hover {
+  color: var(--ink);
+}
+
+.meta-sep {
+  color: #d6d3d1;
+}
+
+.meta-sales {
+  color: var(--muted);
+}
+
+.stock-status {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.825rem;
+  font-weight: 600;
+}
+
+.stock-status .status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-right: 6px;
+  display: inline-block;
+}
+
+.stock-status.in-stock {
+  color: #15803d;
+}
+
+.stock-status.in-stock .status-dot {
+  background: #22c55e;
+}
+
+.stock-status.out-stock {
+  color: #b91c1c;
+}
+
+.stock-status.out-stock .status-dot {
+  background: #ef4444;
+}
+
+/* Twin Details Card (Editorial Luxury Presentation) */
+.gomie-product-details-card {
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: 24px;
+  padding: clamp(24px, 2.5vw, 36px);
+  box-shadow: 0 16px 40px rgba(45, 30, 15, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.9);
+  transition: all 0.35s ease;
+  height: 100%;
+}
+
+.gomie-editorial-price-wrap {
+  padding-block: 4px 14px;
+}
+
+.editorial-sale-price,
+.editorial-sale-price .woocommerce-Price-amount,
+.editorial-sale-price .woocommerce-Price-amount bdi {
+  font-size: clamp(28px, 2.4vw, 34px) !important;
+  font-weight: 800 !important;
+  color: var(--orange-deep) !important;
+  letter-spacing: -0.025em !important;
+  line-height: 1 !important;
+  text-decoration: none !important;
+}
+
+.editorial-regular-price,
+.editorial-regular-price .woocommerce-Price-amount,
+.editorial-regular-price .woocommerce-Price-amount bdi {
+  font-size: 1.15rem !important;
+  color: #94a3b8 !important;
+  text-decoration: line-through !important;
+  font-weight: 500 !important;
+}
+
+.editorial-save-pill {
+  background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 0.78rem !important;
+  letter-spacing: 0.02em !important;
+  padding: 4px 12px !important;
+  border-radius: 99px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  line-height: 1.2 !important;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.28) !important;
+}
+
+.gomie-short-description {
+  font-size: 0.925rem;
+  line-height: 1.7;
+  color: #5f6a72;
+}
+
+/* Ceramic Craft Specs Matrix */
+.gomie-craft-specs-matrix {
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(233, 237, 240, 0.85);
+  border-radius: 16px;
+  padding: 12px 16px;
+}
+
+.spec-matrix-item {
+  display: flex;
+  flex-direction: column;
+  padding: 4px 6px;
+}
+
+.spec-matrix-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  color: #94a3b8;
+  margin-bottom: 2px;
+}
+
+.spec-matrix-val {
+  font-size: 0.825rem;
+  color: var(--ink);
+  line-height: 1.25;
+}
+
+/* ==========================================================================
+   Gomie Purchase Trio: Stepper (White) + Them Gio (Cam) + Mua Ngay (Xanh)
+   ========================================================================== */
+
+.gomie-action-trio-form {
+  margin: 0 !important;
+  width: 100%;
+}
+
+.gomie-purchase-grid {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+/* 1. Stepper */
+.gomie-qty-col {
+  flex-shrink: 0;
+}
+
+.gomie-qty-col .quantity {
+  margin: 0;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 99px;
+  padding: 2px 4px;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  height: 48px;
+}
+
+.gomie-qty-col .quantity .qty {
+  width: 38px;
+  height: 44px;
+  text-align: center;
+  background: transparent;
+  border: none;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--ink);
+  appearance: textfield;
+  -moz-appearance: textfield;
+  padding: 0;
+  margin: 0;
+}
+
+.gomie-qty-col .quantity .qty::-webkit-outer-spin-button,
+.gomie-qty-col .quantity .qty::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.qty-stepper-btn {
+  width: 32px;
+  height: 44px;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 99px;
+  transition: all 0.2s ease;
+}
+
+.qty-stepper-btn:hover {
+  background: #fff7ed;
+  color: var(--orange-deep);
+}
+
+/* 2. Main Add To Cart Button (CAM GOMIE - Signature Brand Hue) */
+.btn-gomie-add-cart,
+.gomie-purchase-actions button.btn-gomie-add-cart {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 48px !important;
+  background: linear-gradient(135deg, #f47a20 0%, #e86b14 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(244, 122, 32, 0.3) !important;
+  border-radius: 99px !important;
+  font-weight: 700 !important;
+  font-size: 0.92rem !important;
+  letter-spacing: 0.01em !important;
+  padding: 0 16px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  white-space: nowrap !important;
+  box-shadow: 0 6px 18px rgba(244, 122, 32, 0.28) !important;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  cursor: pointer;
+}
+
+.btn-gomie-add-cart:hover,
+.gomie-purchase-actions button.btn-gomie-add-cart:hover {
+  background: linear-gradient(135deg, #e86b14 0%, #d95e09 100%) !important;
+  box-shadow: 0 10px 24px rgba(244, 122, 32, 0.38) !important;
+  transform: translateY(-2px);
+  color: #ffffff !important;
+}
+
+/* 3. Quick Buy Button (XANH GOMIE - Signature Ocean Blue) */
+.btn-gomie-buy-now {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 48px;
+  background: linear-gradient(135deg, #168fd2 0%, #0873b6 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(22, 143, 210, 0.3);
+  border-radius: 99px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  letter-spacing: 0.01em;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none !important;
+  white-space: nowrap;
+  box-shadow: 0 6px 18px rgba(22, 143, 210, 0.28);
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  cursor: pointer;
+}
+
+.btn-gomie-buy-now:hover {
+  background: linear-gradient(135deg, #0873b6 0%, #065d94 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 10px 24px rgba(22, 143, 210, 0.38);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 576px) {
+  .gomie-purchase-grid {
+    flex-wrap: wrap;
+  }
+  .gomie-qty-col {
+    width: 100%;
+    margin-bottom: 4px;
+  }
+  .gomie-qty-col .quantity {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .btn-gomie-add-cart,
+  .btn-gomie-buy-now {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+}
+
+/* Guarantee Strip */
+.gomie-guarantee-strip {
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  font-size: 0.775rem;
+  color: var(--muted);
+}
+
+.guarantee-item {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.guarantee-item i {
+  color: var(--orange);
+}
+
+/* Direct Inquiry Helpline */
+.consultation-inline-text {
+  font-size: 0.825rem;
+  color: var(--muted);
+}
+
+.consultation-inline-text .phone-link {
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: none;
+  margin-left: 4px;
+}
+
+.consultation-inline-text .phone-link:hover {
+  color: var(--orange);
+}
+
+.consultation-inline-text .zalo-link {
+  color: var(--blue);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.consultation-inline-text .zalo-link:hover {
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   Editorial Tabs & Storytelling
+   ========================================================================== */
+
+.gomie-modern-tabs {
+  border-bottom: 2px solid var(--line);
+  gap: 12px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.gomie-modern-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.gomie-modern-tabs .nav-item {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.gomie-modern-tabs .nav-link {
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 12px 18px;
+  position: relative;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.gomie-modern-tabs .nav-link:hover {
+  color: var(--ink);
+}
+
+.gomie-modern-tabs .nav-link.active {
+  color: var(--ink);
+  background: transparent;
+}
+
+.gomie-modern-tabs .nav-link.active::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 20px;
+  right: 20px;
+  height: 3px;
+  background: var(--orange);
+  border-radius: 3px;
+}
+
+.gomie-tab-card {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  border-radius: 24px;
+  padding: 36px 40px;
+  box-shadow: 0 16px 40px rgba(45, 30, 15, 0.05);
+}
+
+.kicker-sub {
+  font-size: 12px;
+  color: var(--orange-deep);
+  font-weight: 800;
+  letter-spacing: .16em;
+}
+
+.text-orange { color: var(--orange) !important; }
+.text-blue { color: var(--blue) !important; }
+
+.editorial-lead-title {
+  font-size: clamp(24px, 2.4vw, 34px);
+  font-weight: 750;
+  line-height: 1.25;
+  letter-spacing: -.03em;
+  color: var(--ink);
+}
+
+.editorial-lead-title em {
+  font-style: normal;
+  color: var(--orange);
+}
+
+.editorial-pillar-card {
+  background: #faf9f7;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.editorial-pillar-card:nth-child(2) { background: #f5f9fc; }
+.editorial-pillar-card:nth-child(3) { background: #fff7f0; }
+
+.editorial-pillar-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(45, 30, 15, 0.06);
+}
+
+/* ==========================================================================
+   Editorial Usage Guide & Care Standards (Elevated UX/UI)
+   ========================================================================== */
+
+.gomie-usage-guide-wrapper {
+  color: var(--ink);
+}
+
+.usage-guide-header .usage-eyebrow-line {
+  display: inline-block;
+  width: 28px;
+  height: 2.5px;
+  background: var(--orange);
+  border-radius: 2px;
+}
+
+.usage-guide-header .usage-eyebrow-text {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: var(--orange-deep);
+  text-transform: uppercase;
+}
+
+.usage-guide-header .usage-title {
+  font-size: clamp(20px, 2.2vw, 25px);
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+}
+
+.usage-guide-header .usage-subtitle {
+  line-height: 1.75;
+  color: #5a6672;
+}
+
+/* Care Pillars Cards */
+.editorial-usage-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 22px;
+  border-radius: 20px;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+  background: #ffffff;
+}
+
+.editorial-usage-tile:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(45, 30, 15, 0.08);
+}
+
+.care-card-appliance {
+  background: linear-gradient(180deg, #fcfdfd 0%, #f0fdf4 100%);
+  border: 1px solid #dcfce7;
+}
+.care-card-appliance:hover {
+  border-color: #86efac;
+}
+
+.care-card-cleaning {
+  background: linear-gradient(180deg, #fffdfb 0%, #fff7ed 100%);
+  border: 1px solid #ffedd5;
+}
+.care-card-cleaning:hover {
+  border-color: #fdba74;
+}
+
+.care-card-matte {
+  background: linear-gradient(180deg, #fffdf8 0%, #fef9c3 100%);
+  border: 1px solid #fef08a;
+}
+.care-card-matte:hover {
+  border-color: #fde047;
+}
+
+.care-icon-badge {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  flex-shrink: 0;
+}
+
+.badge-appliance {
+  background: #e0f2fe;
+  color: #0284c7;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.badge-cleaning {
+  background: #ffedd5;
+  color: #ea580c;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.badge-matte {
+  background: #fef3c7;
+  color: #b45309;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.care-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 99px;
+  font-size: 11.5px;
+  font-weight: 750;
+  letter-spacing: 0.02em;
+}
+
+.pill-success {
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+}
+
+.pill-orange {
+  background: #fff7ed;
+  color: #c2410c;
+  border: 1px solid #fed7aa;
+}
+
+.pill-amber {
+  background: #fefce8;
+  color: #a16207;
+  border: 1px solid #fef08a;
+}
+
+.care-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.care-card-title {
+  font-size: 17px;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+.care-feature-list {
+  flex: 1;
+}
+
+.care-feature-item {
+  line-height: 1.65;
+}
+
+.care-feature-item i {
+  font-size: 13.5px;
+  flex-shrink: 0;
+}
+
+.care-card-chip {
+  margin-top: auto;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 10px;
+  font-size: 11.5px;
+  font-weight: 650;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+/* Safety & Warning Panel */
+.usage-safety-panel {
+  background: linear-gradient(135deg, #fffbfb 0%, #fff5f5 100%);
+  border: 1.5px solid #fecaca;
+  box-shadow: 0 8px 24px rgba(220, 38, 38, 0.04);
+}
+
+.safety-icon-emblem {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.25);
+  flex-shrink: 0;
+}
+
+.safety-item-card {
+  background: #ffffff;
+  border: 1px solid #fee2e2;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.safety-item-card:hover {
+  transform: translateY(-2px);
+  border-color: #fca5a5;
+  box-shadow: 0 8px 20px rgba(220, 38, 38, 0.06);
+}
+
+.safety-item-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.bg-danger-soft {
+  background: #fee2e2;
+}
+
+.bg-warning-soft {
+  background: #fef3c7;
+}
+
+.bg-info-soft {
+  background: #e0f2fe;
+}
+
+/* Handbook Banner */
+.usage-handbook-banner {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.usage-handbook-banner:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.07);
+}
+
+.handbook-icon-badge {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #168fd2, #0873b6);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  box-shadow: 0 6px 16px rgba(22, 143, 210, 0.25);
+  flex-shrink: 0;
+}
+
+.btn-handbook-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #168fd2, #0873b6);
+  color: #ffffff !important;
+  padding: 12px 24px;
+  border-radius: 99px;
+  font-weight: 700;
+  font-size: 13.5px;
+  text-decoration: none !important;
+  box-shadow: 0 4px 14px rgba(22, 143, 210, 0.25);
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  white-space: nowrap;
+}
+
+.btn-handbook-cta:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #0873b6, #035284);
+  box-shadow: 0 8px 22px rgba(22, 143, 210, 0.35);
+}
+
+.btn-handbook-cta i {
+  transition: transform 0.25s ease;
+}
+
+.btn-handbook-cta:hover i {
+  transform: translateX(4px);
+}
+
+@media (max-width: 768px) {
+  .editorial-usage-tile {
+    padding: 18px 16px;
+  }
+  .care-status-pill {
+    font-size: 11px;
+    padding: 4px 9px;
+  }
+  .care-icon-badge {
+    width: 38px;
+    height: 38px;
+    font-size: 16px;
+    border-radius: 10px;
+  }
+  .care-card-title {
+    font-size: 16px;
+  }
+  .usage-safety-panel {
+    padding: 20px 16px !important;
+  }
+  .usage-handbook-banner {
+    padding: 20px 16px !important;
+  }
+  .btn-handbook-cta {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ==========================================================================
+   Glazes Cross-Sell Banner
+   ========================================================================== */
+
+.gomie-glaze-cross-sell {
+  background: linear-gradient(135deg, #fff7f0 0%, #fef3e7 100%);
+  border: 1px solid #fed7aa;
+  border-radius: 24px;
+  box-shadow: 0 12px 32px rgba(244, 122, 32, 0.06);
+}
+
+.btn-editorial-orange {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--orange);
+  color: white !important;
+  padding: 14px 28px;
+  border-radius: 99px;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(244, 122, 32, 0.25);
+  transition: all 0.25s ease;
+}
+
+.btn-editorial-orange:hover {
+  background: var(--orange-deep);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(244, 122, 32, 0.35);
+}
+
+/* ==========================================================================
+   Semantic FAQ Accordion
+   ========================================================================== */
+
+.editorial-faq-list {
+  border-top: 1px solid #dfe4e8;
+}
+
+.editorial-faq-list details {
+  border-bottom: 1px solid #dfe4e8;
+  padding: 0;
+}
+
+.editorial-faq-list summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  font-weight: 650;
+  color: var(--ink);
+  line-height: 1.6;
+  font-size: 16px;
+  padding: 20px 2px;
+}
+
+.editorial-faq-list summary::-webkit-details-marker { display: none; }
+.editorial-faq-list summary::marker { display: none; }
+
+.editorial-faq-list summary:after {
+  content: "+";
+  font-size: 22px;
+  line-height: 1;
+  color: var(--blue);
+  font-weight: 400;
+  flex: none;
+}
+
+.editorial-faq-list details[open] summary:after {
+  content: "−";
+}
+
+.editorial-faq-list details p {
+  margin: -2px 0 20px 2px;
+  font-size: 14.5px;
+  line-height: 1.85;
+  color: #5c6870;
+}
+
+/* ==========================================================================
+   Related Products Section
+   ========================================================================== */
+
+.gomie-related-products-section .section-title {
+  letter-spacing: -0.025em;
+  color: var(--ink);
+}
+
+/* ==========================================================================
+   Responsive Adaptations
+   ========================================================================== */
+
+@media (max-width: 767.98px) {
+  .main-image-viewport {
+    height: 340px;
+    padding: 16px;
+  }
+  .main-product-img {
+    max-height: 300px;
+  }
+  .gomie-product-title {
+    font-size: 1.5rem;
+  }
+  .gomie-tab-card {
+    padding: 24px 18px;
+  }
+  .gomie-purchase-actions form.cart {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .gomie-purchase-actions .quantity {
+    justify-content: center;
+  }
+  .gomie-purchase-actions button.single_add_to_cart_button {
+    width: 100% !important;
+  }
+}
+
+/* ==========================================================================
+   Gomie Luxury Image Lightbox Pop Up Modal
+   ========================================================================== */
+
+.gomie-lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0.3s ease;
+}
+
+.gomie-lightbox-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.gomie-lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.gomie-lightbox-dialog {
+  position: relative;
+  z-index: 2;
+  max-width: 92vw;
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transform: scale(0.92);
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.gomie-lightbox-overlay.active .gomie-lightbox-dialog {
+  transform: scale(1);
+}
+
+.gomie-lightbox-close-btn {
+  position: absolute;
+  top: -52px;
+  right: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: #ffffff;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.gomie-lightbox-close-btn:hover {
+  background: var(--orange);
+  border-color: var(--orange);
+  transform: rotate(90deg) scale(1.1);
+  color: #ffffff;
+}
+
+.gomie-lightbox-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: #ffffff;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.gomie-lightbox-arrow:hover {
+  background: var(--orange);
+  border-color: var(--orange);
+  transform: translateY(-50%) scale(1.12);
+  color: #ffffff;
+}
+
+.gomie-lightbox-prev {
+  left: -70px;
+}
+
+.gomie-lightbox-next {
+  right: -70px;
+}
+
+@media (max-width: 991px) {
+  .gomie-lightbox-close-btn {
+    top: -46px;
+    right: 4px;
+  }
+  .gomie-lightbox-prev {
+    left: -20px;
+  }
+  .gomie-lightbox-next {
+    right: -20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .gomie-lightbox-prev {
+    left: 8px;
+    background: rgba(15, 23, 42, 0.6);
+  }
+  .gomie-lightbox-next {
+    right: 8px;
+    background: rgba(15, 23, 42, 0.6);
+  }
+}
+
+.gomie-lightbox-stage {
+  max-width: 86vw;
+  max-height: 78vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: clamp(16px, 3vw, 32px);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+
+.gomie-lightbox-stage img {
+  max-width: 100%;
+  max-height: 72vh;
+  object-fit: contain;
+  display: block;
+  user-select: none;
+  border-radius: 12px;
+}
+
+.gomie-lightbox-footer {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  color: #ffffff;
+  font-size: 14px;
+  padding: 0 8px;
+}
+
+.lightbox-product-title {
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.01em;
+  max-width: 75%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lightbox-image-counter {
+  color: #94a3b8;
+  font-size: 13px;
+  font-weight: 500;
+}

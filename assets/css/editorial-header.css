@@ -1,0 +1,597 @@
+/**
+ * Gomie Ceramic - Editorial Header Styling (High-End UX/UI Seamless 3-Tier)
+ * Unified background color & borderless flow across Top, Branding (Mid), and Nav (Bottom).
+ *
+ * @package Gomie
+ * @version 2.4.0
+ */
+
+.gomie-editorial-header {
+  position: relative;
+  z-index: 1020;
+  background: #ffffff !important;
+  font-family: inherit;
+  box-shadow: 0 4px 24px rgba(45, 30, 15, 0.04);
+  border-bottom: none !important;
+}
+
+.gomie-editorial-header .container {
+  max-width: 1400px !important;
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+}
+
+/* ==========================================================================
+   1. Header Top Bar (Seamless White Background, No Border)
+   ========================================================================== */
+
+.gomie-editorial-header .header-top {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+  border: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  padding: 10px 0 4px !important;
+  font-size: 12.5px !important;
+  color: #556270 !important;
+  position: relative !important;
+  z-index: 1025 !important;
+  min-height: 44px;
+}
+
+.gomie-editorial-header .header-top::before,
+.gomie-editorial-header .header-top::after {
+  display: none !important;
+  content: none !important;
+}
+
+.gomie-editorial-header .top-info-item {
+  color: #556270 !important;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.gomie-editorial-header .top-info-item i {
+  font-size: 11px;
+}
+
+.gomie-editorial-header .info-label {
+  color: #788796 !important;
+  font-weight: 500 !important;
+  font-size: 12px;
+}
+
+.gomie-editorial-header .top-pipe {
+  color: #d1d5db;
+  font-size: 11px;
+}
+
+.gomie-editorial-header .contact-link {
+  color: #374151 !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease;
+}
+
+.gomie-editorial-header .contact-link:hover {
+  color: #f47a20 !important;
+}
+
+.gomie-editorial-header .contact-link.text-orange {
+  color: #e86b14 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.01em;
+}
+
+.gomie-editorial-header .text-orange {
+  color: #f47a20 !important;
+}
+
+.gomie-editorial-header .social-links-minimal a {
+  color: #788796;
+  font-size: 12px;
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  text-decoration: none !important;
+  transition: all 0.2s ease;
+}
+
+.gomie-editorial-header .social-links-minimal a:hover {
+  color: #f47a20;
+  background: rgba(244, 122, 32, 0.08);
+}
+
+/* ==========================================================================
+   2. Header Branding Row (Large Centered Prominent Logo - Seamless White, No Border)
+   ========================================================================== */
+
+.header-branding-row {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  padding: 4px 0 8px;
+  position: relative;
+  border: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+.branding-row-inner {
+  width: 100%;
+}
+
+/* Prominent Center Logo */
+.site-branding {
+  text-align: center;
+  margin: 0 auto;
+}
+
+.gomie-editorial-logo-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  text-decoration: none !important;
+  color: inherit !important;
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.gomie-editorial-logo-link:hover {
+  transform: scale(1.015);
+}
+
+.logo-seal-box {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 6px 18px rgba(244, 122, 32, 0.22));
+}
+
+.logo-text-block {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-text-block .site-title {
+  font-size: clamp(38px, 3.8vw, 46px);
+  font-weight: 850;
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  color: #f47a20;
+  margin: 0;
+}
+
+.logo-text-block .site-tagline {
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.26em;
+  color: #168fd2;
+  margin-top: 5px;
+  text-transform: uppercase;
+}
+
+.logo-text-block .site-sub {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #7b8893;
+  letter-spacing: 0.05em;
+  margin-top: 3px;
+}
+
+/* Custom Image Logo Support (Brand-ready for user replacement) */
+.custom-logo-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-logo-wrapper img,
+.custom-logo {
+  height: auto !important;
+  max-height: 92px !important;
+  width: auto !important;
+  max-width: 360px !important;
+  object-fit: contain !important;
+  display: inline-block;
+  transition: transform 0.25s ease;
+}
+
+.custom-logo-wrapper img:hover {
+  transform: scale(1.02);
+}
+
+/* ==========================================================================
+   3. Header Navigation Row (Centered Menu + Actions - Seamless White, No Border)
+   ========================================================================== */
+
+.header-nav-row {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border: none !important;
+  border-top: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  padding-bottom: 4px;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.header-nav-inner {
+  min-height: 48px;
+}
+
+.gomie-nav-menu {
+  gap: clamp(14px, 2.2vw, 34px);
+  margin: 0 auto;
+  list-style: none !important;
+  padding: 0 !important;
+}
+
+.gomie-nav-menu > li.nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.gomie-nav-menu > li.nav-item > .nav-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 12px 6px !important;
+  font-size: 13.5px !important;
+  font-weight: 650 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.055em !important;
+  color: #27333e !important;
+  text-decoration: none !important;
+  position: relative !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border-radius: 0 !important;
+  transform: none !important;
+  transition: color 0.25s ease !important;
+}
+
+/* Underline animated line */
+.gomie-nav-menu > li.nav-item > .nav-link::after {
+  content: "" !important;
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 6px !important;
+  right: 6px !important;
+  height: 2.5px !important;
+  background: #f47a20 !important;
+  border-radius: 2px !important;
+  transform: scaleX(0) !important;
+  transform-origin: center !important;
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+}
+
+.gomie-nav-menu > li.nav-item:hover > .nav-link,
+.gomie-nav-menu > li.nav-item.current-menu-item > .nav-link,
+.gomie-nav-menu > li.nav-item.current_page_item > .nav-link {
+  color: #f47a20 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  transform: none !important;
+}
+
+.gomie-nav-menu > li.nav-item:hover > .nav-link::after,
+.gomie-nav-menu > li.nav-item.current-menu-item > .nav-link::after,
+.gomie-nav-menu > li.nav-item.current_page_item > .nav-link::after {
+  transform: scaleX(1) !important;
+}
+
+.gomie-nav-menu .nav-arrow {
+  font-size: 9.5px;
+  color: #94a3b8;
+  margin-left: 2px;
+  transition: transform 0.25s ease, color 0.25s ease;
+}
+
+.gomie-nav-menu > li.nav-item:hover .nav-arrow {
+  transform: rotate(180deg);
+  color: #f47a20;
+}
+
+/* ==========================================================================
+   4. Premium Dropdown Menu
+   ========================================================================== */
+
+.gomie-nav-menu .has-dropdown {
+  position: relative;
+}
+
+.gomie-nav-menu .premium-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  min-width: 270px;
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 18px 45px rgba(45, 30, 15, 0.12);
+  padding: 8px 0;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 1050;
+  text-align: left;
+}
+
+.gomie-nav-menu .premium-dropdown::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 16px;
+  right: 16px;
+  height: 2.5px;
+  background: linear-gradient(90deg, #f47a20 0%, #168fd2 100%);
+  border-radius: 2px;
+}
+
+.gomie-nav-menu .has-dropdown:hover > .premium-dropdown {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.gomie-nav-menu .dropdown-list {
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+}
+
+.gomie-nav-menu .dropdown-link {
+  display: block;
+  padding: 10px 22px;
+  font-size: 13.5px;
+  font-weight: 550;
+  color: #334155 !important;
+  text-decoration: none !important;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+}
+
+.gomie-nav-menu .dropdown-link:hover {
+  background: #fff7ed;
+  color: #f47a20 !important;
+  border-left-color: #f47a20;
+  padding-left: 26px;
+}
+
+/* ==========================================================================
+   5. Action Buttons: Search, Cart, Quote
+   ========================================================================== */
+
+.header-nav-actions {
+  flex-shrink: 0;
+}
+
+.nav-action-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid #ece7df;
+  background: #faf8f5;
+  color: #334155;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14.5px;
+  cursor: pointer;
+  text-decoration: none !important;
+  transition: all 0.22s ease;
+  padding: 0;
+}
+
+.nav-action-icon:hover {
+  background: #f47a20;
+  color: #ffffff !important;
+  border-color: #f47a20;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(244, 122, 32, 0.25);
+}
+
+.cart-pill-badge {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  background: #f47a20;
+  color: #ffffff;
+  font-size: 10.5px;
+  font-weight: 750;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 99px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.btn-header-quote {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #168fd2, #0873b6);
+  color: #ffffff !important;
+  padding: 8px 18px;
+  border-radius: 99px;
+  font-size: 12.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-decoration: none !important;
+  transition: all 0.25s ease;
+  box-shadow: 0 3px 10px rgba(22, 143, 210, 0.22);
+}
+
+.btn-header-quote:hover {
+  transform: translateY(-1px);
+  background: linear-gradient(135deg, #0873b6, #035284);
+  box-shadow: 0 6px 18px rgba(22, 143, 210, 0.35);
+}
+
+/* ==========================================================================
+   6. Sticky Header Behavior
+   ========================================================================== */
+
+.site-header.scrolled .header-top {
+  display: none !important;
+}
+
+.site-header.scrolled .header-branding-row {
+  display: none !important;
+}
+
+.site-header.scrolled .header-nav-row {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1030;
+  background: rgba(255, 255, 255, 0.96) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 6px 24px rgba(45, 30, 15, 0.08) !important;
+  border-top: none !important;
+}
+
+.site-header.scrolled .sticky-logo-pill {
+  display: inline-flex !important;
+  align-items: center;
+  margin-right: 18px;
+  text-decoration: none !important;
+}
+
+.site-header.scrolled .sticky-nav-actions {
+  display: flex !important;
+  flex-shrink: 0;
+}
+
+.sticky-logo-pill .sticky-logo-text {
+  font-size: 22px;
+  font-weight: 850;
+  color: #f47a20;
+  letter-spacing: -0.03em;
+}
+
+/* ==========================================================================
+   7. Mobile Layout & Responsive
+   ========================================================================== */
+
+.mobile-toggle-wrapper {
+  flex-shrink: 0;
+  z-index: 5;
+}
+
+.mobile-actions-wrapper {
+  flex-shrink: 0;
+  z-index: 5;
+}
+
+.mobile-menu-toggle {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.mobile-menu-toggle .hamburger-line {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #27333e;
+  border-radius: 2px;
+  transition: all 0.25s ease;
+}
+
+@media (max-width: 1199.98px) {
+  .header-top {
+    padding: 4px 0 !important;
+  }
+  .header-branding-row {
+    padding: 10px 0;
+  }
+  .site-branding {
+    padding: 0 4px;
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: center;
+    min-width: 0;
+    overflow: hidden;
+  }
+  .gomie-editorial-logo-link {
+    gap: 8px;
+    max-width: 100%;
+    align-items: center;
+  }
+  .logo-text-block .site-title {
+    font-size: clamp(20px, 4.8vw, 26px);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .logo-text-block .site-tagline {
+    font-size: 7.5px;
+    letter-spacing: 0.1em;
+    margin-top: 2px;
+  }
+  .logo-text-block .site-sub {
+    display: none !important;
+  }
+  .logo-seal-box svg {
+    width: 36px;
+    height: 36px;
+  }
+  .custom-logo-wrapper img,
+  .custom-logo {
+    max-height: 44px !important;
+    max-width: 160px !important;
+  }
+  .header-nav-row {
+    display: none;
+  }
+  .nav-action-icon {
+    width: 34px;
+    height: 34px;
+    font-size: 13.5px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .header-branding-row .container {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+  .logo-text-block .site-tagline {
+    display: none !important;
+  }
+  .logo-text-block .site-title {
+    font-size: 22px;
+  }
+  .logo-seal-box svg {
+    width: 32px;
+    height: 32px;
+  }
+  .custom-logo-wrapper img,
+  .custom-logo {
+    max-height: 38px !important;
+    max-width: 130px !important;
+  }
+}

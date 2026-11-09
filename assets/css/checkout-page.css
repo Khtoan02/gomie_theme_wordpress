@@ -1,0 +1,769 @@
+/* =============================================================================
+   GOMIE CHECKOUT PAGE - PROFESSIONAL DESIGN
+   Modern checkout design matching cart page styling
+   Focused on conversion and user trust
+============================================================================= */
+
+.gomie-checkout-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+  font-family: var(--font-primary);
+  line-height: 1.5;
+}
+
+/* =============================================================================
+   CHECKOUT HEADER SECTION
+============================================================================= */
+.checkout-header-section {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(224, 89, 42, 0.15);
+}
+
+.checkout-page-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  font-family: var(--font-heading);
+  color: var(--color-primary);
+  margin: 0 0 0.5rem 0;
+  white-space: nowrap;
+}
+
+.checkout-page-title i {
+  color: var(--color-secondary);
+  font-size: 1.5rem;
+  margin-right: 0.75rem;
+}
+
+.checkout-breadcrumb {
+  color: #6c757d;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.checkout-breadcrumb a {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.checkout-breadcrumb a:hover {
+  color: var(--color-secondary);
+}
+
+/* =============================================================================
+   CHECKOUT LAYOUT
+============================================================================= */
+.checkout-content-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 2rem;
+  align-items: start;
+}
+
+/* =============================================================================
+   CHECKOUT FIELDS SECTION
+============================================================================= */
+.checkout-fields-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.checkout-section-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e9ecef;
+  overflow: hidden;
+}
+
+.section-header {
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(135deg, #1a1f2c 0%, #2b3346 100%);
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.section-header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: left 0.6s;
+}
+
+.section-header:hover::before {
+  left: 100%;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  font-family: var(--font-heading);
+}
+
+.section-content {
+  padding: 1.5rem;
+}
+
+/* =============================================================================
+   FORM STYLING
+============================================================================= */
+.checkout-section-card h3 {
+  color: var(--color-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 1.5rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e9ecef;
+  font-family: var(--font-heading);
+}
+
+.woocommerce-billing-fields .form-row,
+.woocommerce-shipping-fields .form-row,
+.woocommerce-additional-fields .form-row {
+  margin-bottom: 1.25rem;
+}
+
+.woocommerce-billing-fields .form-row:last-child,
+.woocommerce-shipping-fields .form-row:last-child,
+.woocommerce-additional-fields .form-row:last-child {
+  margin-bottom: 0;
+}
+
+.form-row label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.form-row .required {
+  color: var(--color-secondary);
+}
+
+.form-row input[type="text"],
+.form-row input[type="email"],
+.form-row input[type="tel"],
+.form-row input[type="password"],
+.form-row select,
+.form-row textarea {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #333;
+  background: #fff;
+  transition: border-color 0.3s ease;
+}
+
+.form-row input:focus,
+.form-row select:focus,
+.form-row textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(224, 89, 42, 0.1);
+}
+
+.form-row .input-checkbox {
+  width: auto;
+  margin-right: 0.5rem;
+}
+
+/* Order Notes */
+.order-notes-section label {
+  color: var(--color-secondary);
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.order-notes-section textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* =============================================================================
+   ORDER REVIEW SECTION
+============================================================================= */
+.checkout-review-section {
+  position: sticky;
+  top: 2rem;
+}
+
+.order-review-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(224, 89, 42, 0.1);
+  overflow: hidden;
+}
+
+.order-review-content {
+  padding: 1.25rem;
+}
+
+/* Order Review Table */
+.woocommerce-checkout-review-order-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+}
+
+.woocommerce-checkout-review-order-table th,
+.woocommerce-checkout-review-order-table td {
+  padding: 1rem 0;
+  border-bottom: 1px solid #f1f3f4;
+  text-align: left;
+}
+
+.woocommerce-checkout-review-order-table th {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.woocommerce-checkout-review-order-table td {
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.woocommerce-checkout-review-order-table .product-name {
+  font-weight: 600;
+  color: #333;
+}
+
+.woocommerce-checkout-review-order-table .product-total {
+  font-weight: 700;
+  color: var(--color-secondary);
+  text-align: right;
+}
+
+.woocommerce-checkout-review-order-table .cart-subtotal th,
+.woocommerce-checkout-review-order-table .cart-subtotal td {
+  font-weight: 600;
+  color: var(--color-primary);
+  border-top: 1px solid #e9ecef;
+  padding-top: 1.25rem;
+}
+
+.woocommerce-checkout-review-order-table .order-total {
+  background: linear-gradient(135deg, #1a1f2c 0%, #2b3346 100%);
+  color: #fff;
+}
+
+.woocommerce-checkout-review-order-table .order-total th,
+.woocommerce-checkout-review-order-table .order-total td {
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 1.25rem 1rem;
+  font-family: var(--font-heading);
+}
+
+/* =============================================================================
+   PAYMENT SECTION
+============================================================================= */
+.payment-section {
+  padding: 1.5rem;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 237, 228, 0.2) 0%,
+    rgba(255, 216, 195, 0.1) 100%
+  );
+  border-top: 1px solid rgba(239, 102, 26, 0.1);
+}
+
+.payment-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  color: var(--color-secondary);
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.payment-header i {
+  font-size: 1.1rem;
+}
+
+.payment_methods {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.payment_methods li {
+  margin-bottom: 1rem;
+  background: #fff;
+  border-radius: 8px;
+  border: 2px solid #e9ecef;
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+}
+
+.payment_methods li.payment_method_selected,
+.payment_methods li:hover {
+  border-color: var(--color-primary);
+}
+
+.payment_methods label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  margin: 0;
+  cursor: pointer;
+  font-weight: 600;
+  color: #333;
+  transition: background-color 0.2s;
+}
+
+.payment_methods label:hover {
+  background: rgba(224, 89, 42, 0.03);
+}
+
+.payment_methods input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+}
+
+.payment_method_description {
+  padding: 1rem 1.25rem;
+  background: #f8f9fa;
+  border-top: 1px solid #e9ecef;
+  color: #6c757d;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* =============================================================================
+   TERMS AND CONDITIONS
+============================================================================= */
+.checkout-terms {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: rgba(224, 89, 42, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(224, 89, 42, 0.1);
+}
+
+.checkout-terms .form-row {
+  margin: 0;
+}
+
+.checkout-terms label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.checkout-terms input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+/* =============================================================================
+   PLACE ORDER BUTTON
+============================================================================= */
+.place-order-section {
+  margin-top: 1.5rem;
+}
+
+.place-order-button {
+  display: block;
+  width: 100%;
+  background: linear-gradient(135deg, var(--color-secondary) 0%, #ff7a3d 100%);
+  color: #fff;
+  text-decoration: none;
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(239, 102, 26, 0.25);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.place-order-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #e55a15 0%, var(--color-secondary) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.place-order-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(239, 102, 26, 0.4);
+  color: #fff;
+}
+
+.place-order-button:hover::before {
+  opacity: 1;
+}
+
+.place-order-button .button-content {
+  display: flex;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.place-order-button .button-icon {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+}
+
+.place-order-button .button-icon i {
+  font-size: 1.1rem;
+  color: #fff;
+}
+
+.place-order-button .button-text {
+  flex: 1;
+  text-align: left;
+}
+
+.place-order-button .main-text {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 700;
+  font-family: var(--font-heading);
+  margin-bottom: 0.25rem;
+}
+
+.place-order-button .sub-text {
+  display: block;
+  font-size: 0.85rem;
+  opacity: 0.9;
+  font-weight: 400;
+}
+
+.place-order-button .button-arrow {
+  width: 30px;
+  height: 30px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.place-order-button .button-arrow i {
+  font-size: 0.9rem;
+  color: #fff;
+}
+
+.place-order-button:hover .button-arrow {
+  transform: translateX(3px);
+}
+
+/* Loading state for place order button */
+.place-order-button.loading {
+  pointer-events: none;
+}
+
+.place-order-button.loading .main-text {
+  opacity: 0.7;
+}
+
+.place-order-button.loading .button-icon i {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =============================================================================
+   RESPONSIVE DESIGN
+============================================================================= */
+@media (max-width: 992px) {
+  .checkout-content-wrapper {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .checkout-review-section {
+    order: -1; /* Show order review first on mobile */
+  }
+}
+
+@media (max-width: 768px) {
+  .gomie-checkout-container {
+    padding: 1rem 0.75rem;
+  }
+
+  .checkout-page-title {
+    font-size: 1.5rem;
+  }
+
+  .section-header {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+
+  .section-content {
+    padding: 1rem;
+  }
+
+  .checkout-content-wrapper {
+    gap: 1rem;
+  }
+
+  .place-order-button .button-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+    padding: 1.5rem 1rem;
+  }
+
+  .place-order-button .button-icon {
+    margin-right: 0;
+  }
+
+  .place-order-button .button-text {
+    text-align: center;
+  }
+
+  .checkout-review-section {
+    position: static;
+  }
+}
+
+@media (max-width: 480px) {
+  .gomie-checkout-container {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .checkout-page-title {
+    font-size: 1.25rem;
+  }
+}
+
+/* =============================================================================
+   WOOCOMMERCE FORM OVERRIDES
+============================================================================= */
+/* Clean up WooCommerce default styling */
+.woocommerce-checkout .form-row .input-text,
+.woocommerce-checkout .form-row select,
+.woocommerce-checkout .form-row textarea {
+  border-radius: 8px !important;
+  border: 2px solid #e9ecef !important;
+  padding: 0.875rem 1rem !important;
+  font-size: 0.9rem !important;
+}
+
+.woocommerce-checkout .form-row .input-text:focus,
+.woocommerce-checkout .form-row select:focus,
+.woocommerce-checkout .form-row textarea:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 3px rgba(224, 89, 42, 0.1) !important;
+}
+
+.woocommerce-checkout .form-row-wide {
+  width: 100%;
+}
+
+.woocommerce-checkout .form-row-first,
+.woocommerce-checkout .form-row-last {
+  width: 48%;
+  float: left;
+}
+
+.woocommerce-checkout .form-row-last {
+  float: right;
+}
+
+.woocommerce-checkout .form-row::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Validation styling */
+.woocommerce-checkout .form-row.woocommerce-invalid .input-text,
+.woocommerce-checkout .form-row.woocommerce-invalid select {
+  border-color: #dc3545 !important;
+}
+
+.woocommerce-checkout .form-row.woocommerce-validated .input-text,
+.woocommerce-checkout .form-row.woocommerce-validated select {
+  border-color: #28a745 !important;
+}
+
+/* =============================================================================
+   LOADING STATES & ANIMATIONS
+============================================================================= */
+.checkout-section-card.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.processing-checkout {
+  position: relative;
+}
+
+.processing-checkout::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+/* =============================================================================
+   ACCESSIBILITY & USABILITY
+============================================================================= */
+.screen-reader-text {
+  position: absolute !important;
+  clip: rect(1px, 1px, 1px, 1px);
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden;
+}
+
+/* Focus styles for better keyboard navigation */
+button:focus,
+input:focus,
+select:focus,
+textarea:focus,
+a:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .checkout-section-card {
+    border: 2px solid #333;
+  }
+
+  .order-review-card {
+    border: 2px solid #333;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+
+/* =============================================================================
+   GOMIE EDITORIAL V11 CERAMIC OVERRIDES FOR CHECKOUT
+============================================================================= */
+.checkout-page-title {
+  color: #1a1f2c !important;
+}
+.checkout-page-title i {
+  color: #e0592a !important;
+}
+.section-header {
+  background: linear-gradient(135deg, #1a1f2c 0%, #2b3346 100%) !important;
+  border-bottom: 2px solid #e0592a;
+}
+.checkout-section-card, .order-review-card {
+  border: 1px solid rgba(224, 89, 42, 0.12) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 8px 24px rgba(160, 120, 80, 0.06) !important;
+}
+.woocommerce-checkout-review-order-table .order-total {
+  background: linear-gradient(135deg, #e0592a 0%, #c4471b 100%) !important;
+  color: #ffffff !important;
+}
+.woocommerce-checkout-review-order-table .order-total th,
+.woocommerce-checkout-review-order-table .order-total td {
+  color: #ffffff !important;
+}
+.place-order-button, #place_order {
+  background: linear-gradient(135deg, #e0592a 0%, #c4471b 100%) !important;
+  border-radius: 999px !important;
+  box-shadow: 0 8px 20px rgba(224, 89, 42, 0.35) !important;
+  color: #ffffff !important;
+}
+.place-order-button:hover, #place_order:hover {
+  background: linear-gradient(135deg, #c4471b 0%, #b3471e 100%) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(224, 89, 42, 0.45) !important;
+}
+.woocommerce-info {
+  background: #ffffff !important;
+  border-top: 3px solid #e0592a !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important;
+  color: #1a1f2c !important;
+}
+.woocommerce-info a {
+  color: #e0592a !important;
+  font-weight: 600 !important;
+}
+.wc_payment_method label {
+  font-weight: 600 !important;
+  color: #1a1f2c !important;
+}
+.wc_payment_method .payment_box {
+  background: #fbf8f3 !important;
+  border-left: 3px solid #e0592a !important;
+  border-radius: 8px !important;
+  color: #555 !important;
+  font-size: 0.9rem !important;
+}

@@ -1,0 +1,57 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8f9fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e9ecef;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="icon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e67e22;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#d35400;stop-opacity:0.9" />
+    </linearGradient>
+    <linearGradient id="text" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2c3e50;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#34495e;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="400" fill="url(#bg)" rx="20"/>
+  
+  <!-- Ceramic Mug Icon -->
+  <g transform="translate(200, 180)">
+    <!-- Mug Body -->
+    <ellipse cx="0" cy="0" rx="60" ry="45" fill="url(#icon)" opacity="0.9"/>
+    <ellipse cx="0" cy="0" rx="55" ry="40" fill="none" stroke="#fff" stroke-width="2" opacity="0.3"/>
+    
+    <!-- Mug Handle -->
+    <path d="M 60 0 Q 80 -10 80 10 Q 80 30 60 20" fill="none" stroke="url(#icon)" stroke-width="8" stroke-linecap="round"/>
+    
+    <!-- Steam -->
+    <g opacity="0.6">
+      <path d="M -30 -30 Q -35 -40 -30 -50" stroke="url(#icon)" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M -20 -35 Q -25 -45 -20 -55" stroke="url(#icon)" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M -10 -30 Q -15 -40 -10 -50" stroke="url(#icon)" stroke-width="3" fill="none" stroke-linecap="round"/>
+    </g>
+    
+    <!-- Decorative Pattern -->
+    <circle cx="0" cy="-15" r="3" fill="#fff" opacity="0.4"/>
+    <circle cx="0" cy="15" r="3" fill="#fff" opacity="0.4"/>
+    <circle cx="-15" cy="0" r="3" fill="#fff" opacity="0.4"/>
+    <circle cx="15" cy="0" r="3" fill="#fff" opacity="0.4"/>
+  </g>
+  
+  <!-- GOMIE Text -->
+  <text x="200" y="280" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="url(#text)">GOMIE</text>
+  
+  <!-- Subtitle -->
+  <text x="200" y="305" font-family="Arial, sans-serif" font-size="14" font-weight="500" text-anchor="middle" fill="#7f8c8d">Gốm Sứ Bát Tràng</text>
+  
+  <!-- Decorative Elements -->
+  <g opacity="0.1">
+    <circle cx="50" cy="50" r="20" fill="url(#icon)"/>
+    <circle cx="350" cy="80" r="15" fill="url(#icon)"/>
+    <circle cx="80" cy="320" r="12" fill="url(#icon)"/>
+    <circle cx="320" cy="350" r="18" fill="url(#icon)"/>
+  </g>
+</svg>
+
