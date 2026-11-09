@@ -146,8 +146,22 @@
                 <div class="header-nav-inner d-flex align-items-center justify-content-center">
                     
                     <!-- Sticky mini logo (displays only when scrolled sticky) -->
-                    <a href="<?php echo esc_url(home_url('/')); ?>" class="sticky-logo-pill d-none" aria-label="Trang chủ Gomie">
-                        <span class="sticky-logo-text">Gomie</span>
+                    <?php
+                    $sticky_logo_url = '';
+                    if (has_custom_logo()) {
+                        $custom_logo_id = get_theme_mod('custom_logo');
+                        $logo_img_src   = wp_get_attachment_image_src($custom_logo_id, 'medium');
+                        if (!empty($logo_img_src[0])) {
+                            $sticky_logo_url = $logo_img_src[0];
+                        }
+                    }
+                    ?>
+                    <a href="<?php echo esc_url(home_url('/')); ?>" class="sticky-logo-pill d-none" aria-label="<?php bloginfo('name'); ?>">
+                        <?php if (!empty($sticky_logo_url)) : ?>
+                            <img src="<?php echo esc_url($sticky_logo_url); ?>" alt="<?php bloginfo('name'); ?>" class="sticky-logo-img" />
+                        <?php else : ?>
+                            <span class="sticky-logo-text">Gomie</span>
+                        <?php endif; ?>
                     </a>
 
                     <!-- 100% Centered Menu Links -->
