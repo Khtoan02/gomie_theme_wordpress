@@ -1,283 +1,118 @@
 /**
- * Checkout Page Styles - Gomie Ceramic Modern Editorial
- * Shopify & Apple-grade UX/UI Architecture
+ * Checkout Page Styles - Simplified & Minimalist
+ * Clean, lightweight, frictionless design
  * 
  * @package Gomie
- * @version 12.0.0
+ * @version 13.0.0
  */
 
-/* ==========================================================================
-   1. CANVAS & LAYOUT BASE
-   ========================================================================== */
 .gomie-editorial-checkout-canvas {
   background-color: #fbf8f3;
-  background-image: url('../images/glazes/Background-1.png');
-  background-repeat: repeat;
-  min-height: 90vh;
-  padding-bottom: 90px;
+  min-height: 85vh;
   color: #2b2b2b;
 }
 
-/* ==========================================================================
-   2. BREADCRUMBS (Definitive fix for double slash //)
-   ========================================================================== */
-.checkout-breadcrumb-v11 {
-  font-size: 0.875rem;
-}
-.checkout-breadcrumb-v11 .breadcrumb {
-  background: transparent;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-}
-.checkout-breadcrumb-v11 .breadcrumb-item {
-  display: inline-flex;
-  align-items: center;
-}
-/* Force eliminate ::after from main.css */
-.checkout-breadcrumb-v11 .breadcrumb-item::after {
-  content: none !important;
-  display: none !important;
-}
-/* Clean single divider using ::before */
-.checkout-breadcrumb-v11 .breadcrumb-item + .breadcrumb-item::before {
-  content: "/" !important;
-  padding: 0 10px;
-  color: #c4b5a5 !important;
-  font-weight: 400;
-}
-.checkout-breadcrumb-v11 a {
-  color: #666;
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-.checkout-breadcrumb-v11 a:hover {
-  color: #e0592a;
-}
-.checkout-breadcrumb-v11 .active {
+.checkout-page-title {
   color: #1a1a1a;
-  font-weight: 700;
+  letter-spacing: -0.3px;
 }
 
 /* ==========================================================================
-   3. HERO HEADER
+   CARDS & CONTAINERS
    ========================================================================== */
-.checkout-header-v11 {
-  margin-bottom: 35px;
-}
-.checkout-pill-badge {
-  display: inline-flex;
-  align-items: center;
-  background: rgba(224, 89, 42, 0.08);
-  border: 1px solid rgba(224, 89, 42, 0.25);
-  color: #e0592a;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.8px;
-  padding: 6px 16px;
-  border-radius: 50px;
-  text-transform: uppercase;
-}
-.checkout-title-v11 {
-  font-size: 2.25rem;
-  letter-spacing: -0.5px;
-  line-height: 1.25;
-}
-.highlight-orange {
-  color: #e0592a;
-}
-.checkout-sub-v11 {
-  font-size: 0.98rem;
-  color: #6b635b;
-}
-
-/* ==========================================================================
-   4. CARDS & ARCHITECTURE
-   ========================================================================== */
-.gomie-checkout-card {
+.gomie-checkout-box,
+.gomie-order-summary-box {
   background: #ffffff;
-  border-radius: 20px;
-  padding: 28px 32px;
-  box-shadow: 0 10px 30px rgba(40, 20, 10, 0.04);
-  border: 1px solid #ede5dc;
-  transition: box-shadow 0.3s ease;
-}
-.gomie-checkout-card:hover {
-  box-shadow: 0 14px 40px rgba(40, 20, 10, 0.07);
-}
-
-.card-step-header .step-circle {
-  width: 38px;
-  height: 38px;
-  min-width: 38px;
-  background: linear-gradient(135deg, #e0592a 0%, #c4491e 100%);
-  color: #ffffff;
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 1.05rem;
-  box-shadow: 0 4px 12px rgba(224, 89, 42, 0.3);
-}
-.card-step-header .step-circle-secondary {
-  background: #f1ebe4;
-  color: #7c6f64;
-  box-shadow: none;
-}
-.step-title {
-  color: #1a1a1a;
-  letter-spacing: -0.2px;
-}
-
-/* Welcome User Alert */
-.checkout-user-welcome-alert {
-  background: #f0fdf4;
-  border: 1px solid #bbf7d0;
-}
-.checkout-guest-login-notice {
-  background: #fffaf5;
-  border: 1px solid #fed7aa;
-}
-
-/* Form Controls (Inputs, Selects, Textareas) */
-.gomie-checkout-card .form-row {
-  margin-bottom: 18px;
-  padding: 0;
-}
-.gomie-checkout-card label {
-  font-weight: 600;
-  font-size: 0.88rem;
-  color: #2d3748;
-  margin-bottom: 7px;
-  display: block;
-}
-.gomie-checkout-card label .required {
-  color: #e0592a;
-  text-decoration: none;
-}
-.gomie-checkout-card input[type="text"],
-.gomie-checkout-card input[type="tel"],
-.gomie-checkout-card input[type="email"],
-.gomie-checkout-card select,
-.gomie-checkout-card textarea,
-.gomie-textarea-custom {
-  width: 100%;
-  border: 1.5px solid #e2e8f0;
   border-radius: 12px;
-  padding: 13px 18px;
-  font-size: 0.95rem;
-  color: #1a202c;
-  background-color: #faf8f5;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: none;
-}
-.gomie-checkout-card input:focus,
-.gomie-checkout-card select:focus,
-.gomie-checkout-card textarea:focus,
-.gomie-textarea-custom:focus {
-  outline: none;
-  border-color: #e0592a !important;
-  background-color: #ffffff !important;
-  box-shadow: 0 0 0 3px rgba(224, 89, 42, 0.12) !important;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
-/* Account save checkbox */
-.woocommerce-form__label-for-checkbox {
-  display: flex !important;
-  align-items: center !important;
-  gap: 8px !important;
-  cursor: pointer;
-  font-weight: 500 !important;
-  color: #4a5568 !important;
-  margin-top: 10px;
-}
-.woocommerce-form__input-checkbox {
-  width: 18px !important;
-  height: 18px !important;
-  accent-color: #e0592a;
-  cursor: pointer;
-}
-
-/* Guarantee Card */
-.gomie-guarantee-card {
-  background: #ffffff;
-  border: 1px solid #ede5dc;
-  box-shadow: 0 6px 20px rgba(40, 20, 10, 0.03);
-}
-.guarantee-mini-item {
-  background: #fbf9f6;
-  border-radius: 12px;
-  padding: 14px;
-  text-align: center;
-  height: 100%;
-  border: 1px solid #f0e8df;
-}
-
-/* ==========================================================================
-   5. STICKY ORDER SUMMARY (RIGHT COLUMN)
-   ========================================================================== */
-.gomie-checkout-sidebar-sticky {
+.gomie-order-summary-box {
   position: -webkit-sticky;
   position: sticky;
-  top: 95px;
-}
-.gomie-order-summary-card {
-  background: #ffffff;
-  border-radius: 20px;
-  box-shadow: 0 12px 35px rgba(40, 20, 10, 0.05);
-  border: 1px solid #ede5dc;
+  top: 90px;
 }
 
-/* Product list in Order Review */
+/* Form Inputs */
+.checkout-billing-fields .form-row {
+  margin-bottom: 16px;
+  padding: 0;
+}
+.checkout-billing-fields label {
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: #334155;
+  margin-bottom: 6px;
+  display: block;
+}
+.checkout-billing-fields label .required {
+  color: #e0592a;
+  text-decoration: none;
+}
+.checkout-billing-fields input[type="text"],
+.checkout-billing-fields input[type="tel"],
+.checkout-billing-fields input[type="email"],
+.checkout-billing-fields select,
+.checkout-billing-fields textarea,
+.order-notes-wrap textarea {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  color: #1e293b;
+  background-color: #ffffff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.checkout-billing-fields input:focus,
+.checkout-billing-fields select:focus,
+.checkout-billing-fields textarea:focus,
+.order-notes-wrap textarea:focus {
+  outline: none;
+  border-color: #e0592a;
+  box-shadow: 0 0 0 3px rgba(224, 89, 42, 0.12);
+}
+
+/* ==========================================================================
+   PRODUCT LIST & TOTALS
+   ========================================================================== */
 .checkout-products-list {
-  max-height: 380px;
+  max-height: 320px;
   overflow-y: auto;
-  padding-right: 6px;
-  margin-bottom: 15px;
-}
-.checkout-products-list::-webkit-scrollbar {
-  width: 5px;
-}
-.checkout-products-list::-webkit-scrollbar-thumb {
-  background: #e2d8cd;
-  border-radius: 10px;
+  margin-bottom: 12px;
 }
 .checkout-product-item {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 12px 0;
-  border-bottom: 1px dashed #efe8df;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f1f5f9;
 }
 .checkout-product-item:last-child {
   border-bottom: none;
 }
 .checkout-product-thumb-box {
   position: relative;
-  width: 64px;
-  height: 64px;
-  min-width: 64px;
-  border-radius: 12px;
+  width: 54px;
+  height: 54px;
+  min-width: 54px;
+  border-radius: 8px;
   overflow: visible;
-  border: 1px solid #ebdcd0;
-  background: #fdfbf9;
+  border: 1px solid #e2e8f0;
 }
 .checkout-product-thumb-box img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 12px;
+  border-radius: 8px;
 }
 .checkout-qty-badge {
   position: absolute;
-  top: -8px;
-  right: -8px;
-  width: 22px;
-  height: 22px;
+  top: -6px;
+  right: -6px;
+  width: 20px;
+  height: 20px;
   background: #e0592a;
   color: #ffffff;
   border-radius: 50%;
@@ -286,173 +121,105 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 6px rgba(224, 89, 42, 0.4);
   border: 2px solid #ffffff;
-  z-index: 2;
 }
 .checkout-product-info {
   flex-grow: 1;
   min-width: 0;
 }
 .checkout-product-title {
-  font-weight: 600;
-  font-size: 0.92rem;
-  color: #1a202c;
-  line-height: 1.35;
-  white-space: normal;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #1e293b;
+  line-height: 1.3;
+}
+.checkout-product-unit-price {
+  font-size: 0.8rem;
+  color: #64748b;
 }
 .checkout-product-subtotal {
-  font-weight: 700;
-  font-size: 0.95rem;
-  color: #1a202c;
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: #1e293b;
   white-space: nowrap;
 }
 
-/* Totals Summary */
+/* Totals */
 .checkout-totals-summary {
-  padding-top: 10px;
+  padding-top: 8px;
 }
 .totals-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 0;
-  font-size: 0.92rem;
-  color: #4a5568;
+  padding: 6px 0;
+  font-size: 0.9rem;
+  color: #64748b;
 }
 .totals-value {
   font-weight: 600;
-  color: #1a202c;
+  color: #1e293b;
 }
 .totals-grand-total {
-  border-top: 2px solid #f1e9e0;
-  border-bottom: 1px solid #f1e9e0;
-  padding: 16px 0 14px;
-  margin-top: 8px;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 12px;
+  margin-top: 6px;
 }
 .grand-total-label {
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 700;
-  color: #1a202c;
-}
-.grand-total-sub {
-  font-size: 0.78rem;
+  color: #1e293b;
 }
 .grand-total-value {
-  font-size: 1.45rem;
-  font-weight: 800;
+  font-size: 1.3rem;
+  font-weight: 700;
   color: #e0592a;
 }
 
 /* ==========================================================================
-   6. PAYMENT SECTION & GATEWAYS (Interactive Card Selection)
+   PAYMENT METHODS
    ========================================================================== */
-.gomie-payment-modern-wrap {
-  border-color: #f1e9e0 !important;
+.gomie-payment-clean-wrap {
+  border-color: #f1f5f9 !important;
 }
-.gomie-payment-card-item {
-  position: relative;
+.gomie-payment-item {
   list-style: none !important;
 }
-.gomie-payment-card-label {
+.gomie-payment-label {
   cursor: pointer;
-  border: 1.5px solid #e2e8f0;
+  border: 1px solid #e2e8f0;
   background: #ffffff;
   transition: all 0.2s ease;
   user-select: none;
 }
-.gomie-payment-card-label:hover {
+.gomie-payment-label:hover {
   border-color: #cbd5e1;
-  background: #fafafa;
 }
-
-/* Custom Radio Dot */
-.gomie-custom-radio-circle {
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  min-width: 18px;
-  border-radius: 50%;
-  border: 2px solid #cbd5e1;
-  background: #ffffff;
-  transition: all 0.2s ease;
-}
-
-/* When Payment Radio is Checked */
-.gomie-payment-card-item input[type="radio"]:checked + .gomie-payment-card-label {
-  border-color: #e0592a !important;
-  background: #fff9f6 !important;
-  box-shadow: 0 4px 15px rgba(224, 89, 42, 0.08);
-}
-.gomie-payment-card-item input[type="radio"]:checked + .gomie-payment-card-label .gomie-custom-radio-circle {
+.gomie-payment-item input[type="radio"]:checked + .gomie-payment-label {
   border-color: #e0592a;
-  background: #e0592a;
-  box-shadow: inset 0 0 0 3px #ffffff;
-}
-.gomie-payment-card-item input[type="radio"]:checked + .gomie-payment-card-label .payment-main-title {
-  color: #e0592a !important;
-}
-
-/* Payment Description Box */
-.gomie-payment-desc-box {
   background: #fff9f6;
-  border: 1.5px solid #e0592a;
-  border-top: none;
-  font-size: 0.85rem;
-  color: #4a5568;
-  line-height: 1.5;
+}
+.payment-title {
+  font-size: 0.92rem;
 }
 
-/* ==========================================================================
-   7. PLACE ORDER BUTTON (PREMIUM CALL TO ACTION)
-   ========================================================================== */
-.btn-gomie-place-order {
-  background: linear-gradient(135deg, #e0592a 0%, #c4491e 100%) !important;
+/* Place Order Button */
+.btn-gomie-order-clean {
+  background: #e0592a !important;
   color: #ffffff !important;
   border: none !important;
-  border-radius: 16px !important;
-  padding: 16px 24px !important;
-  box-shadow: 0 10px 25px rgba(224, 89, 42, 0.35) !important;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  border-radius: 8px !important;
+  padding: 13px 20px !important;
+  transition: background-color 0.2s ease !important;
   cursor: pointer;
-  text-decoration: none;
-  position: relative;
-  overflow: hidden;
 }
-.btn-gomie-place-order:hover {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 14px 35px rgba(224, 89, 42, 0.45) !important;
+.btn-gomie-order-clean:hover {
+  background: #c9491e !important;
   color: #ffffff !important;
-}
-.btn-gomie-place-order:active {
-  transform: translateY(0) !important;
-}
-.btn-order-main-text span {
-  letter-spacing: 0.5px;
-}
-.btn-order-sub-text {
-  font-size: 0.82rem;
-  font-weight: 400;
-  opacity: 0.9;
-  margin-top: 4px;
-}
-
-/* Hotline Link */
-.hotline-link {
-  color: #e0592a;
-  font-size: 1.1rem;
-  transition: color 0.2s ease;
-}
-.hotline-link:hover {
-  color: #b73b12;
-}
-.summary-hotline-box {
-  background: #fff8f5;
-  border: 1px dashed rgba(224, 89, 42, 0.35);
 }
 
 /* ==========================================================================
-   8. WIPE OUT ALL UNWANTED OLD LED/NAVY OVERRIDES & REDUNDANT HEADERS
+   CLEANUP OLD OVERRIDES
    ========================================================================== */
 .checkout-main-box,
 .section-header,
@@ -470,10 +237,4 @@
   background: transparent !important;
   border: none !important;
   padding: 0 !important;
-}
-.woocommerce-checkout #payment div.payment_box {
-  margin: 0 !important;
-}
-.woocommerce-checkout #payment div.payment_box::before {
-  display: none !important;
 }

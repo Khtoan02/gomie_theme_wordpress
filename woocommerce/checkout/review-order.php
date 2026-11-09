@@ -87,7 +87,7 @@ defined('ABSPATH') || exit;
         <?php if (WC()->cart->needs_shipping() && WC()->cart->show_shipping()) : ?>
             <?php do_action('woocommerce_review_order_before_shipping'); ?>
             <div class="totals-row totals-shipping">
-                <span class="totals-label">Vận chuyển &amp; bảo hiểm rơi vỡ:</span>
+                <span class="totals-label">Giao hàng:</span>
                 <span class="totals-value"><?php wc_cart_totals_shipping_html(); ?></span>
             </div>
             <?php do_action('woocommerce_review_order_after_shipping'); ?>
@@ -121,10 +121,7 @@ defined('ABSPATH') || exit;
         <!-- Grand Total -->
         <?php do_action('woocommerce_review_order_before_order_total'); ?>
         <div class="totals-row totals-grand-total">
-            <div>
-                <span class="grand-total-label">Tổng thanh toán:</span>
-                <span class="grand-total-sub text-muted d-block">Đã bao gồm VAT &amp; bảo hiểm vận chuyển</span>
-            </div>
+            <span class="grand-total-label">Tổng cộng:</span>
             <span class="grand-total-value"><?php wc_cart_totals_order_total_html(); ?></span>
         </div>
         <?php do_action('woocommerce_review_order_after_order_total'); ?>
