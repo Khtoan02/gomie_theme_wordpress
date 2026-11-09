@@ -64,10 +64,11 @@ foreach ($query_products as $p) {
     $detected_glazes[$glaze_info['slug']]['count']++;
 
     $ceramic_products[] = array(
-        'product'    => $wc_prod,
-        'glaze_name' => $glaze_info['name'],
-        'glaze_slug' => $glaze_info['slug'],
-        'cat_slugs'  => $cat_slugs,
+        'product'     => $wc_prod,
+        'glaze_name'  => $glaze_info['name'],
+        'glaze_slug'  => $glaze_info['slug'],
+        'glaze_color' => $glaze_info['color'],
+        'cat_slugs'   => $cat_slugs,
     );
 }
 
@@ -224,6 +225,18 @@ $theme_uri = get_template_directory_uri();
                 $glaze_slug = $item['glaze_slug'];
                 $cat_data_attr = !empty($item['cat_slugs']) ? implode(' ', $item['cat_slugs']) : 'all';
 
+                // Tự động gán tên tác phẩm nếu sản phẩm thiếu tên hoặc (no title)
+                $display_title = trim($title);
+                if (empty($display_title) || strcasecmp($display_title, '(no title)') === 0 || strcasecmp($display_title, 'no title') === 0) {
+                    $cats = wp_get_post_terms($pid, 'product_cat', ['fields' => 'names']);
+                    $first_cat = (!empty($cats) && !is_wp_error($cats)) ? $cats[0] : '';
+                    if (!empty($first_cat) && $first_cat !== 'Uncategorized') {
+                        $display_title = $first_cat . ' ' . $glaze_name . ' Bát Tràng';
+                    } else {
+                        $display_title = 'Tác Phẩm ' . (!empty($glaze_name) ? $glaze_name : 'Gốm Sứ Gomie');
+                    }
+                }
+
                 // Image with prioritized detection
                 $img_url = '';
                 if (has_post_thumbnail($pid)) {
@@ -247,42 +260,38 @@ $theme_uri = get_template_directory_uri();
                      data-glaze="<?php echo esc_attr($glaze_slug); ?>" 
                      data-cat="<?php echo esc_attr($cat_data_attr); ?>"
                      data-price="<?php echo esc_attr($price_num); ?>"
-                     data-title="<?php echo esc_attr($title); ?>">
+                     data-title="<?php echo esc_attr($display_title); ?>">
                     <div class="ceramic-card-v11">
-                        <!-- Top Badges -->
-                        <div class="card-badges">
-                            <span class="badge-glaze">
-                                <span class="badge-dot"></span> <?php echo esc_html($glaze_name); ?>
-                            </span>
-                            <span class="badge-temp">1.300°C</span>
-                        </div>
+                        <!-- Top Media Wrap with Edge-to-Edge Image -->
+                        <div class="card-media-box">
+                            <?php if (!empty($glaze_name)) : 
+                                $card_glaze_color = !empty($item['glaze_color']) ? $item['glaze_color'] : '#e0592a';
+                            ?>
+                                <div class="card-badge-wrap">
+                                    <span class="badge-glaze">
+                                        <span class="badge-dot" style="background: <?php echo esc_attr($card_glaze_color); ?>;"></span>
+                                        <?php echo esc_html($glaze_name); ?>
+                                    </span>
+                                </div>
+                            <?php endif; ?>
 
-                        <!-- Card Image -->
-                        <a href="<?php echo esc_url($permalink); ?>" class="card-img-anchor">
-                            <div class="card-img-wrap">
-                                <img src="<?php echo esc_url($img_url); ?>" alt="<?php echo esc_attr($title); ?>" loading="lazy" class="product-clay-img" />
-                            </div>
-                        </a>
+                            <a href="<?php echo esc_url($permalink); ?>" class="card-img-anchor" title="<?php echo esc_attr($display_title); ?>">
+                                <div class="card-img-wrap">
+                                    <img src="<?php echo esc_url($img_url); ?>" alt="<?php echo esc_attr($display_title); ?>" loading="lazy" class="product-clay-img" />
+                                </div>
+                            </a>
+                        </div>
 
                         <!-- Card Body -->
                         <div class="card-body-v11">
-                            <div class="card-rating-row mb-1">
-                                <span class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></span>
-                                <span class="craft-note ms-2">Bát Tràng Thủ Công</span>
-                            </div>
-
                             <h3 class="product-title-v11">
-                                <a href="<?php echo esc_url($permalink); ?>" title="<?php echo esc_attr($title); ?>">
-                                    <?php echo esc_html($title); ?>
+                                <a href="<?php echo esc_url($permalink); ?>" title="<?php echo esc_attr($display_title); ?>">
+                                    <?php echo esc_html($display_title); ?>
                                 </a>
                             </h3>
 
-                            <p class="product-desc-brief">
-                                <?php echo esc_html(wp_strip_all_tags($product->get_short_description())); ?>
-                            </p>
-
                             <!-- Price Row -->
-                            <div class="price-row-v11 mb-3">
+                            <div class="price-row-v11">
                                 <?php if (!empty($price_html)) : ?>
                                     <div class="price-box"><?php echo wp_kses_post($price_html); ?></div>
                                 <?php else : ?>
@@ -290,14 +299,11 @@ $theme_uri = get_template_directory_uri();
                                 <?php endif; ?>
                             </div>
 
-                            <!-- Action Buttons -->
-                            <div class="card-actions-v11 d-flex gap-2">
-                                <button type="button" class="btn-add-cart-v11 flex-grow-1" data-product-id="<?php echo esc_attr($pid); ?>" title="Thêm vào giỏ">
+                            <!-- Action Button -->
+                            <div class="card-actions-v11 mt-3">
+                                <button type="button" class="btn-add-cart-v11 w-100" data-product-id="<?php echo esc_attr($pid); ?>" title="Thêm vào giỏ">
                                     <i class="fa-solid fa-basket-shopping me-1"></i> Thêm giỏ hàng
                                 </button>
-                                <a href="<?php echo esc_url($permalink); ?>" class="btn-detail-v11" title="Chi tiết tác phẩm">
-                                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                                </a>
                             </div>
                         </div>
                     </div>
@@ -536,110 +542,106 @@ $theme_uri = get_template_directory_uri();
     border-color: #e0592a;
 }
 
-/* Ceramic Product Card */
+/* Ceramic Product Card - Clean, Full-bleed & Editorial */
 .ceramic-card-v11 {
     background: #ffffff;
-    border-radius: 20px;
-    padding: 1.25rem;
+    border-radius: 18px;
+    padding: 0;
+    overflow: hidden;
     border: 1px solid rgba(224, 89, 42, 0.12);
-    box-shadow: 0 8px 24px rgba(160, 120, 80, 0.06);
-    transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.3s ease;
+    box-shadow: 0 4px 20px rgba(60, 40, 20, 0.05);
+    transition: transform 0.35s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.35s ease, border-color 0.35s ease;
     display: flex;
     flex-direction: column;
     height: 100%;
     position: relative;
 }
 .ceramic-card-v11:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 16px 36px rgba(224, 89, 42, 0.12);
-    border-color: rgba(224, 89, 42, 0.3);
+    transform: translateY(-5px);
+    box-shadow: 0 16px 36px rgba(224, 89, 42, 0.14);
+    border-color: rgba(224, 89, 42, 0.35);
 }
 
-.card-badges {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.card-media-box {
+    position: relative;
+    width: 100%;
+    background: #faf8f5;
+    overflow: hidden;
+}
+
+.card-badge-wrap {
     position: absolute;
-    top: 1rem;
-    left: 1rem;
-    right: 1rem;
+    top: 0.85rem;
+    left: 0.85rem;
     z-index: 2;
 }
+
 .badge-glaze {
-    background: rgba(255, 255, 255, 0.92);
-    backdrop-filter: blur(4px);
-    padding: 0.25rem 0.65rem;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 0.3rem 0.75rem;
     border-radius: 999px;
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     font-weight: 700;
     color: #1a1f2c;
-    border: 1px solid rgba(0,0,0,0.06);
-    display: flex;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
+    gap: 0.4rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 .badge-glaze .badge-dot {
-    width: 6px;
-    height: 6px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
-    background: #e0592a;
-}
-.badge-temp {
-    background: #1a1f2c;
-    color: #fff;
-    font-size: 0.7rem;
-    font-weight: 700;
-    padding: 0.25rem 0.55rem;
-    border-radius: 999px;
+    display: inline-block;
 }
 
 .card-img-anchor {
     display: block;
     text-decoration: none;
-    margin-bottom: 0.75rem;
+    width: 100%;
 }
 .card-img-wrap {
-    background: radial-gradient(circle, rgba(254, 245, 238, 0.9) 0%, rgba(255, 255, 255, 0.2) 75%);
-    border-radius: 16px;
-    padding: 1.5rem 1rem;
-    height: 240px;
+    width: 100%;
+    aspect-ratio: 1 / 1;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    background: #faf8f5;
 }
 .product-clay-img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    transition: transform 0.4s ease;
-    filter: drop-shadow(0 10px 14px rgba(0,0,0,0.1));
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .ceramic-card-v11:hover .product-clay-img {
     transform: scale(1.06);
 }
 
 .card-body-v11 {
+    padding: 1.15rem 1.25rem 1.25rem;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
 }
-.card-rating-row {
-    font-size: 0.78rem;
-    color: #928b84;
-}
-.card-rating-row .stars {
-    color: #f59e0b;
-    font-size: 0.7rem;
-}
+
 .product-title-v11 {
     font-size: 1.05rem;
     font-weight: 700;
     line-height: 1.45;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.65rem;
+    min-height: 3rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 .product-title-v11 a {
-    color: #1a1f2c;
+    color: #1c1917;
     text-decoration: none;
     transition: color 0.2s;
 }
@@ -647,36 +649,29 @@ $theme_uri = get_template_directory_uri();
     color: #e0592a;
 }
 
-.product-desc-brief {
-    font-size: 0.85rem;
-    line-height: 1.5;
-    color: #6e6761;
-    margin-bottom: 0.75rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
 .price-row-v11 {
     margin-top: auto;
 }
 .price-box {
-    font-size: 1.15rem;
+    font-size: 1.2rem;
     font-weight: 800;
     color: #e0592a;
+    display: flex;
+    align-items: baseline;
+    gap: 0.35rem;
 }
 .price-box del {
-    font-size: 0.85rem;
-    color: #9ca3af;
+    font-size: 0.88rem;
+    color: #a8a29e;
     font-weight: 400;
-    margin-right: 0.4rem;
+    text-decoration: line-through;
 }
 .price-box ins {
     text-decoration: none;
+    color: #e0592a;
 }
 .price-contact {
-    font-size: 0.95rem;
+    font-size: 1rem;
     font-weight: 700;
     color: #b3471e;
 }
@@ -686,37 +681,24 @@ $theme_uri = get_template_directory_uri();
     color: #ffffff;
     border: none;
     border-radius: 999px;
-    padding: 0.55rem 1rem;
-    font-size: 0.85rem;
-    font-weight: 600;
+    padding: 0.65rem 1.25rem;
+    font-size: 0.88rem;
+    font-weight: 700;
     cursor: pointer;
     transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
 }
 .btn-add-cart-v11:hover {
     background: #c4471b;
-    box-shadow: 0 4px 14px rgba(224, 89, 42, 0.35);
+    box-shadow: 0 4px 16px rgba(224, 89, 42, 0.35);
+    color: #ffffff;
 }
 .btn-add-cart-v11.loading {
     opacity: 0.7;
     pointer-events: none;
-}
-.btn-detail-v11 {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    background: #f7f4ee;
-    color: #4a453f;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    font-size: 0.85rem;
-    border: 1px solid rgba(0,0,0,0.06);
-    transition: all 0.2s;
-}
-.btn-detail-v11:hover {
-    background: #1a1f2c;
-    color: #fff;
 }
 
 /* Bottom Feature */
