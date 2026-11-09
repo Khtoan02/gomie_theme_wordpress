@@ -1695,3 +1695,139 @@ add_action("template_redirect", function() {
         }
     }
 }, 5);
+
+/**
+ * Universal Glaze & Ceramic Attribute Detector
+ * Recognizes glazes from WooCommerce attributes (pa_*), custom meta, categories, and titles
+ *
+ * @param WC_Product|int $product
+ * @return array
+ */
+function gomie_get_product_glaze_info($product) {
+    if (is_numeric($product)) {
+        $product = wc_get_product($product);
+    }
+    if (!$product) {
+        return array('name' => 'Men Độc Bản', 'slug' => 'men-doc-ban', 'color' => '#e0592a');
+    }
+
+    $pid = $product->get_id();
+    $title = $product->get_name();
+    $glaze_name = '';
+    $glaze_slug = '';
+
+    // 1. Check custom postmeta
+    $meta_keys = array('_gomie_glaze_name', 'glaze_name', 'mau_men', 'sac_men', 'pa_mau-men', 'mau_sac', 'glaze');
+    foreach ($meta_keys as $mk) {
+        $val = get_post_meta($pid, $mk, true);
+        if (!empty($val) && is_string($val)) {
+            $glaze_name = trim($val);
+            $glaze_slug = sanitize_title($glaze_name);
+            break;
+        }
+    }
+
+    // 2. Check WooCommerce product attributes (pa_* taxonomy or custom attribute)
+    if (empty($glaze_name)) {
+        $attributes = $product->get_attributes();
+        if (!empty($attributes)) {
+            foreach ($attributes as $attr_name => $attr) {
+                if (preg_match('/(men|glaze|mau|sac|color)/i', $attr_name)) {
+                    if (is_object($attr) && method_exists($attr, 'is_taxonomy') && $attr->is_taxonomy()) {
+                        $terms = wc_get_product_terms($pid, $attr_name, array('fields' => 'all'));
+                        if (!empty($terms) && !is_wp_error($terms)) {
+                            $term = reset($terms);
+                            $glaze_name = $term->name;
+                            $glaze_slug = $term->slug;
+                            break;
+                        }
+                    } elseif (is_object($attr) && method_exists($attr, 'get_options')) {
+                        $opts = $attr->get_options();
+                        if (!empty($opts)) {
+                            $opt = reset($opts);
+                            $glaze_name = is_string($opt) ? $opt : (isset($opt['name']) ? $opt['name'] : '');
+                            $glaze_slug = sanitize_title($glaze_name);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // 3. Check categories for "Men ..."
+    if (empty($glaze_name)) {
+        $cats = wp_get_post_terms($pid, 'product_cat');
+        if (!empty($cats) && !is_wp_error($cats)) {
+            foreach ($cats as $c) {
+                if (stripos($c->name, 'Men ') !== false) {
+                    $glaze_name = $c->name;
+                    $glaze_slug = $c->slug;
+                    break;
+                }
+            }
+        }
+    }
+
+    // 4. Fallback to product title keyword detection
+    if (empty($glaze_name)) {
+        if (stripos($title, 'sapphire') !== false) { $glaze_name = 'Men Sapphire'; $glaze_slug = 'sapphire'; }
+        elseif (stripos($title, 'cánh gián') !== false) { $glaze_name = 'Men Cánh Gián'; $glaze_slug = 'canh-gian'; }
+        elseif (stripos($title, 'gấm vàng') !== false) { $glaze_name = 'Men Gấm Vàng'; $glaze_slug = 'gam-vang'; }
+        elseif (stripos($title, 'hỏa biến') !== false) { $glaze_name = 'Men Xanh Hỏa Biến'; $glaze_slug = 'hoa-bien'; }
+        elseif (stripos($title, 'rêu') !== false) { $glaze_name = 'Men Rêu'; $glaze_slug = 'reu'; }
+        elseif (stripos($title, 'ngọc trai') !== false || stripos($title, 'bích ngọc') !== false) { $glaze_name = 'Men Ngọc Trai'; $glaze_slug = 'ngoc-trai'; }
+        elseif (stripos($title, 'nâu tuyết') !== false) { $glaze_name = 'Men Nâu Tuyết'; $glaze_slug = 'nau-tuyet'; }
+        elseif (stripos($title, 'men rạn') !== false || stripos($title, 'rạn') !== false) { $glaze_name = 'Men Rạn'; $glaze_slug = 'men-ran'; }
+        elseif (stripos($title, 'men lam') !== false || stripos($title, 'lam') !== false) { $glaze_name = 'Men Lam'; $glaze_slug = 'men-lam'; }
+        elseif (stripos($title, 'men tro') !== false || stripos($title, 'tro') !== false) { $glaze_name = 'Men Tro'; $glaze_slug = 'men-tro'; }
+        elseif (stripos($title, 'bạch ngọc') !== false || stripos($title, 'trắng') !== false) { $glaze_name = 'Men Bạch Ngọc'; $glaze_slug = 'bach-ngoc'; }
+        else { $glaze_name = 'Men Độc Bản'; $glaze_slug = 'men-doc-ban'; }
+    }
+
+    // Color palette mapping (supporting both with and without "men-" prefix)
+    $palette = array(
+        'sapphire'           => '#1a365d',
+        'men-sapphire'       => '#1a365d',
+        'canh-gian'          => '#7c2d12',
+        'men-canh-gian'      => '#7c2d12',
+        'gam-vang'           => '#d97706',
+        'men-gam-vang'       => '#d97706',
+        'hoa-bien'           => '#0284c7',
+        'xanh-hoa-bien'      => '#0284c7',
+        'men-xanh-hoa-bien'  => '#0284c7',
+        'reu'                => '#4d7c0f',
+        'men-reu'            => '#4d7c0f',
+        'ngoc-trai'          => '#0d9488',
+        'men-ngoc-trai'      => '#0d9488',
+        'nau-tuyet'          => '#78350f',
+        'men-nau-tuyet'      => '#78350f',
+        'men-ran'            => '#b45309',
+        'ran'                => '#b45309',
+        'men-lam'            => '#1d4ed8',
+        'lam'                => '#1d4ed8',
+        'men-tro'            => '#64748b',
+        'tro'                => '#64748b',
+        'bach-ngoc'          => '#e2e8f0',
+        'men-bach-ngoc'      => '#e2e8f0',
+        'trang'              => '#e2e8f0',
+        'men-trang'          => '#e2e8f0',
+        'men-doc-ban'        => '#e0592a',
+    );
+
+    $color = '#8c7866';
+    if (isset($palette[$glaze_slug])) {
+        $color = $palette[$glaze_slug];
+    } else {
+        $clean_slug = str_replace('men-', '', $glaze_slug);
+        if (isset($palette[$clean_slug])) {
+            $color = $palette[$clean_slug];
+        }
+    }
+
+    return array(
+        'name'  => $glaze_name,
+        'slug'  => $glaze_slug,
+        'color' => $color,
+    );
+}

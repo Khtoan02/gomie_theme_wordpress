@@ -11,27 +11,82 @@ defined('ABSPATH') || exit;
 
 get_header();
 
-// Fetch all ceramic products with glaze meta
+// Fetch all published products
 $args = array(
     'post_type'      => 'product',
     'posts_per_page' => -1,
     'post_status'    => 'publish',
-    'meta_query'     => array(
-        array(
-            'key'     => '_gomie_glaze_name',
-            'compare' => 'EXISTS',
-        )
-    ),
-    'orderby'        => 'ID',
+    'orderby'        => 'menu_order title',
     'order'          => 'ASC'
 );
 $query_products = get_posts($args);
 
 $ceramic_products = array();
+$detected_glazes = array();
+
 foreach ($query_products as $p) {
     $wc_prod = wc_get_product($p->ID);
-    if ($wc_prod) {
-        $ceramic_products[] = $wc_prod;
+    if (!$wc_prod || !$wc_prod->is_visible()) {
+        continue;
+    }
+
+    $pid = $wc_prod->get_id();
+    $title = $wc_prod->get_name();
+    $cat_slugs = wp_get_post_terms($pid, 'product_cat', array('fields' => 'slugs'));
+    if (!is_array($cat_slugs)) $cat_slugs = array();
+
+    // Skip LED demo products on local test environment
+    $is_led = false;
+    foreach ($cat_slugs as $c_slug) {
+        if (strpos($c_slug, 'led') !== false || strpos($c_slug, 'man-hinh') !== false) {
+            $is_led = true;
+            break;
+        }
+    }
+    if ($is_led && (stripos($title, 'LED') !== false || stripos($title, 'NovaStar') !== false)) {
+        continue;
+    }
+
+    // Detect Glaze info dynamically from attributes (pa_*), custom meta, categories, or title
+    $glaze_info = function_exists('gomie_get_product_glaze_info') 
+        ? gomie_get_product_glaze_info($wc_prod) 
+        : array('name' => 'Men Độc Bản', 'slug' => 'men-doc-ban', 'color' => '#e0592a');
+
+    // Aggregate unique glazes for filter chips
+    if (!isset($detected_glazes[$glaze_info['slug']])) {
+        $detected_glazes[$glaze_info['slug']] = array(
+            'name'  => $glaze_info['name'],
+            'slug'  => $glaze_info['slug'],
+            'color' => $glaze_info['color'],
+            'count' => 0,
+        );
+    }
+    $detected_glazes[$glaze_info['slug']]['count']++;
+
+    $ceramic_products[] = array(
+        'product'    => $wc_prod,
+        'glaze_name' => $glaze_info['name'],
+        'glaze_slug' => $glaze_info['slug'],
+        'cat_slugs'  => $cat_slugs,
+    );
+}
+
+// Fetch dynamic product categories from active products
+$active_categories = array();
+$seen_cat_ids = array();
+
+foreach ($ceramic_products as $item) {
+    $p_cats = wp_get_post_terms($item['product']->get_id(), 'product_cat');
+    if (!empty($p_cats) && !is_wp_error($p_cats)) {
+        foreach ($p_cats as $c) {
+            if (in_array($c->slug, array('chua-phan-loai', 'uncategorized', 'man-hinh-led', 'cabin-led', 'bo-xu-ly-hinh-anh', 'den-led-chieu-sang-thong-minh', 'man-hinh-led-ngoai-troi', 'man-hinh-led-trong-nha', 'ung-dung-man-hinh-led', 'he-thong-am-thanh', 'he-thong-anh-sang'))) {
+                continue;
+            }
+            if (!isset($seen_cat_ids[$c->term_id])) {
+                $seen_cat_ids[$c->term_id] = true;
+                $active_categories[] = $c;
+            }
+        }
     }
 }
 
@@ -101,27 +156,22 @@ $theme_uri = get_template_directory_uri();
                         <button type="button" class="glaze-chip active" data-glaze="all">
                             <span class="chip-color chip-all"></span> Tất cả sắc men
                         </button>
-                        <button type="button" class="glaze-chip" data-glaze="sapphire">
-                            <span class="chip-color chip-sapphire"></span> Men Sapphire
-                        </button>
-                        <button type="button" class="glaze-chip" data-glaze="canh-gian">
-                            <span class="chip-color chip-canh-gian"></span> Men Cánh Gián
-                        </button>
-                        <button type="button" class="glaze-chip" data-glaze="gam-vang">
-                            <span class="chip-color chip-gam-vang"></span> Men Gấm Vàng
-                        </button>
-                        <button type="button" class="glaze-chip" data-glaze="hoa-bien">
-                            <span class="chip-color chip-hoa-bien"></span> Men Xanh Hỏa Biến
-                        </button>
-                        <button type="button" class="glaze-chip" data-glaze="reu">
-                            <span class="chip-color chip-reu"></span> Men Rêu
-                        </button>
-                        <button type="button" class="glaze-chip" data-glaze="ngoc-trai">
-                            <span class="chip-color chip-ngoc-trai"></span> Men Ngọc Trai
-                        </button>
-                        <button type="button" class="glaze-chip" data-glaze="nau-tuyet">
-                            <span class="chip-color chip-nau-tuyet"></span> Men Nâu Tuyết
-                        </button>
+                        <?php if (!empty($detected_glazes)) : ?>
+                            <?php foreach ($detected_glazes as $slug => $glaze_item) : ?>
+                                <button type="button" class="glaze-chip" data-glaze="<?php echo esc_attr($slug); ?>">
+                                    <span class="chip-color" style="background-color: <?php echo esc_attr($glaze_item['color']); ?>;"></span>
+                                    <?php echo esc_html($glaze_item['name']); ?>
+                                </button>
+                            <?php endforeach; ?>
+                        <?php else : ?>
+                            <button type="button" class="glaze-chip" data-glaze="sapphire"><span class="chip-color chip-sapphire"></span> Men Sapphire</button>
+                            <button type="button" class="glaze-chip" data-glaze="canh-gian"><span class="chip-color chip-canh-gian"></span> Men Cánh Gián</button>
+                            <button type="button" class="glaze-chip" data-glaze="gam-vang"><span class="chip-color chip-gam-vang"></span> Men Gấm Vàng</button>
+                            <button type="button" class="glaze-chip" data-glaze="hoa-bien"><span class="chip-color chip-hoa-bien"></span> Men Xanh Hỏa Biến</button>
+                            <button type="button" class="glaze-chip" data-glaze="reu"><span class="chip-color chip-reu"></span> Men Rêu</button>
+                            <button type="button" class="glaze-chip" data-glaze="ngoc-trai"><span class="chip-color chip-ngoc-trai"></span> Men Ngọc Trai</button>
+                            <button type="button" class="glaze-chip" data-glaze="nau-tuyet"><span class="chip-color chip-nau-tuyet"></span> Men Nâu Tuyết</button>
+                        <?php endif; ?>
                     </div>
                 </div>
 
@@ -130,11 +180,19 @@ $theme_uri = get_template_directory_uri();
                     <!-- Category Tabs -->
                     <div class="category-tabs d-flex flex-wrap gap-2" id="categoryFilter">
                         <button type="button" class="cat-pill active" data-cat="all">Tất cả sản phẩm</button>
-                        <button type="button" class="cat-pill" data-cat="bat-an">Bát ăn cơm</button>
-                        <button type="button" class="cat-pill" data-cat="bat-to">Bát tô canh</button>
-                        <button type="button" class="cat-pill" data-cat="dia-an">Đĩa tiệc</button>
-                        <button type="button" class="cat-pill" data-cat="bo-am-chen">Bộ ấm chén</button>
-                        <button type="button" class="cat-pill" data-cat="bo-qua-tang">Bộ quà tặng</button>
+                        <?php if (!empty($active_categories)) : ?>
+                            <?php foreach ($active_categories as $cat) : ?>
+                                <button type="button" class="cat-pill" data-cat="<?php echo esc_attr($cat->slug); ?>">
+                                    <?php echo esc_html($cat->name); ?>
+                                </button>
+                            <?php endforeach; ?>
+                        <?php else : ?>
+                            <button type="button" class="cat-pill" data-cat="bat-an">Bát ăn</button>
+                            <button type="button" class="cat-pill" data-cat="bat-to">Bát tô</button>
+                            <button type="button" class="cat-pill" data-cat="dia-an">Đĩa ăn</button>
+                            <button type="button" class="cat-pill" data-cat="bo-am-chen">Bộ ấm chén</button>
+                            <button type="button" class="cat-pill" data-cat="bo-qua-tang">Bộ quà tặng</button>
+                        <?php endif; ?>
                     </div>
 
                     <!-- Sort Dropdown -->
@@ -153,7 +211,8 @@ $theme_uri = get_template_directory_uri();
 
         <!-- Product Grid -->
         <div class="row g-4 shop-product-grid" id="productGrid">
-            <?php foreach ($ceramic_products as $product) : 
+            <?php foreach ($ceramic_products as $item) : 
+                $product = $item['product'];
                 $pid = $product->get_id();
                 $title = $product->get_name();
                 $permalink = get_permalink($pid);
@@ -161,38 +220,19 @@ $theme_uri = get_template_directory_uri();
                 $sale_price = $product->get_sale_price();
                 $price_num = $product->get_price();
                 $price_html = $product->get_price_html();
-                
-                // Get glaze name
-                $glaze_name = get_post_meta($pid, '_gomie_glaze_name', true);
-                if (empty($glaze_name)) {
-                    if (stripos($title, 'sapphire') !== false) $glaze_name = 'Men Sapphire';
-                    elseif (stripos($title, 'cánh gián') !== false) $glaze_name = 'Men Cánh Gián';
-                    elseif (stripos($title, 'gấm vàng') !== false) $glaze_name = 'Men Gấm Vàng';
-                    elseif (stripos($title, 'hỏa biến') !== false) $glaze_name = 'Men Xanh Hỏa Biến';
-                    elseif (stripos($title, 'rêu') !== false) $glaze_name = 'Men Rêu';
-                    elseif (stripos($title, 'ngọc trai') !== false || stripos($title, 'bích ngọc') !== false) $glaze_name = 'Men Ngọc Trai';
-                    elseif (stripos($title, 'nâu tuyết') !== false) $glaze_name = 'Men Nâu Tuyết';
-                    else $glaze_name = 'Men Độc Bản';
+                $glaze_name = $item['glaze_name'];
+                $glaze_slug = $item['glaze_slug'];
+                $cat_data_attr = !empty($item['cat_slugs']) ? implode(' ', $item['cat_slugs']) : 'all';
+
+                // Image with prioritized detection
+                $img_url = '';
+                if (has_post_thumbnail($pid)) {
+                    $img_url = get_the_post_thumbnail_url($pid, 'large');
+                } elseif ($product->get_image_id()) {
+                    $img_url = wp_get_attachment_image_url($product->get_image_id(), 'large');
                 }
-
-                // Glaze slug for filtering
-                $glaze_slug = 'other';
-                if (stripos($glaze_name, 'sapphire') !== false) $glaze_slug = 'sapphire';
-                elseif (stripos($glaze_name, 'cánh gián') !== false) $glaze_slug = 'canh-gian';
-                elseif (stripos($glaze_name, 'gấm vàng') !== false) $glaze_slug = 'gam-vang';
-                elseif (stripos($glaze_name, 'hỏa biến') !== false) $glaze_slug = 'hoa-bien';
-                elseif (stripos($glaze_name, 'rêu') !== false) $glaze_slug = 'reu';
-                elseif (stripos($glaze_name, 'ngọc trai') !== false) $glaze_slug = 'ngoc-trai';
-                elseif (stripos($glaze_name, 'nâu tuyết') !== false) $glaze_slug = 'nau-tuyet';
-
-                // Categories
-                $term_slugs = wp_get_post_terms($pid, 'product_cat', array('fields' => 'slugs'));
-                $cat_data_attr = !empty($term_slugs) ? implode(' ', $term_slugs) : 'all';
-
-                // Image
-                $img_url = wp_get_attachment_image_url($product->get_image_id(), 'medium_large');
+                
                 if (empty($img_url)) {
-                    // Fallback to glaze mockup
                     if ($glaze_slug === 'sapphire') $img_url = $theme_uri . '/assets/images/glazes/Gomie-men-saphire.png';
                     elseif ($glaze_slug === 'canh-gian') $img_url = $theme_uri . '/assets/images/glazes/Gomie-men-canh-gian.png';
                     elseif ($glaze_slug === 'gam-vang') $img_url = $theme_uri . '/assets/images/glazes/Gomie-men-gam-vang.png';
@@ -337,6 +377,15 @@ $theme_uri = get_template_directory_uri();
 </div>
 
 <style>
+.shop-breadcrumb .breadcrumb-item::after {
+    display: none !important;
+    content: none !important;
+}
+.shop-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+    content: "/" !important;
+    padding: 0 8px;
+    color: #c4b5a5 !important;
+}
 /* ==========================================================================
    GOMIE EDITORIAL SHOP STYLES
    ========================================================================== */
@@ -800,10 +849,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         cards.forEach(card => {
             const cardGlaze = card.getAttribute('data-glaze');
-            const cardCats = card.getAttribute('data-cat') || '';
+            const rawCats = card.getAttribute('data-cat') || '';
+            const cardCats = rawCats.split(/\s+/);
 
             const glazeMatch = (currentGlaze === 'all' || cardGlaze === currentGlaze);
-            const catMatch = (currentCat === 'all' || cardCats.includes(currentCat));
+            const catMatch = (currentCat === 'all' || cardCats.includes(currentCat) || rawCats.includes(currentCat));
 
             if (glazeMatch && catMatch) {
                 card.classList.remove('d-none');
