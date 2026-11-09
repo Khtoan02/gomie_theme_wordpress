@@ -12,6 +12,7 @@
     initMobileMenu();
     initSearchToggle();
     initDropdownMenu();
+    initNavActiveHighlight();
     initSmoothScroll();
     initBackToTop();
     initAnimations();
@@ -137,6 +138,93 @@
         if ($(window).width() <= 1024) {
           dropdownMenus.slideUp();
         }
+      }
+    });
+  }
+
+  // Active Navigation State Highlighter
+  function initNavActiveHighlight() {
+    var currentPath = window.location.pathname.replace(/\/$/, '') || '/';
+    var navItems = $('.gomie-nav-menu > li.nav-item, #primary-menu > li');
+
+    navItems.each(function() {
+      var item = $(this);
+      var link = item.find('> a');
+      var href = link.attr('href') || '';
+      var linkPath = '';
+
+      try {
+        linkPath = new URL(href, window.location.origin).pathname.replace(/\/$/, '') || '/';
+      } catch(e) {
+        linkPath = href.replace(/\/$/, '') || '/';
+      }
+
+      var text = link.text().toLowerCase().trim();
+      var isMatch = false;
+
+      if (linkPath === currentPath && currentPath !== '' && currentPath !== '/') {
+        isMatch = true;
+      }
+
+      // Check sub links in dropdown
+      item.find('.dropdown-link, ul a').each(function() {
+        var subHref = $(this).attr('href') || '';
+        var subPath = '';
+        try {
+          subPath = new URL(subHref, window.location.origin).pathname.replace(/\/$/, '') || '/';
+        } catch(e) {
+          subPath = subHref.replace(/\/$/, '') || '/';
+        }
+        if (subPath === currentPath && currentPath !== '' && currentPath !== '/') {
+          isMatch = true;
+          $(this).addClass('active');
+        }
+      });
+
+      // Contextual fallback:
+      if (!isMatch) {
+        // Chia sẻ
+        if (text.indexOf('chia sẻ') !== -1 || text.indexOf('chia se') !== -1) {
+          if (currentPath === '/chia-se' || currentPath.indexOf('/chia-se/') === 0 || $('body').hasClass('single-post') || $('body').hasClass('blog')) {
+            isMatch = true;
+          }
+        }
+        // Sản phẩm
+        if (text === 'sản phẩm' || text === 'san pham') {
+          if (currentPath === '/san-pham' || currentPath.indexOf('/san-pham/') === 0 || $('body').hasClass('woocommerce') || $('body').hasClass('post-type-archive-product')) {
+            isMatch = true;
+          }
+        }
+        // Về chúng tôi
+        if (text.indexOf('về chúng tôi') !== -1 || text.indexOf('ve chung toi') !== -1) {
+          var aboutList = ['/cau-chuyen', '/chung-nhan', '/nha-hang', '/khach-san', '/qua-tang', '/ve-chung-toi'];
+          if (aboutList.indexOf(currentPath) !== -1) {
+            isMatch = true;
+          }
+        }
+        // Loại sản phẩm
+        if (text.indexOf('loại sản phẩm') !== -1 || text.indexOf('loai san pham') !== -1) {
+          if (currentPath === '/loai-san-pham' || $('body').hasClass('tax-product_cat')) {
+            isMatch = true;
+          }
+        }
+        // Màu men
+        if (text.indexOf('màu men') !== -1 || text.indexOf('mau men') !== -1) {
+          if (currentPath === '/mau-men') {
+            isMatch = true;
+          }
+        }
+        // Liên hệ
+        if (text.indexOf('liên hệ') !== -1 || text.indexOf('lien he') !== -1) {
+          if (currentPath === '/contact' || currentPath === '/lien-he') {
+            isMatch = true;
+          }
+        }
+      }
+
+      if (isMatch) {
+        item.addClass('current-menu-item active');
+        link.addClass('active');
       }
     });
   }

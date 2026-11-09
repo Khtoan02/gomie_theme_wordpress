@@ -274,7 +274,13 @@
 
 .gomie-nav-menu > li.nav-item:hover > .nav-link,
 .gomie-nav-menu > li.nav-item.current-menu-item > .nav-link,
-.gomie-nav-menu > li.nav-item.current_page_item > .nav-link {
+.gomie-nav-menu > li.nav-item.current_page_item > .nav-link,
+.gomie-nav-menu > li.nav-item.current-menu-ancestor > .nav-link,
+.gomie-nav-menu > li.nav-item.current-menu-parent > .nav-link,
+.gomie-nav-menu > li.nav-item.current_page_ancestor > .nav-link,
+.gomie-nav-menu > li.nav-item.current_page_parent > .nav-link,
+.gomie-nav-menu > li.nav-item.active > .nav-link,
+.gomie-nav-menu > li.nav-item > .nav-link.active {
   color: #f47a20 !important;
   background: transparent !important;
   background-color: transparent !important;
@@ -283,7 +289,13 @@
 
 .gomie-nav-menu > li.nav-item:hover > .nav-link::after,
 .gomie-nav-menu > li.nav-item.current-menu-item > .nav-link::after,
-.gomie-nav-menu > li.nav-item.current_page_item > .nav-link::after {
+.gomie-nav-menu > li.nav-item.current_page_item > .nav-link::after,
+.gomie-nav-menu > li.nav-item.current-menu-ancestor > .nav-link::after,
+.gomie-nav-menu > li.nav-item.current-menu-parent > .nav-link::after,
+.gomie-nav-menu > li.nav-item.current_page_ancestor > .nav-link::after,
+.gomie-nav-menu > li.nav-item.current_page_parent > .nav-link::after,
+.gomie-nav-menu > li.nav-item.active > .nav-link::after,
+.gomie-nav-menu > li.nav-item > .nav-link.active::after {
   transform: scaleX(1) !important;
 }
 

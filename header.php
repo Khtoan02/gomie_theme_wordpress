@@ -158,7 +158,7 @@
                             'menu_id'        => 'primary-menu',
                             'container'      => false,
                             'menu_class'     => 'gomie-nav-menu d-flex justify-content-center align-items-center list-unstyled mb-0',
-                            'fallback_cb'    => false,
+                            'fallback_cb'    => 'gomie_default_primary_menu',
                             'walker'         => new Premium_Walker_Nav_Menu(),
                         ));
                         ?>
@@ -249,7 +249,7 @@
                 'menu_id'        => 'mobile-menu',
                 'container'      => false,
                     'menu_class'     => 'mobile-nav-menu list-unstyled mb-0',
-                'fallback_cb'    => false,
+                'fallback_cb'    => 'gomie_default_primary_menu',
                 'walker'         => new Mobile_Walker_Nav_Menu(),
             ));
             ?>
