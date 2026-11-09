@@ -798,9 +798,10 @@ function gomie_highlight_active_nav_menu_items($classes, $item, $args, $depth = 
     }
 
     // Page-specific contextual active matching:
-    // 1. Chia sẻ / Blog / Post
-    if (!$is_active && ($current_uri === 'chia-se' || is_home() || is_singular('post') || is_category() || is_tag())) {
-        if ($item_path === 'chia-se' || strpos($title_lower, 'chia sẻ') !== false || strpos($title_lower, 'chia se') !== false) {
+    // 1. Câu chuyện / Về chúng tôi
+    $story_pages = array('cau-chuyen', 'chung-nhan', 'nha-hang', 'khach-san', 'qua-tang', 've-chung-toi');
+    if (!$is_active && in_array($current_uri, $story_pages, true)) {
+        if ($item_path === 'cau-chuyen' || strpos($title_lower, 'câu chuyện') !== false || strpos($title_lower, 'cau chuyen') !== false || strpos($title_lower, 'về chúng tôi') !== false) {
             $is_active = true;
         }
     }
@@ -812,29 +813,21 @@ function gomie_highlight_active_nav_menu_items($classes, $item, $args, $depth = 
         }
     }
 
-    // 3. Về chúng tôi / Câu chuyện / Chứng nhận / B2B HoReCa
-    $about_pages = array('cau-chuyen', 'chung-nhan', 'nha-hang', 'khach-san', 'qua-tang', 've-chung-toi');
-    if (!$is_active && in_array($current_uri, $about_pages, true)) {
-        if (strpos($title_lower, 'về chúng tôi') !== false || strpos($title_lower, 've chung toi') !== false) {
-            $is_active = true;
-        }
-    }
-
-    // 4. Loại sản phẩm
-    if (!$is_active && ($current_uri === 'loai-san-pham' || (function_exists('is_product_category') && is_product_category()))) {
-        if ($item_path === 'loai-san-pham' || strpos($title_lower, 'loại sản phẩm') !== false || strpos($title_lower, 'loai san pham') !== false) {
-            $is_active = true;
-        }
-    }
-
-    // 5. Màu men
+    // 3. Màu men
     if (!$is_active && ($current_uri === 'mau-men' || (function_exists('is_product_taxonomy') && is_product_taxonomy()))) {
         if ($item_path === 'mau-men' || strpos($title_lower, 'màu men') !== false || strpos($title_lower, 'mau men') !== false) {
             $is_active = true;
         }
     }
 
-    // 6. Liên hệ
+    // 4. Chia sẻ / Blog / Post
+    if (!$is_active && ($current_uri === 'chia-se' || $current_uri === 'tin-tuc' || $current_uri === 'blog' || is_home() || is_singular('post') || is_category() || is_tag())) {
+        if ($item_path === 'chia-se' || strpos($title_lower, 'chia sẻ') !== false || strpos($title_lower, 'chia se') !== false || strpos($title_lower, 'tin tức') !== false) {
+            $is_active = true;
+        }
+    }
+
+    // 5. Liên hệ
     if (!$is_active && ($current_uri === 'contact' || $current_uri === 'lien-he')) {
         if ($item_path === 'contact' || $item_path === 'lien-he' || strpos($title_lower, 'liên hệ') !== false || strpos($title_lower, 'lien he') !== false) {
             $is_active = true;
@@ -853,217 +846,127 @@ add_filter('nav_menu_css_class', 'gomie_highlight_active_nav_menu_items', 10, 4)
 
 /**
  * Default fallback primary navigation menu
- * Renders full Gomie Ceramic navigation with dropdowns and active state
+ * Renders pure 5-item Gomie Ceramic navigation with active state
  */
 function gomie_default_primary_menu() {
     $current_uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
 
     // Determine active tabs
-    $is_about = in_array($current_uri, array('cau-chuyen', 'chung-nhan', 'nha-hang', 'khach-san', 'qua-tang', 've-chung-toi'), true);
-    $is_share = ($current_uri === 'chia-se' || is_home() || is_singular('post') || is_category() || is_tag());
-    $is_types = ($current_uri === 'loai-san-pham' || (function_exists('is_product_category') && is_product_category()));
-    $is_glaze = ($current_uri === 'mau-men' || (function_exists('is_product_taxonomy') && is_product_taxonomy()));
-    $is_shop  = ($current_uri === 'san-pham' || (function_exists('is_shop') && is_shop()) || (function_exists('is_product') && is_product()) || (function_exists('is_cart') && is_cart()) || (function_exists('is_checkout') && is_checkout()));
-    $is_contact = ($current_uri === 'contact' || $current_uri === 'lien-he');
+    $is_story   = in_array($current_uri, array('cau-chuyen', 'chung-nhan', 've-chung-toi'), true);
+    $is_shop    = in_array($current_uri, array('san-pham', 'loai-san-pham', 'cua-hang', 'shop'), true) 
+                  || (function_exists('is_shop') && is_shop()) 
+                  || (function_exists('is_product') && is_product()) 
+                  || (function_exists('is_product_category') && is_product_category()) 
+                  || (function_exists('is_cart') && is_cart()) 
+                  || (function_exists('is_checkout') && is_checkout());
+    $is_glaze   = ($current_uri === 'mau-men' || (function_exists('is_product_taxonomy') && is_product_taxonomy()));
+    $is_share   = ($current_uri === 'chia-se' || $current_uri === 'tin-tuc' || $current_uri === 'blog' || is_home() || is_singular('post') || is_category() || is_tag());
+    $is_contact = in_array($current_uri, array('contact', 'lien-he'), true);
 
     echo '<ul id="primary-menu" class="gomie-nav-menu d-flex justify-content-center align-items-center list-unstyled mb-0">';
 
-    // 1. Về chúng tôi (Dropdown)
-    echo '<li class="nav-item has-dropdown' . ($is_about ? ' current-menu-item active' : '') . '">';
-    echo '<a class="nav-link' . ($is_about ? ' active' : '') . '" href="' . esc_url(home_url('/cau-chuyen/')) . '">';
-    echo '<span class="nav-text">Về Chúng Tôi</span>';
-    echo '<i class="fas fa-chevron-down nav-arrow ms-1"></i>';
-    echo '</a>';
-    echo '<div class="premium-dropdown">';
-    echo '<ul class="dropdown-list">';
-    echo '<li><a class="dropdown-link' . ($current_uri === 'cau-chuyen' ? ' active' : '') . '" href="' . esc_url(home_url('/cau-chuyen/')) . '"><span class="nav-text">Câu Chuyện Gomie</span></a></li>';
-    echo '<li><a class="dropdown-link' . ($current_uri === 'chung-nhan' ? ' active' : '') . '" href="' . esc_url(home_url('/chung-nhan/')) . '"><span class="nav-text">Chứng Nhận An Toàn</span></a></li>';
-    echo '<li><a class="dropdown-link' . ($current_uri === 'nha-hang' ? ' active' : '') . '" href="' . esc_url(home_url('/nha-hang/')) . '"><span class="nav-text">Gốm Sứ Nhà Hàng</span></a></li>';
-    echo '<li><a class="dropdown-link' . ($current_uri === 'khach-san' ? ' active' : '') . '" href="' . esc_url(home_url('/khach-san/')) . '"><span class="nav-text">Gốm Sứ Khách Sạn &amp; Resort</span></a></li>';
-    echo '<li><a class="dropdown-link' . ($current_uri === 'qua-tang' ? ' active' : '') . '" href="' . esc_url(home_url('/qua-tang/')) . '"><span class="nav-text">Quà Tặng Doanh Nghiệp</span></a></li>';
-    echo '</ul>';
-    echo '</div>';
+    // 1. CÂU CHUYỆN
+    echo '<li class="nav-item' . ($is_story ? ' current-menu-item active' : '') . '">';
+    echo '<a class="nav-link' . ($is_story ? ' active' : '') . '" href="' . esc_url(home_url('/cau-chuyen/')) . '"><span class="nav-text">CÂU CHUYỆN</span></a>';
     echo '</li>';
 
-    // 2. Chia sẻ
-    echo '<li class="nav-item' . ($is_share ? ' current-menu-item active' : '') . '">';
-    echo '<a class="nav-link' . ($is_share ? ' active' : '') . '" href="' . esc_url(home_url('/chia-se/')) . '"><span class="nav-text">Chia Sẻ</span></a>';
-    echo '</li>';
-
-    // 3. Loại sản phẩm (Dropdown)
-    echo '<li class="nav-item has-dropdown' . ($is_types ? ' current-menu-item active' : '') . '">';
-    echo '<a class="nav-link' . ($is_types ? ' active' : '') . '" href="' . esc_url(home_url('/loai-san-pham/')) . '">';
-    echo '<span class="nav-text">Loại Sản Phẩm</span>';
-    echo '<i class="fas fa-chevron-down nav-arrow ms-1"></i>';
-    echo '</a>';
-    echo '<div class="premium-dropdown">';
-    echo '<ul class="dropdown-list">';
-    echo '<li><a class="dropdown-link" href="' . esc_url(home_url('/nha-hang/')) . '"><span class="nav-text">Gốm Nhà Hàng &amp; Bàn Ăn</span></a></li>';
-    echo '<li><a class="dropdown-link" href="' . esc_url(home_url('/khach-san/')) . '"><span class="nav-text">Gốm Khách Sạn &amp; Nghỉ Dưỡng</span></a></li>';
-    echo '<li><a class="dropdown-link" href="' . esc_url(home_url('/qua-tang/')) . '"><span class="nav-text">Quà Tặng Doanh Nghiệp &amp; In Logo</span></a></li>';
-    echo '<li><a class="dropdown-link" href="' . esc_url(home_url('/san-pham/')) . '"><span class="nav-text">Tất Cả Sản Phẩm Gốm</span></a></li>';
-    echo '</ul>';
-    echo '</div>';
-    echo '</li>';
-
-    // 4. Màu men (Dropdown)
-    echo '<li class="nav-item has-dropdown' . ($is_glaze ? ' current-menu-item active' : '') . '">';
-    echo '<a class="nav-link' . ($is_glaze ? ' active' : '') . '" href="' . esc_url(home_url('/mau-men/')) . '">';
-    echo '<span class="nav-text">Màu Men</span>';
-    echo '<i class="fas fa-chevron-down nav-arrow ms-1"></i>';
-    echo '</a>';
-    echo '<div class="premium-dropdown">';
-    echo '<ul class="dropdown-list">';
-    echo '<li><a class="dropdown-link" href="' . esc_url(home_url('/mau-men/#hoa-bien')) . '"><span class="nav-text">Men Hỏa Biến Đột Biến</span></a></li>';
-    echo '<li><a class="dropdown-link" href="' . esc_url(home_url('/mau-men/#men-ran')) . '"><span class="nav-text">Men Rạn Cổ Truyền Thống</span></a></li>';
-    echo '<li><a class="dropdown-link" href="' . esc_url(home_url('/mau-men/#men-lam')) . '"><span class="nav-text">Men Lam Bát Tràng</span></a></li>';
-    echo '<li><a class="dropdown-link" href="' . esc_url(home_url('/mau-men/#men-ngoc')) . '"><span class="nav-text">Men Ngọc Celadon Quý Phái</span></a></li>';
-    echo '<li><a class="dropdown-link" href="' . esc_url(home_url('/mau-men/#men-matte')) . '"><span class="nav-text">Men Matte Mờ Đương Đại</span></a></li>';
-    echo '</ul>';
-    echo '</div>';
-    echo '</li>';
-
-    // 5. Sản phẩm
+    // 2. SẢN PHẨM
     echo '<li class="nav-item' . ($is_shop ? ' current-menu-item active' : '') . '">';
-    echo '<a class="nav-link' . ($is_shop ? ' active' : '') . '" href="' . esc_url(home_url('/san-pham/')) . '"><span class="nav-text">Sản Phẩm</span></a>';
+    echo '<a class="nav-link' . ($is_shop ? ' active' : '') . '" href="' . esc_url(home_url('/san-pham/')) . '"><span class="nav-text">SẢN PHẨM</span></a>';
     echo '</li>';
 
-    // 6. Liên hệ
+    // 3. MÀU MEN
+    echo '<li class="nav-item' . ($is_glaze ? ' current-menu-item active' : '') . '">';
+    echo '<a class="nav-link' . ($is_glaze ? ' active' : '') . '" href="' . esc_url(home_url('/mau-men/')) . '"><span class="nav-text">MÀU MEN</span></a>';
+    echo '</li>';
+
+    // 4. CHIA SẺ
+    echo '<li class="nav-item' . ($is_share ? ' current-menu-item active' : '') . '">';
+    echo '<a class="nav-link' . ($is_share ? ' active' : '') . '" href="' . esc_url(home_url('/chia-se/')) . '"><span class="nav-text">CHIA SẺ</span></a>';
+    echo '</li>';
+
+    // 5. LIÊN HỆ
     echo '<li class="nav-item' . ($is_contact ? ' current-menu-item active' : '') . '">';
-    echo '<a class="nav-link' . ($is_contact ? ' active' : '') . '" href="' . esc_url(home_url('/contact/')) . '"><span class="nav-text">Liên Hệ</span></a>';
+    echo '<a class="nav-link' . ($is_contact ? ' active' : '') . '" href="' . esc_url(home_url('/contact/')) . '"><span class="nav-text">LIÊN HỆ</span></a>';
     echo '</li>';
 
     echo '</ul>';
 }
 
 /**
- * Automatically create and assign Primary Menu on Web host if missing
+ * Automatically create and assign Primary Menu on Web host if missing or inconsistent
  */
-function gomie_auto_setup_primary_menu() {
+function gomie_auto_setup_primary_menu($force_sync = false) {
     $menu_name = 'Gomie Primary Menu';
     $locations = get_theme_mod('nav_menu_locations');
     
-    // If primary location already has a valid menu assigned, do not overwrite
-    if (!empty($locations['primary'])) {
+    // Check if primary location already has this exact 5-item menu
+    if (!$force_sync && !empty($locations['primary'])) {
         $existing = wp_get_nav_menu_object($locations['primary']);
         if ($existing) {
-            return;
+            $items = wp_get_nav_menu_items($existing->term_id);
+            if (!empty($items) && count($items) === 5) {
+                $titles = array_map(function($i) { return mb_strtoupper(trim(wp_strip_all_tags($i->title)), 'UTF-8'); }, $items);
+                if (in_array('CÂU CHUYỆN', $titles, true) && in_array('SẢN PHẨM', $titles, true) && in_array('MÀU MEN', $titles, true)) {
+                    return;
+                }
+            }
         }
     }
 
-    // Check if menu exists
+    // Check if menu exists, or create new
     $menu_obj = wp_get_nav_menu_object($menu_name);
-    if (!$menu_obj) {
+    if ($menu_obj) {
+        $menu_id = $menu_obj->term_id;
+        // Clean existing items to ensure pure 5 items
+        $existing_items = wp_get_nav_menu_items($menu_id);
+        if (!empty($existing_items)) {
+            foreach ($existing_items as $ei) {
+                wp_delete_post($ei->ID, true);
+            }
+        }
+    } else {
         $menu_id = wp_create_nav_menu($menu_name);
         if (is_wp_error($menu_id)) {
             return;
         }
-
-        // Add menu items with dynamic home_url paths
-        // 1. Về chúng tôi (parent)
-        $parent_about = wp_update_nav_menu_item($menu_id, 0, array(
-            'menu-item-title'   => 'Về Chúng Tôi',
-            'menu-item-url'     => home_url('/cau-chuyen/'),
-            'menu-item-status'  => 'publish',
-        ));
-        wp_update_nav_menu_item($menu_id, 0, array(
-            'menu-item-title'   => 'Câu Chuyện Gomie',
-            'menu-item-url'     => home_url('/cau-chuyen/'),
-            'menu-item-parent-id' => $parent_about,
-            'menu-item-status'  => 'publish',
-        ));
-        wp_update_nav_menu_item($menu_id, 0, array(
-            'menu-item-title'   => 'Chứng Nhận An Toàn',
-            'menu-item-url'     => home_url('/chung-nhan/'),
-            'menu-item-parent-id' => $parent_about,
-            'menu-item-status'  => 'publish',
-        ));
-        wp_update_nav_menu_item($menu_id, 0, array(
-            'menu-item-title'   => 'Gốm Sứ Nhà Hàng',
-            'menu-item-url'     => home_url('/nha-hang/'),
-            'menu-item-parent-id' => $parent_about,
-            'menu-item-status'  => 'publish',
-        ));
-        wp_update_nav_menu_item($menu_id, 0, array(
-            'menu-item-title'   => 'Gốm Sứ Khách Sạn & Resort',
-            'menu-item-url'     => home_url('/khach-san/'),
-            'menu-item-parent-id' => $parent_about,
-            'menu-item-status'  => 'publish',
-        ));
-        wp_update_nav_menu_item($menu_id, 0, array(
-            'menu-item-title'   => 'Quà Tặng Doanh Nghiệp',
-            'menu-item-url'     => home_url('/qua-tang/'),
-            'menu-item-parent-id' => $parent_about,
-            'menu-item-status'  => 'publish',
-        ));
-
-        // 2. Chia sẻ
-        wp_update_nav_menu_item($menu_id, 0, array(
-            'menu-item-title'   => 'Chia Sẻ',
-            'menu-item-url'     => home_url('/chia-se/'),
-            'menu-item-status'  => 'publish',
-        ));
-
-        // 3. Loại sản phẩm
-        $parent_types = wp_update_nav_menu_item($menu_id, 0, array(
-            'menu-item-title'   => 'Loại Sản Phẩm',
-            'menu-item-url'     => home_url('/loai-san-pham/'),
-            'menu-item-status'  => 'publish',
-        ));
-        wp_update_nav_menu_item($menu_id, 0, array(
-            'menu-item-title'   => 'Gốm Nhà Hàng & Bàn Ăn',
-            'menu-item-url'     => home_url('/nha-hang/'),
-            'menu-item-parent-id' => $parent_types,
-            'menu-item-status'  => 'publish',
-        ));
-        wp_update_nav_menu_item($menu_id, 0, array(
-            'menu-item-title'   => 'Gốm Khách Sạn & Nghỉ Dưỡng',
-            'menu-item-url'     => home_url('/khach-san/'),
-            'menu-item-parent-id' => $parent_types,
-            'menu-item-status'  => 'publish',
-        ));
-        wp_update_nav_menu_item($menu_id, 0, array(
-            'menu-item-title'   => 'Quà Tặng Doanh Nghiệp & In Logo',
-            'menu-item-url'     => home_url('/qua-tang/'),
-            'menu-item-parent-id' => $parent_types,
-            'menu-item-status'  => 'publish',
-        ));
-
-        // 4. Màu men
-        $parent_glaze = wp_update_nav_menu_item($menu_id, 0, array(
-            'menu-item-title'   => 'Màu Men',
-            'menu-item-url'     => home_url('/mau-men/'),
-            'menu-item-status'  => 'publish',
-        ));
-        wp_update_nav_menu_item($menu_id, 0, array(
-            'menu-item-title'   => 'Men Hỏa Biến Đột Biến',
-            'menu-item-url'     => home_url('/mau-men/#hoa-bien'),
-            'menu-item-parent-id' => $parent_glaze,
-            'menu-item-status'  => 'publish',
-        ));
-        wp_update_nav_menu_item($menu_id, 0, array(
-            'menu-item-title'   => 'Men Rạn Cổ Truyền Thống',
-            'menu-item-url'     => home_url('/mau-men/#men-ran'),
-            'menu-item-parent-id' => $parent_glaze,
-            'menu-item-status'  => 'publish',
-        ));
-
-        // 5. Sản phẩm
-        wp_update_nav_menu_item($menu_id, 0, array(
-            'menu-item-title'   => 'Sản Phẩm',
-            'menu-item-url'     => home_url('/san-pham/'),
-            'menu-item-status'  => 'publish',
-        ));
-
-        // 6. Liên hệ
-        wp_update_nav_menu_item($menu_id, 0, array(
-            'menu-item-title'   => 'Liên Hệ',
-            'menu-item-url'     => home_url('/contact/'),
-            'menu-item-status'  => 'publish',
-        ));
-    } else {
-        $menu_id = $menu_obj->term_id;
     }
+
+    // Add pure 5 Gomie menu items in exact order:
+    // 1. CÂU CHUYỆN
+    wp_update_nav_menu_item($menu_id, 0, array(
+        'menu-item-title'   => 'CÂU CHUYỆN',
+        'menu-item-url'     => home_url('/cau-chuyen/'),
+        'menu-item-status'  => 'publish',
+    ));
+
+    // 2. SẢN PHẨM
+    wp_update_nav_menu_item($menu_id, 0, array(
+        'menu-item-title'   => 'SẢN PHẨM',
+        'menu-item-url'     => home_url('/san-pham/'),
+        'menu-item-status'  => 'publish',
+    ));
+
+    // 3. MÀU MEN
+    wp_update_nav_menu_item($menu_id, 0, array(
+        'menu-item-title'   => 'MÀU MEN',
+        'menu-item-url'     => home_url('/mau-men/'),
+        'menu-item-status'  => 'publish',
+    ));
+
+    // 4. CHIA SẺ
+    wp_update_nav_menu_item($menu_id, 0, array(
+        'menu-item-title'   => 'CHIA SẺ',
+        'menu-item-url'     => home_url('/chia-se/'),
+        'menu-item-status'  => 'publish',
+    ));
+
+    // 5. LIÊN HỆ
+    wp_update_nav_menu_item($menu_id, 0, array(
+        'menu-item-title'   => 'LIÊN HỆ',
+        'menu-item-url'     => home_url('/contact/'),
+        'menu-item-status'  => 'publish',
+    ));
 
     // Assign to primary theme location
     $locations['primary'] = $menu_id;
@@ -1074,6 +977,17 @@ add_action('init', function() {
     $locs = get_nav_menu_locations();
     if (empty($locs['primary'])) {
         gomie_auto_setup_primary_menu();
+    } else {
+        $existing = wp_get_nav_menu_object($locs['primary']);
+        if (!$existing) {
+            gomie_auto_setup_primary_menu();
+        } else {
+            $items = wp_get_nav_menu_items($existing->term_id);
+            // If the currently assigned menu has messy legacy structure (e.g. not 5 items or has 'Loại Sản Phẩm'), auto-sync to pure 5-item Gomie menu
+            if (empty($items) || count($items) !== 5) {
+                gomie_auto_setup_primary_menu(true);
+            }
+        }
     }
 });
 

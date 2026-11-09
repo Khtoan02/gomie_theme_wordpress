@@ -195,8 +195,8 @@
             isMatch = true;
           }
         }
-        // Về chúng tôi
-        if (text.indexOf('về chúng tôi') !== -1 || text.indexOf('ve chung toi') !== -1) {
+        // Câu chuyện / Về chúng tôi
+        if (text.indexOf('câu chuyện') !== -1 || text.indexOf('cau chuyen') !== -1 || text.indexOf('về chúng tôi') !== -1 || text.indexOf('ve chung toi') !== -1) {
           var aboutList = ['/cau-chuyen', '/chung-nhan', '/nha-hang', '/khach-san', '/qua-tang', '/ve-chung-toi'];
           if (aboutList.indexOf(currentPath) !== -1) {
             isMatch = true;
