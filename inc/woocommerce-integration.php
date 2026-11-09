@@ -573,6 +573,10 @@ function gomie_simplify_vietnam_checkout_fields($fields) {
         $fields["order"]["order_comments"]["class"] = array("form-row-wide");
     }
 
+    if (isset($fields["account"]["createaccount"])) {
+        $fields["account"]["createaccount"]["label"] = __("Lưu thông tin này cho các lần mua sau (Tạo tài khoản)", "gomie-theme");
+    }
+
     return $fields;
 }
 
@@ -747,40 +751,4 @@ function gomie_save_checkout_data_to_user_account($user_id, $posted_data) {
 
     update_user_meta($user_id, "billing_country", "VN");
     update_user_meta($user_id, "shipping_country", "VN");
-}
-
-// 7. Hien thi thong bao tai thong tin luu tren dau form
-add_action("woocommerce_before_checkout_billing_form", "gomie_render_account_save_notice");
-function gomie_render_account_save_notice() {
-    if (is_user_logged_in()) {
-        $user_id = get_current_user_id();
-        $user = wp_get_current_user();
-        $has_saved = get_user_meta($user_id, "billing_phone", true) || get_user_meta($user_id, "billing_address_1", true);
-        ?>
-        <div class="gomie-saved-data-notice mb-3 p-3 rounded-3" style="background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; font-size: 0.9rem;">
-            <div class="d-flex align-items-center gap-2">
-                <i class="fa-solid fa-circle-check" style="color: #16a34a; font-size: 1.15rem;"></i>
-                <div>
-                    <strong>Xin chào <?php echo esc_html($user->display_name); ?>!</strong>
-                    <?php if ($has_saved) : ?>
-                        <span>Hệ thống đã tự động điền thông tin nhận hàng từ lần mua trước. Mọi thay đổi sẽ được tự động lưu lại cho các lần sau.</span>
-                    <?php else : ?>
-                        <span>Thông tin bạn điền lần này sẽ được tự động lưu vào tài khoản để sử dụng cho các lần mua sau.</span>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
-        <?php
-    } else {
-        ?>
-        <div class="gomie-guest-tip-notice mb-3 p-3 rounded-3" style="background: #fff8f5; border: 1px solid #fed7aa; color: #9a3412; font-size: 0.9rem;">
-            <div class="d-flex align-items-center gap-2">
-                <i class="fa-solid fa-user-shield" style="color: #ea580c; font-size: 1.15rem;"></i>
-                <div>
-                    <span><strong>Mẹo mua hàng:</strong> Đã có tài khoản? <a href="<?php echo esc_url(wc_get_page_permalink("myaccount")); ?>" class="fw-bold text-decoration-underline" style="color: #ea580c;">Đăng nhập</a> để tự động điền thông tin, hoặc tích chọn <strong>"Tạo tài khoản"</strong> bên dưới để lưu cho các lần sau.</span>
-                </div>
-            </div>
-        </div>
-        <?php
-    }
 }

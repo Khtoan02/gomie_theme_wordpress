@@ -252,7 +252,7 @@ function gomie_enqueue_scripts() {
     // Checkout Page CSS & JS - Load on checkout page
     if (is_checkout()) {
         // Checkout Page CSS
-        wp_enqueue_style('checkout-page', get_template_directory_uri() . '/assets/css/checkout-page.css', array('gomie-style', 'gomie-colors'), GOMIE_THEME_VERSION);
+        wp_enqueue_style('checkout-page', get_template_directory_uri() . '/assets/css/checkout-page.css', array('gomie-style', 'gomie-colors'), filemtime(get_template_directory() . '/assets/css/checkout-page.css'));
         
         // Checkout Page JavaScript
         if (file_exists(get_template_directory() . '/assets/js/checkout-page.js')) {

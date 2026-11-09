@@ -1682,3 +1682,16 @@ add_action("template_redirect", function() {
         exit;
     }
 });
+
+
+// Allow previewing checkout with sample ceramic products if preview query param is set
+add_action("template_redirect", function() {
+    if (isset($_GET["preview_checkout"])) {
+        if (WC()->cart && WC()->cart->is_empty()) {
+            $prods = wc_get_products(array("limit" => 2));
+            foreach ($prods as $p) {
+                WC()->cart->add_to_cart($p->get_id(), 1);
+            }
+        }
+    }
+}, 5);
