@@ -363,10 +363,11 @@
   border-color: rgba(224, 89, 42, 0.22);
 }
 
-/* Card Thumbnail */
+/* Card Thumbnail - Tỷ lệ chuẩn 16:9 sắc nét */
 .gomie-post-card .card-thumb-wrap {
   position: relative;
-  aspect-ratio: 16 / 10;
+  width: 100%;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
   background: #eee;
 }
@@ -374,6 +375,9 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .gomie-post-card:hover .card-thumb-wrap img {

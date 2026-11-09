@@ -244,12 +244,12 @@ $theme_uri = get_template_directory_uri();
                 $views_formatted = number_format($stats['views']);
                 $sales_formatted = number_format($stats['sales']);
 
-                // Image with prioritized detection
+                // Image with prioritized detection (High-res Full)
                 $img_url = '';
                 if (has_post_thumbnail($pid)) {
-                    $img_url = get_the_post_thumbnail_url($pid, 'large');
+                    $img_url = get_the_post_thumbnail_url($pid, 'full');
                 } elseif ($product->get_image_id()) {
-                    $img_url = wp_get_attachment_image_url($product->get_image_id(), 'large');
+                    $img_url = wp_get_attachment_image_url($product->get_image_id(), 'full');
                 }
                 
                 if (empty($img_url)) {
@@ -619,7 +619,9 @@ $theme_uri = get_template_directory_uri();
     width: 100%;
     height: 100%;
     object-fit: contain;
-    padding: 16px;
+    padding: 10px;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
     transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 

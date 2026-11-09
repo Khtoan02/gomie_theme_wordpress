@@ -172,7 +172,7 @@ $schema_data = array(
                     </div>
                     <?php foreach ($attachment_ids as $attachment_id) :
                         $thumb_url = wp_get_attachment_image_url($attachment_id, 'full');
-                        $small_thumb = wp_get_attachment_image_url($attachment_id, 'woocommerce_thumbnail');
+                        $small_thumb = wp_get_attachment_image_url($attachment_id, 'full');
                         if (!$thumb_url) continue;
                     ?>
                         <div class="thumb-item" data-full="<?php echo esc_url($thumb_url); ?>">

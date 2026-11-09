@@ -693,7 +693,7 @@ function gomie_ajax_load_restaurant_products() {
     }
     
     // Helper functions for AJAX
-    function gomie_get_product_image_url_ajax($product_id, $size = 'woocommerce_thumbnail') {
+    function gomie_get_product_image_url_ajax($product_id, $size = 'full') {
         if (function_exists('wp_get_attachment_image_src')) {
             $image_id = get_post_thumbnail_id($product_id);
             if ($image_id) {
@@ -730,7 +730,7 @@ function gomie_ajax_load_restaurant_products() {
         $product_id = $product->get_id();
         $title = $product->get_name();
         $permalink = get_permalink($product_id);
-        $image = gomie_get_product_image_url_ajax($product_id, 'woocommerce_thumbnail');
+        $image = gomie_get_product_image_url_ajax($product_id, 'full');
         $price_html = $product->get_price_html();
         $stats = gomie_get_product_stats_ajax($product_id);
         

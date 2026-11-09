@@ -295,7 +295,7 @@ function gomie_restaurant_breadcrumb() {
 /**
  * Get optimized product image URL
  */
-function gomie_get_optimized_product_image($product_id, $size = 'woocommerce_thumbnail') {
+function gomie_get_optimized_product_image($product_id, $size = 'full') {
     $image_id = get_post_thumbnail_id($product_id);
     
     if (!$image_id) {
@@ -400,7 +400,7 @@ if (!function_exists('gomie_render_product_card')) {
         $product_id = $product->get_id();
         $title = $product->get_name();
         $permalink = get_permalink($product_id);
-        $image = gomie_get_product_image_url($product_id, 'woocommerce_thumbnail');
+        $image = gomie_get_product_image_url($product_id, 'full');
         $price_html = $product->get_price_html();
         $stats = function_exists('gomie_get_product_stats') ? gomie_get_product_stats($product_id) : array(
             'views' => 3800,
@@ -1605,7 +1605,7 @@ if (!function_exists('gomie_render_product_card')) {
         $product_id = $product->get_id();
         $title = $product->get_name();
         $permalink = get_permalink($product_id);
-        $image = gomie_get_product_image_url($product_id, 'woocommerce_thumbnail');
+        $image = gomie_get_product_image_url($product_id, 'full');
         $price_html = $product->get_price_html();
         $stats = function_exists('gomie_get_product_stats') ? gomie_get_product_stats($product_id) : array(
             'views' => 3800,
@@ -1720,7 +1720,7 @@ function gomie_gift_category_structured_data($term) {
  * Get product image URL safely
  */
 if (!function_exists('gomie_get_product_image_url')) {
-    function gomie_get_product_image_url($product_id, $size = 'woocommerce_thumbnail') {
+    function gomie_get_product_image_url($product_id, $size = 'full') {
         if (function_exists('wp_get_attachment_image_src')) {
             $image_id = get_post_thumbnail_id($product_id);
             if ($image_id) {
@@ -1751,7 +1751,7 @@ if (!function_exists('gomie_render_product_card')) {
         $product_id = $product->get_id();
         $title = $product->get_name();
         $permalink = get_permalink($product_id);
-        $image = gomie_get_product_image_url($product_id, 'woocommerce_thumbnail');
+        $image = gomie_get_product_image_url($product_id, 'full');
         $price_html = $product->get_price_html();
         $stats = function_exists('gomie_get_product_stats') ? gomie_get_product_stats($product_id) : array(
             'views' => 3800,
@@ -1856,7 +1856,7 @@ function gomie_get_reading_time($post_id = null) {
 /**
  * Get post thumbnail URL with intelligent editorial fallback
  */
-function gomie_get_post_thumbnail_src($post_id = null, $size = "large") {
+function gomie_get_post_thumbnail_src($post_id = null, $size = "full") {
     if (!$post_id) {
         $post_id = get_the_ID();
     }

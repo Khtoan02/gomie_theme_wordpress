@@ -158,7 +158,7 @@ get_header();
               <?php while ($related->have_posts()) : $related->the_post();
                 $rel_tag = get_post_meta(get_the_ID(), '_gomie_editorial_tag', true);
                 $rel_img = get_post_meta(get_the_ID(), '_gomie_editorial_img', true);
-                $rel_img_url = !empty($rel_img) ? esc_url(get_template_directory_uri() . '/assets/images/stories/' . $rel_img) : esc_url(get_template_directory_uri() . '/assets/images/stories/gomie-story-ban-tiec.jpg');
+                $rel_img_url = !empty($rel_img) ? esc_url(get_template_directory_uri() . '/assets/images/stories/' . $rel_img) : (has_post_thumbnail() ? get_the_post_thumbnail_url(get_the_ID(), 'full') : esc_url(get_template_directory_uri() . '/assets/images/stories/gomie-story-ban-tiec.jpg'));
               ?>
                 <article class="related-card">
                   <a href="<?php the_permalink(); ?>" class="related-card-media">
@@ -382,10 +382,10 @@ get_header();
   .hero-image-stage img {
     display: block;
     width: 100%;
-    height: auto;
-    max-height: 600px;
+    aspect-ratio: 16 / 9;
     object-fit: cover;
     object-position: center;
+    image-rendering: -webkit-optimize-contrast;
   }
 
   .hero-image-watermark {
@@ -644,7 +644,7 @@ get_header();
 
   .related-card-media {
     width: 100%;
-    height: 200px;
+    aspect-ratio: 16 / 9;
     overflow: hidden;
     display: block;
     background: #f2eee8;
@@ -654,6 +654,7 @@ get_header();
     width: 100%;
     height: 100%;
     object-fit: cover;
+    image-rendering: -webkit-optimize-contrast;
     transition: transform .5s ease;
   }
 

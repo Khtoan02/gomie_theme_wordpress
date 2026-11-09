@@ -22,7 +22,7 @@ $product_categories = get_terms(array(
 
 // Helper functions (reuse from existing templates)
 if (!function_exists('gomie_get_product_image_url')) {
-    function gomie_get_product_image_url($product_id, $size = 'woocommerce_thumbnail') {
+    function gomie_get_product_image_url($product_id, $size = 'full') {
         if (function_exists('wp_get_attachment_image_src')) {
             $image_id = get_post_thumbnail_id($product_id);
             if ($image_id) {
@@ -63,7 +63,7 @@ if (!function_exists('gomie_render_product_card_shop')) {
         $product_id = $product->get_id();
         $title = $product->get_name();
         $permalink = get_permalink($product_id);
-        $image = gomie_get_product_image_url($product_id, 'woocommerce_thumbnail');
+        $image = gomie_get_product_image_url($product_id, 'full');
         $price_html = $product->get_price_html();
         $stats = gomie_get_product_stats($product_id);
         

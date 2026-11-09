@@ -6,7 +6,7 @@
  */
 
 $p_id = get_the_ID();
-$thumb_src = function_exists('gomie_get_post_thumbnail_src') ? gomie_get_post_thumbnail_src($p_id, 'medium_large') : (has_post_thumbnail() ? get_the_post_thumbnail_url($p_id, 'medium_large') : '');
+$thumb_src = function_exists('gomie_get_post_thumbnail_src') ? gomie_get_post_thumbnail_src($p_id, 'full') : (has_post_thumbnail() ? get_the_post_thumbnail_url($p_id, 'full') : '');
 $reading_time = function_exists('gomie_get_reading_time') ? gomie_get_reading_time($p_id) : '3 phút đọc';
 $post_cats = get_the_category();
 $p_cat_name = !empty($post_cats) ? $post_cats[0]->name : 'Gốm sứ';
