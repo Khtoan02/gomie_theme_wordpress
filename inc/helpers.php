@@ -1670,11 +1670,15 @@ function gomie_get_post_thumbnail_src($post_id = null, $size = "large") {
 }
 
 
-// 301 redirect legacy /blog to /chia-se/
+// 301 redirects for legacy URLs
 add_action("template_redirect", function() {
     $uri = trim(parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH), "/");
     if ($uri === "blog") {
         wp_redirect(home_url("/chia-se/"), 301);
+        exit;
+    }
+    if ($uri === "chinh-sach-bao-mat") {
+        wp_redirect(home_url("/policy/"), 301);
         exit;
     }
 });

@@ -34,15 +34,15 @@
                         </div>
                     </div>
                     
-                    <!-- Column 3: Hướng dẫn mua hàng -->
+                    <!-- Column 3: Hướng dẫn mua hàng & Chính sách -->
                     <div class="footer-column">
-                        <h4 class="footer-title">Hướng dẫn mua hàng</h4>
+                        <h4 class="footer-title">Chính sách & Hướng dẫn</h4>
                         <div class="footer-content">
                             <ul class="footer-menu">
-                                <li><a href="/chinh-sach-bao-mat">Chính sách bảo mật</a></li>
-                                <li><a href="/chinh-sach-doi-tra">Chính sách đổi trả</a></li>
-                                <li><a href="/chinh-sach-van-chuyen">Chính sách vận chuyển & kiểm tra hàng</a></li>
-                                <li><a href="/chinh-sach-thanh-toan">Chính sách thanh toán</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/policy/')); ?>">Chính sách bảo mật</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/chinh-sach-doi-tra/')); ?>">Chính sách đổi trả &amp; bảo hành</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/chinh-sach-thanh-toan/')); ?>">Chính sách thanh toán</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/huong-dan-su-dung/')); ?>">Hướng dẫn sử dụng &amp; bảo quản</a></li>
                             </ul>
                         </div>
                     </div>
