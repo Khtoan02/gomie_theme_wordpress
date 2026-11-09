@@ -1625,3 +1625,56 @@ if (!function_exists('gomie_render_product_card')) {
         <?php
     }
 }
+
+
+/**
+ * Get estimated reading time for a post
+ */
+function gomie_get_reading_time($post_id = null) {
+    if (!$post_id) {
+        $post_id = get_the_ID();
+    }
+    $content = get_post_field("post_content", $post_id);
+    $word_count = str_word_count(strip_tags($content));
+    $minutes = ceil($word_count / 200);
+    return max(1, (int)$minutes) . " phút đọc";
+}
+
+/**
+ * Get post thumbnail URL with intelligent editorial fallback
+ */
+function gomie_get_post_thumbnail_src($post_id = null, $size = "large") {
+    if (!$post_id) {
+        $post_id = get_the_ID();
+    }
+    
+    if (has_post_thumbnail($post_id)) {
+        $url = get_the_post_thumbnail_url($post_id, $size);
+        if ($url) {
+            return $url;
+        }
+    }
+    
+    // Fallback editorial pool
+    $fallbacks = array(
+        "/assets/images/stories/gomie-story-ban-tiec.jpg",
+        "/assets/images/stories/chuyen-gomie-men-hoa-bien.jpg",
+        "/assets/images/stories/gomie-story-resort-horeca.jpg",
+        "/assets/images/stories/gomie-story-gian-bep-viet.jpg",
+        "/assets/images/stories/chuyen-gomie-dat-set.jpg",
+        "/assets/images/stories/gomie-story-hoa-bien-1300c.jpg"
+    );
+    
+    $index = absint($post_id) % count($fallbacks);
+    return get_template_directory_uri() . $fallbacks[$index];
+}
+
+
+// 301 redirect legacy /blog to /chia-se/
+add_action("template_redirect", function() {
+    $uri = trim(parse_url($_SERVER["REQUEST_URI"], PHP_URL_PATH), "/");
+    if ($uri === "blog") {
+        wp_redirect(home_url("/chia-se/"), 301);
+        exit;
+    }
+});

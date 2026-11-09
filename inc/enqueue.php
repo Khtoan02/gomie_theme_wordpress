@@ -81,6 +81,11 @@ function gomie_enqueue_scripts() {
         wp_enqueue_style('footer-new', get_template_directory_uri() . '/assets/css/footer-new.css', array('gomie-style'), GOMIE_THEME_VERSION);
     }
 
+    // Góc Chia Sẻ / Editorial Blog Archive CSS
+    if (file_exists(get_template_directory() . '/assets/css/sharing-blog.css')) {
+        wp_enqueue_style('gomie-sharing-blog', get_template_directory_uri() . '/assets/css/sharing-blog.css', array('gomie-style'), filemtime(get_template_directory() . '/assets/css/sharing-blog.css'));
+    }
+
     // Unified Category CSS - for restaurant, hotel, and gift categories (OPTIMIZED)
     if ($is_category_page) {
         wp_enqueue_style('restaurant-category', get_template_directory_uri() . '/assets/css/restaurant-category.css', array('gomie-style', 'gomie-colors'), GOMIE_THEME_VERSION);
