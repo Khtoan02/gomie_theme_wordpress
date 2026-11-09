@@ -498,4 +498,289 @@ function gomie_ensure_cart_calculations() {
     }
 }
 add_action('wp_loaded', 'gomie_ensure_cart_calculations');
-?>
+
+
+/**
+ * =============================================================================
+ * GOMIE CERAMIC - VIETNAM CHECKOUT OPTIMIZATION
+ * Tinh gon form thanh toan cho thi truong Viet Nam (Ten, SDT, Dia chi, Email)
+ * Tu dong luu thong tin cho khach hang co tai khoan dung lai cho cac lan sau
+ * =============================================================================
+ */
+
+// 1. Tinh gon cac truong checkout
+add_filter("woocommerce_checkout_fields", "gomie_simplify_vietnam_checkout_fields", 9999);
+function gomie_simplify_vietnam_checkout_fields($fields) {
+    // Chi giu lai 4 truong thiet yeu trong billing
+    $fields["billing"]["billing_first_name"] = array(
+        "label"        => __("Họ và tên người nhận", "gomie-theme"),
+        "placeholder"  => __("Ví dụ: Nguyễn Văn An", "gomie-theme"),
+        "required"     => true,
+        "class"        => array("form-row-wide"),
+        "clear"        => true,
+        "priority"     => 10,
+        "autocomplete" => "name",
+    );
+
+    $fields["billing"]["billing_phone"] = array(
+        "label"        => __("Số điện thoại nhận hàng", "gomie-theme"),
+        "placeholder"  => __("Ví dụ: 0912 345 678 (Shipper sẽ gọi trước khi giao)", "gomie-theme"),
+        "required"     => true,
+        "type"         => "tel",
+        "class"        => array("form-row-wide"),
+        "clear"        => true,
+        "priority"     => 20,
+        "autocomplete" => "tel",
+    );
+
+    $fields["billing"]["billing_address_1"] = array(
+        "label"        => __("Địa chỉ nhận hàng chi tiết", "gomie-theme"),
+        "placeholder"  => __("Số nhà, ngõ/đường, phường/xã, quận/huyện, tỉnh/thành phố", "gomie-theme"),
+        "required"     => true,
+        "class"        => array("form-row-wide"),
+        "clear"        => true,
+        "priority"     => 30,
+        "autocomplete" => "street-address",
+    );
+
+    $fields["billing"]["billing_email"] = array(
+        "label"        => __("Địa chỉ Email nhận thông tin đơn hàng", "gomie-theme"),
+        "placeholder"  => __("email@example.com (để nhận xác nhận & mã vận đơn)", "gomie-theme"),
+        "required"     => true,
+        "type"         => "email",
+        "class"        => array("form-row-wide"),
+        "clear"        => true,
+        "priority"     => 40,
+        "autocomplete" => "email",
+    );
+
+    // Xoa bo toan bo cac truong khong phu hop tai Viet Nam
+    unset($fields["billing"]["billing_last_name"]);
+    unset($fields["billing"]["billing_company"]);
+    unset($fields["billing"]["billing_country"]);
+    unset($fields["billing"]["billing_address_2"]);
+    unset($fields["billing"]["billing_city"]);
+    unset($fields["billing"]["billing_state"]);
+    unset($fields["billing"]["billing_postcode"]);
+
+    // Tat hoan toan muc giao hang toi dia chi khac
+    unset($fields["shipping"]);
+
+    // Toi uu muc ghi chu don hang
+    if (isset($fields["order"]["order_comments"])) {
+        $fields["order"]["order_comments"]["label"] = __("Ghi chú giao hàng (tùy chọn)", "gomie-theme");
+        $fields["order"]["order_comments"]["placeholder"] = __("Ví dụ: Giao giờ hành chính, bọc lót chống sốc cẩn thận giúp tôi...", "gomie-theme");
+        $fields["order"]["order_comments"]["class"] = array("form-row-wide");
+    }
+
+    return $fields;
+}
+
+// 2. Tinh gon billing fields mac dinh
+add_filter("woocommerce_billing_fields", "gomie_simplify_billing_fields_direct", 9999);
+function gomie_simplify_billing_fields_direct($fields) {
+    if (isset($fields["billing_first_name"])) {
+        $fields["billing_first_name"]["label"] = __("Họ và tên người nhận", "gomie-theme");
+        $fields["billing_first_name"]["placeholder"] = __("Ví dụ: Nguyễn Văn An", "gomie-theme");
+        $fields["billing_first_name"]["class"] = array("form-row-wide");
+        $fields["billing_first_name"]["priority"] = 10;
+    }
+    if (isset($fields["billing_phone"])) {
+        $fields["billing_phone"]["label"] = __("Số điện thoại nhận hàng", "gomie-theme");
+        $fields["billing_phone"]["placeholder"] = __("Ví dụ: 0912 345 678 (Shipper sẽ gọi trước khi giao)", "gomie-theme");
+        $fields["billing_phone"]["required"] = true;
+        $fields["billing_phone"]["class"] = array("form-row-wide");
+        $fields["billing_phone"]["priority"] = 20;
+    }
+    if (isset($fields["billing_address_1"])) {
+        $fields["billing_address_1"]["label"] = __("Địa chỉ nhận hàng chi tiết", "gomie-theme");
+        $fields["billing_address_1"]["placeholder"] = __("Số nhà, ngõ/đường, phường/xã, quận/huyện, tỉnh/thành phố", "gomie-theme");
+        $fields["billing_address_1"]["class"] = array("form-row-wide");
+        $fields["billing_address_1"]["priority"] = 30;
+    }
+    if (isset($fields["billing_email"])) {
+        $fields["billing_email"]["label"] = __("Địa chỉ Email nhận thông tin đơn hàng", "gomie-theme");
+        $fields["billing_email"]["placeholder"] = __("email@example.com (để nhận xác nhận & mã vận đơn)", "gomie-theme");
+        $fields["billing_email"]["class"] = array("form-row-wide");
+        $fields["billing_email"]["priority"] = 40;
+    }
+
+    unset($fields["billing_last_name"]);
+    unset($fields["billing_company"]);
+    unset($fields["billing_country"]);
+    unset($fields["billing_address_2"]);
+    unset($fields["billing_city"]);
+    unset($fields["billing_state"]);
+    unset($fields["billing_postcode"]);
+
+    return $fields;
+}
+
+// 3. Tu dong xu ly du lieu khi submit (tach ho ten, gan quoc gia VN, thanh pho mac dinh)
+add_filter("woocommerce_checkout_posted_data", "gomie_process_vietnam_checkout_data");
+function gomie_process_vietnam_checkout_data($data) {
+    if (!empty($data["billing_first_name"]) && empty($data["billing_last_name"])) {
+        $name_parts = explode(" ", trim($data["billing_first_name"]));
+        if (count($name_parts) > 1) {
+            $data["billing_first_name"] = array_shift($name_parts);
+            $data["billing_last_name"]  = implode(" ", $name_parts);
+        } else {
+            $data["billing_last_name"]  = $data["billing_first_name"];
+        }
+    }
+
+    // Luon mac dinh quoc gia Viet Nam
+    $data["billing_country"] = "VN";
+    $data["shipping_country"] = "VN";
+
+    if (empty($data["billing_city"])) {
+        $data["billing_city"] = "Việt Nam";
+    }
+    $data["shipping_city"] = $data["billing_city"];
+
+    $data["shipping_first_name"] = $data["billing_first_name"];
+    $data["shipping_last_name"]  = $data["billing_last_name"];
+    $data["shipping_address_1"]  = $data["billing_address_1"];
+    $data["shipping_phone"]      = $data["billing_phone"];
+
+    return $data;
+}
+
+// 4. Bo qua kiem tra bat buoc cho cac truong da an
+add_filter("woocommerce_default_address_fields", "gomie_override_default_address_fields", 9999);
+function gomie_override_default_address_fields($fields) {
+    if (isset($fields["last_name"])) {
+        $fields["last_name"]["required"] = false;
+    }
+    if (isset($fields["city"])) {
+        $fields["city"]["required"] = false;
+    }
+    if (isset($fields["state"])) {
+        $fields["state"]["required"] = false;
+    }
+    if (isset($fields["postcode"])) {
+        $fields["postcode"]["required"] = false;
+    }
+    return $fields;
+}
+
+// 5. Tu dong dien (Pre-fill) thong tin da luu cho khach hang co tai khoan
+add_filter("woocommerce_checkout_get_value", "gomie_prefill_saved_user_checkout_data", 10, 2);
+function gomie_prefill_saved_user_checkout_data($value, $input) {
+    if (is_user_logged_in()) {
+        $user_id = get_current_user_id();
+        
+        // Ho va ten gop
+        if ($input === "billing_first_name") {
+            $first = get_user_meta($user_id, "billing_first_name", true);
+            $last  = get_user_meta($user_id, "billing_last_name", true);
+            if ($first || $last) {
+                return trim($first . " " . $last);
+            }
+            $user_data = get_userdata($user_id);
+            if ($user_data && !empty($user_data->display_name)) {
+                return $user_data->display_name;
+            }
+        }
+        
+        // So dien thoai
+        if ($input === "billing_phone") {
+            $phone = get_user_meta($user_id, "billing_phone", true);
+            if ($phone) {
+                return $phone;
+            }
+        }
+        
+        // Dia chi
+        if ($input === "billing_address_1") {
+            $addr = get_user_meta($user_id, "billing_address_1", true);
+            if ($addr) {
+                return $addr;
+            }
+        }
+        
+        // Email
+        if ($input === "billing_email") {
+            $email = get_user_meta($user_id, "billing_email", true);
+            if ($email) {
+                return $email;
+            }
+            $user_data = get_userdata($user_id);
+            if ($user_data && !empty($user_data->user_email)) {
+                return $user_data->user_email;
+            }
+        }
+    }
+    return $value;
+}
+
+// 6. Tu dong LUU thong tin vao tai khoan khach hang khi dat hang de su dung cac lan sau
+add_action("woocommerce_checkout_update_user_meta", "gomie_save_checkout_data_to_user_account", 10, 2);
+function gomie_save_checkout_data_to_user_account($user_id, $posted_data) {
+    if (!$user_id) {
+        return;
+    }
+
+    if (!empty($posted_data["billing_first_name"])) {
+        $name_parts = explode(" ", trim($posted_data["billing_first_name"]));
+        if (count($name_parts) > 1) {
+            $first = array_shift($name_parts);
+            $last  = implode(" ", $name_parts);
+        } else {
+            $first = $posted_data["billing_first_name"];
+            $last  = "";
+        }
+        update_user_meta($user_id, "billing_first_name", sanitize_text_field($first));
+        update_user_meta($user_id, "billing_last_name", sanitize_text_field($last));
+        update_user_meta($user_id, "first_name", sanitize_text_field($first));
+        update_user_meta($user_id, "last_name", sanitize_text_field($last));
+    }
+
+    if (!empty($posted_data["billing_phone"])) {
+        update_user_meta($user_id, "billing_phone", sanitize_text_field($posted_data["billing_phone"]));
+    }
+
+    if (!empty($posted_data["billing_address_1"])) {
+        update_user_meta($user_id, "billing_address_1", sanitize_text_field($posted_data["billing_address_1"]));
+        update_user_meta($user_id, "shipping_address_1", sanitize_text_field($posted_data["billing_address_1"]));
+    }
+
+    update_user_meta($user_id, "billing_country", "VN");
+    update_user_meta($user_id, "shipping_country", "VN");
+}
+
+// 7. Hien thi thong bao tai thong tin luu tren dau form
+add_action("woocommerce_before_checkout_billing_form", "gomie_render_account_save_notice");
+function gomie_render_account_save_notice() {
+    if (is_user_logged_in()) {
+        $user_id = get_current_user_id();
+        $user = wp_get_current_user();
+        $has_saved = get_user_meta($user_id, "billing_phone", true) || get_user_meta($user_id, "billing_address_1", true);
+        ?>
+        <div class="gomie-saved-data-notice mb-3 p-3 rounded-3" style="background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; font-size: 0.9rem;">
+            <div class="d-flex align-items-center gap-2">
+                <i class="fa-solid fa-circle-check" style="color: #16a34a; font-size: 1.15rem;"></i>
+                <div>
+                    <strong>Xin chào <?php echo esc_html($user->display_name); ?>!</strong>
+                    <?php if ($has_saved) : ?>
+                        <span>Hệ thống đã tự động điền thông tin nhận hàng từ lần mua trước. Mọi thay đổi sẽ được tự động lưu lại cho các lần sau.</span>
+                    <?php else : ?>
+                        <span>Thông tin bạn điền lần này sẽ được tự động lưu vào tài khoản để sử dụng cho các lần mua sau.</span>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+        <?php
+    } else {
+        ?>
+        <div class="gomie-guest-tip-notice mb-3 p-3 rounded-3" style="background: #fff8f5; border: 1px solid #fed7aa; color: #9a3412; font-size: 0.9rem;">
+            <div class="d-flex align-items-center gap-2">
+                <i class="fa-solid fa-user-shield" style="color: #ea580c; font-size: 1.15rem;"></i>
+                <div>
+                    <span><strong>Mẹo mua hàng:</strong> Đã có tài khoản? <a href="<?php echo esc_url(wc_get_page_permalink("myaccount")); ?>" class="fw-bold text-decoration-underline" style="color: #ea580c;">Đăng nhập</a> để tự động điền thông tin, hoặc tích chọn <strong>"Tạo tài khoản"</strong> bên dưới để lưu cho các lần sau.</span>
+                </div>
+            </div>
+        </div>
+        <?php
+    }
+}

@@ -44,11 +44,7 @@ $theme_uri = get_template_directory_uri();
             <?php
             while ( have_posts() ) :
                 the_post();
-                if ( function_exists( 'woocommerce_checkout' ) ) {
-                    echo do_shortcode( '[woocommerce_checkout]' );
-                } else {
-                    the_content();
-                }
+                echo do_shortcode( '[woocommerce_checkout]' );
             endwhile;
             ?>
         </div>
