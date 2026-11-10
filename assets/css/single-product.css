@@ -1541,16 +1541,17 @@
   margin-bottom: 6px !important;
 }
 
-/* Card boxes & grids inside description (e.g. .grid > div, .bg-slate-50, etc.) */
-.product-custom-content .grid {
+/* Card boxes & grids inside description (ONLY for div containers) */
+.product-custom-content div.grid {
   display: grid;
   gap: 14px !important;
   margin: 18px 0 24px 0 !important;
+  max-width: 860px;
 }
 
-.product-custom-content .grid > div,
-.product-custom-content .bg-slate-50,
-.product-custom-content [class*="rounded-xl"] {
+.product-custom-content div.grid > div,
+.product-custom-content div.bg-slate-50,
+.product-custom-content div[class*="rounded-xl"] {
   background-color: #faf8f5 !important;
   border: 1px solid rgba(226, 232, 240, 0.85) !important;
   border-radius: 12px !important;
@@ -1558,15 +1559,15 @@
   transition: all 0.25s ease;
 }
 
-.product-custom-content .grid > div:hover,
-.product-custom-content .bg-slate-50:hover {
+.product-custom-content div.grid > div:hover,
+.product-custom-content div.bg-slate-50:hover {
   background-color: #ffffff !important;
   border-color: rgba(224, 89, 42, 0.3) !important;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
 }
 
-.product-custom-content .grid > div h4,
-.product-custom-content .bg-slate-50 h4 {
+.product-custom-content div.grid > div h4,
+.product-custom-content div.bg-slate-50 h4 {
   font-size: 15px !important;
   font-weight: 650 !important;
   color: #1e293b !important;
@@ -1575,38 +1576,94 @@
   line-height: 1.35 !important;
 }
 
-.product-custom-content .grid > div p,
-.product-custom-content .bg-slate-50 p {
+.product-custom-content div.grid > div p,
+.product-custom-content div.bg-slate-50 p {
   font-size: 13.5px !important;
   line-height: 1.6 !important;
   color: #64748b !important;
   margin-bottom: 0 !important;
 }
 
-/* Tables inside description */
+/* ==========================================================================
+   SPECIFICATION TABLE REFINEMENT (Luxury Porcelain Layout)
+   ========================================================================== */
+.product-custom-content .overflow-x-auto {
+  margin: 18px 0 28px 0 !important;
+  max-width: 860px !important;
+}
+
 .product-custom-content table {
   width: 100% !important;
+  max-width: 860px !important;
   border-collapse: separate !important;
   border-spacing: 0 !important;
-  border: 1px solid #e2e8f0 !important;
-  border-radius: 12px !important;
+  border: 1px solid #ede7df !important;
+  border-radius: 14px !important;
   overflow: hidden !important;
-  font-size: 13.5px !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02) !important;
   margin: 16px 0 24px 0 !important;
+}
+
+.product-custom-content table tbody tr {
+  border: none !important;
+  transition: background-color 0.15s ease;
+}
+
+.product-custom-content table tbody tr:hover td {
+  background-color: #fdfbf7 !important;
 }
 
 .product-custom-content table td,
 .product-custom-content table th {
-  padding: 10px 14px !important;
-  border-bottom: 1px solid #f1f5f9 !important;
-  color: #475569 !important;
+  padding: 12px 18px !important;
+  font-size: 14px !important;
+  line-height: 1.55 !important;
+  border: none !important;
+  border-bottom: 1px solid #ede7df !important;
+  border-radius: 0 !important; /* Triệt tiêu hoàn toàn border-radius trên từng ô lẻ */
+  box-shadow: none !important;
 }
 
-.product-custom-content table td:first-child {
-  background-color: #f8fafc !important;
+/* Cột Tiêu đề / Thuộc tính bên trái */
+.product-custom-content table td:first-child,
+.product-custom-content table th:first-child {
+  width: 240px !important;
+  min-width: 170px !important;
+  max-width: 260px !important;
+  background-color: #faf7f2 !important;
+  color: #1e293b !important;
   font-weight: 600 !important;
-  color: #334155 !important;
-  width: 32% !important;
+  border-right: 1px solid #ede7df !important;
+  border-radius: 0 !important;
+}
+
+/* Cột Giá trị bên phải */
+.product-custom-content table td:last-child,
+.product-custom-content table td:nth-child(2) {
+  background-color: #ffffff !important;
+  color: #4b5563 !important;
+  border-radius: 0 !important;
+}
+
+/* Hàng cuối cùng không bị kẻ viền dưới */
+.product-custom-content table tbody tr:last-child td {
+  border-bottom: none !important;
+}
+
+@media (max-width: 768px) {
+  .product-custom-content table td:first-child,
+  .product-custom-content table th:first-child {
+    width: 140px !important;
+    min-width: 120px !important;
+    padding: 10px 12px !important;
+    font-size: 13px !important;
+  }
+  .product-custom-content table td,
+  .product-custom-content table th {
+    padding: 10px 12px !important;
+    font-size: 13px !important;
+  }
 }
 
 /* Fallback & Enhanced list styling */
