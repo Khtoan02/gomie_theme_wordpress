@@ -83,7 +83,8 @@ get_header();
         <?php endif; ?>
 
         <!-- 3. Article Core Body Content -->
-        <div class="article-body-wrapper wrap-narrow">
+        <div class="article-body-container wrap-narrow">
+          <div class="article-body-wrapper">
           <?php if (has_excerpt()) : ?>
             <div class="article-lead-paragraph">
               <?php echo get_the_excerpt(); ?>
@@ -152,7 +153,8 @@ get_header();
             </div>
           </div>
 
-        </div><!-- /.article-body-wrapper -->
+          </div><!-- /.article-body-wrapper -->
+        </div><!-- /.article-body-container -->
 
         <!-- 4. Related Ceramic Stories -->
         <?php
@@ -502,13 +504,16 @@ get_header();
 
   /* 3. Core Body Content */
   .article-body-wrapper {
-    background: rgba(255, 255, 255, .92);
+    background: rgba(255, 255, 255, .96);
     backdrop-filter: blur(18px);
     border-radius: 32px;
     border: 1px solid rgba(255, 255, 255, .98);
     box-shadow: 0 20px 48px rgba(45, 30, 15, .06);
-    padding: clamp(36px, 4.8vw, 64px) clamp(28px, 4.5vw, 58px);
+    padding: clamp(32px, 4.8vw, 64px) clamp(24px, 4.5vw, 56px);
     margin-bottom: clamp(50px, 6vw, 85px);
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    max-width: 100% !important;
   }
 
   .article-lead-paragraph {
@@ -526,6 +531,11 @@ get_header();
     font-size: 16.5px;
     line-height: 1.95;
     color: #48545e;
+    max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-wrap: break-word !important;
+    word-break: normal !important;
   }
 
   /* Drop Cap for first paragraph - gentle & refined */
@@ -590,29 +600,89 @@ get_header();
     flex-shrink: 0;
   }
 
-  /* Images inside article */
+  /* 100% Robust Gutenberg Images & Figures Layout */
+  .article-rich-text figure,
+  .article-rich-text .wp-block-image,
+  .article-rich-text figure.wp-block-image,
+  .article-rich-text .wp-block-image figure,
+  .article-rich-text .wp-block-image.size-full,
+  .article-rich-text .wp-block-image.size-large,
+  .article-rich-text .wp-block-image.is-resized,
+  .article-rich-text .wp-block-image.aligncenter,
+  .article-rich-text .wp-block-image.alignleft,
+  .article-rich-text .wp-block-image.alignright,
+  .article-rich-text .wp-block-image.alignnone,
+  .article-rich-text .wp-block-image.alignwide,
+  .article-rich-text .wp-block-image.alignfull,
+  .article-rich-text figure.aligncenter,
+  .article-rich-text figure.alignwide,
+  .article-rich-text figure.alignfull {
+    display: block !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 32px auto 24px auto !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    float: none !important;
+    clear: both !important;
+    position: relative !important;
+  }
+
+  .article-rich-text figure.aligncenter,
+  .article-rich-text .wp-block-image.aligncenter {
+    text-align: center !important;
+  }
+
   .article-rich-text img,
-  .article-rich-text figure img {
+  .article-rich-text figure img,
+  .article-rich-text .wp-block-image img,
+  .article-rich-text p img,
+  .article-rich-text a img {
+    display: block !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    height: auto !important;
+    margin: 0 auto !important;
     border-radius: 20px !important;
     box-shadow: 0 14px 36px rgba(45, 30, 15, 0.08) !important;
     border: 1px solid rgba(235, 222, 206, 0.9) !important;
-    margin: 36px auto !important;
-    display: block !important;
-    max-width: 100% !important;
-    height: auto !important;
+    box-sizing: border-box !important;
+    object-fit: cover !important;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
+
   .article-rich-text img:hover {
     transform: translateY(-2px);
     box-shadow: 0 18px 42px rgba(45, 30, 15, 0.12) !important;
   }
-  .article-rich-text figcaption {
-    font-size: 13.5px;
-    color: #7b8893;
-    text-align: center;
-    margin-top: -18px;
-    margin-bottom: 30px;
-    font-style: italic;
+
+  .article-rich-text figcaption,
+  .article-rich-text .wp-block-image figcaption,
+  .article-rich-text figure.wp-block-image figcaption,
+  .article-rich-text .wp-element-caption {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    font-size: 13.5px !important;
+    line-height: 1.6 !important;
+    color: #7b8893 !important;
+    text-align: center !important;
+    margin-top: 10px !important;
+    margin-bottom: 0 !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    font-style: italic !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Prevent table / embed / iframe overflows */
+  .article-rich-text table,
+  .article-rich-text iframe,
+  .article-rich-text video,
+  .article-rich-text embed,
+  .article-rich-text .wp-block-embed {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   /* Blockquote */
