@@ -214,7 +214,7 @@ $theme_uri = get_template_directory_uri();
         <div class="shop-canvas-wrapper d-flex justify-content-center align-items-start gap-4">
             <!-- WIDGET BỘ LỌC NẰM BÊN NGOÀI CONTAINER-WIDTH (LỀ TRÁI CỦA SẢN PHẨM) -->
             <aside class="shop-outside-sidebar" id="shopFilterSidebar">
-                <div class="filter-widget-card p-3 p-xl-4 rounded-4 shadow-sm bg-white" id="filterWidgetCard">
+                <div class="filter-widget-card rounded-4 shadow-sm bg-white" id="filterWidgetCard">
                     <div class="widget-header d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
                         <div class="widget-title fw-bold text-dark d-flex align-items-center gap-2">
                             <i class="fa-solid fa-sliders text-danger"></i>
@@ -281,7 +281,7 @@ $theme_uri = get_template_directory_uri();
 
                     <?php if (!empty($gift_categories)) : ?>
                     <!-- Widget Block 3: Bộ Quà Tặng & Dự Án Doanh Nghiệp (Phần riêng biệt) -->
-                    <div class="widget-filter-group mb-3 pt-3 border-top">
+                    <div class="widget-filter-group pt-3 border-top">
                         <div class="filter-group-title fw-bold text-dark mb-2 d-flex justify-content-between align-items-center">
                             <span><i class="fa-solid fa-gift text-danger me-2"></i>Quà tặng & Dự án</span>
                             <span class="badge bg-danger-subtle text-danger small px-2 py-0 rounded-pill" style="font-size: 10px;">HoReCa</span>
@@ -296,20 +296,6 @@ $theme_uri = get_template_directory_uri();
                         </div>
                     </div>
                     <?php endif; ?>
-
-                    <!-- Widget Block 4: Khoảng Giá (Lưới nút bấm gọn) -->
-                    <div class="widget-filter-group pt-3 border-top">
-                        <div class="filter-group-title fw-bold text-dark mb-2">
-                            <span><i class="fa-solid fa-tag text-danger me-2"></i>Khoảng giá</span>
-                        </div>
-                        <div class="price-grid-items" id="priceFilter">
-                            <button type="button" class="price-chip-widget price-all active" data-price-range="all">Tất cả mức giá</button>
-                            <button type="button" class="price-chip-widget" data-price-range="under-100k">&lt; 100.000 đ</button>
-                            <button type="button" class="price-chip-widget" data-price-range="100k-300k">100k - 300k</button>
-                            <button type="button" class="price-chip-widget" data-price-range="300k-500k">300k - 500k</button>
-                            <button type="button" class="price-chip-widget" data-price-range="above-500k">&gt; 500.000 đ</button>
-                        </div>
-                    </div>
                 </div>
             </aside>
 
@@ -671,7 +657,7 @@ $theme_uri = get_template_directory_uri();
 
 /* Sidebar nằm bên trái, ngoài container của sản phẩm */
 .shop-outside-sidebar {
-    width: 280px;
+    width: 330px;
     flex-shrink: 0;
     position: sticky;
     top: 100px;
@@ -682,11 +668,8 @@ $theme_uri = get_template_directory_uri();
 .filter-widget-card {
     border: 1px solid rgba(224, 89, 42, 0.15);
     background: #ffffff;
-    max-height: calc(100vh - 120px);
-    overflow-y: auto;
+    padding: 20px 16px;
     border-radius: 20px;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(224, 89, 42, 0.3) transparent;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
 }
 .filter-widget-card::-webkit-scrollbar {
@@ -765,29 +748,34 @@ $theme_uri = get_template_directory_uri();
 /* Glaze Swatches (Lưới 2 cột sắc men) */
 .glaze-grid-items {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 6px;
 }
 .glaze-chip-widget {
     display: flex;
     align-items: center;
-    gap: 7px;
+    gap: 6px;
     background: #ffffff;
     border: 1px solid #f1ece5;
-    padding: 6px 10px;
-    border-radius: 8px;
-    font-size: 12px;
+    padding: 6px 8px;
+    border-radius: 9px;
+    font-size: 11.5px;
+    letter-spacing: -0.15px;
     font-weight: 600;
     color: #4a453f;
     text-align: left;
     width: 100%;
+    box-sizing: border-box;
     cursor: pointer;
     transition: all 0.2s ease;
+    min-width: 0;
 }
 .glaze-chip-widget .chip-title {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    flex: 1;
+    min-width: 0;
 }
 .glaze-chip-widget.glaze-all {
     width: 100%;
@@ -828,30 +816,34 @@ $theme_uri = get_template_directory_uri();
 /* Category Tableware (Lưới 2 cột có Icon trực quan) */
 .cat-grid-items {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 6px;
 }
 .cat-pill-widget {
     display: flex;
     align-items: center;
-    gap: 7px;
+    gap: 6px;
     background: #ffffff;
     border: 1px solid #f1ece5;
-    padding: 6px 10px;
-    border-radius: 8px;
-    font-size: 12px;
+    padding: 6px 8px;
+    border-radius: 9px;
+    font-size: 11.5px;
+    letter-spacing: -0.15px;
     font-weight: 600;
     color: #4a453f;
     text-align: left;
     width: 100%;
+    box-sizing: border-box;
     cursor: pointer;
     transition: all 0.2s ease;
+    min-width: 0;
 }
 .cat-pill-widget .cat-name {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    flex-grow: 1;
+    flex: 1;
+    min-width: 0;
 }
 .cat-pill-widget .cat-icon {
     font-size: 12px;
@@ -883,7 +875,7 @@ $theme_uri = get_template_directory_uri();
 /* Gift & HoReCa Projects Block (Khối riêng biệt cao cấp) */
 .gift-grid-items {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 6px;
 }
 .gift-pill-widget {
@@ -893,19 +885,24 @@ $theme_uri = get_template_directory_uri();
     background: #fffcf9;
     border: 1px dashed rgba(224, 89, 42, 0.35);
     padding: 6px 8px;
-    border-radius: 8px;
+    border-radius: 9px;
     font-size: 11.5px;
+    letter-spacing: -0.15px;
     font-weight: 600;
     color: #b43403;
     text-align: left;
     width: 100%;
+    box-sizing: border-box;
     cursor: pointer;
     transition: all 0.2s ease;
+    min-width: 0;
 }
 .gift-pill-widget .gift-name {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    flex: 1;
+    min-width: 0;
 }
 .gift-pill-widget:hover {
     background: #fff7ed;
@@ -920,46 +917,6 @@ $theme_uri = get_template_directory_uri();
 }
 .gift-pill-widget.active i {
     color: #ffffff !important;
-}
-
-/* Price Range (Lưới nút bấm gọn) */
-.price-grid-items {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px;
-}
-.price-chip-widget {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #ffffff;
-    border: 1px solid #f1ece5;
-    padding: 6px 8px;
-    border-radius: 8px;
-    font-size: 11.5px;
-    font-weight: 600;
-    color: #4a453f;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-align: center;
-}
-.price-chip-widget.price-all {
-    grid-column: span 2;
-    background: #fbf9f6;
-    border-color: #ebdcd0;
-    padding: 7px 12px;
-}
-.price-chip-widget:hover {
-    background: #fff8f3;
-    border-color: rgba(224, 89, 42, 0.3);
-    color: #e0592a;
-}
-.price-chip-widget.active {
-    background: #e0592a;
-    border-color: #e0592a;
-    color: #ffffff;
-    font-weight: 700;
-    box-shadow: 0 2px 6px rgba(224, 89, 42, 0.2);
 }
 
 /* Shop Toolbar (Right Side) */
@@ -1375,7 +1332,6 @@ $theme_uri = get_template_directory_uri();
 document.addEventListener('DOMContentLoaded', function() {
     const glazeChips = document.querySelectorAll('#glazeFilter .glaze-chip-widget');
     const catPills = document.querySelectorAll('#categoryFilter .cat-pill-widget, .gift-pill-widget');
-    const priceChips = document.querySelectorAll('#priceFilter .price-chip-widget');
     const sortSelect = document.getElementById('shopSort');
     const cards = Array.from(document.querySelectorAll('.product-card-col'));
     const grid = document.getElementById('productGrid');
@@ -1385,7 +1341,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let currentGlaze = 'all';
     let currentCat = 'all';
-    let currentPriceRange = 'all';
 
     function renderActiveTags() {
         if (!activeTagsContainer) return;
@@ -1418,20 +1373,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
             activeTagsContainer.appendChild(tag);
         }
-
-        if (currentPriceRange !== 'all') {
-            const activePriceEl = document.querySelector('#priceFilter .price-chip-widget.active');
-            const name = activePriceEl ? activePriceEl.textContent.trim() : currentPriceRange;
-            const tag = document.createElement('span');
-            tag.className = 'active-tag';
-            tag.innerHTML = `${name} <i class="fa-solid fa-xmark"></i>`;
-            tag.title = 'Bỏ lọc giá';
-            tag.addEventListener('click', () => {
-                const allBtn = document.querySelector('#priceFilter .price-chip-widget[data-price-range="all"]');
-                if (allBtn) allBtn.click();
-            });
-            activeTagsContainer.appendChild(tag);
-        }
     }
 
     const pageSize = 16;
@@ -1447,23 +1388,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const cardGlaze = card.getAttribute('data-glaze');
             const rawCats = card.getAttribute('data-cat') || '';
             const cardCats = rawCats.split(/\s+/);
-            const price = parseFloat(card.getAttribute('data-price') || 0);
 
             const glazeMatch = (currentGlaze === 'all' || cardGlaze === currentGlaze);
             const catMatch = (currentCat === 'all' || cardCats.includes(currentCat) || rawCats.includes(currentCat));
 
-            let priceMatch = true;
-            if (currentPriceRange === 'under-100k') {
-                priceMatch = (price > 0 && price < 100000);
-            } else if (currentPriceRange === '100k-300k') {
-                priceMatch = (price >= 100000 && price <= 300000);
-            } else if (currentPriceRange === '300k-500k') {
-                priceMatch = (price >= 300000 && price <= 500000);
-            } else if (currentPriceRange === 'above-500k') {
-                priceMatch = (price > 500000);
-            }
-
-            if (glazeMatch && catMatch && priceMatch) {
+            if (glazeMatch && catMatch) {
                 matchingCards.push(card);
             } else {
                 card.classList.add('d-none');
@@ -1475,7 +1404,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const tbCount = document.getElementById('toolbarFilterCount');
         if (tbCount) tbCount.textContent = totalMatches;
 
-        const isFiltered = (currentGlaze !== 'all' || currentCat !== 'all' || currentPriceRange !== 'all');
+        const isFiltered = (currentGlaze !== 'all' || currentCat !== 'all');
         const activeLimit = isFiltered ? Math.max(currentlyVisibleLimit, pageSize) : currentlyVisibleLimit;
 
         matchingCards.forEach((card, index) => {
@@ -1531,16 +1460,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Price range clicks
-    priceChips.forEach(chip => {
-        chip.addEventListener('click', function() {
-            priceChips.forEach(c => c.classList.remove('active'));
-            this.classList.add('active');
-            currentPriceRange = this.getAttribute('data-price-range');
-            applyFilters();
-        });
-    });
-
     // Sort
     if (sortSelect) {
         sortSelect.addEventListener('change', function() {
@@ -1581,13 +1500,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const allCat = document.querySelector('.cat-pill-all');
         if (allCat) allCat.classList.add('active');
 
-        priceChips.forEach(c => c.classList.remove('active'));
-        const allPrice = document.querySelector('#priceFilter .price-chip-widget[data-price-range="all"]');
-        if (allPrice) allPrice.classList.add('active');
-
         currentGlaze = 'all';
         currentCat = 'all';
-        currentPriceRange = 'all';
         currentlyVisibleLimit = pageSize;
         applyFilters();
     };
