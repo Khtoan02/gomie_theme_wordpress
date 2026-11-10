@@ -902,11 +902,13 @@ if (!function_exists('gomie_get_product_category')) {
   .gomie-display { 
     color: #1e293b !important; 
     font-weight: 850 !important; 
-    line-height: 1.18 !important; 
-    font-size: clamp(2.15rem, 3.6vw, 3.25rem) !important;
+    line-height: 1.22 !important; 
+    font-size: clamp(1.65rem, 3.6vw, 3.25rem) !important;
     letter-spacing: -0.028em !important;
     margin-bottom: 1.25rem !important;
     text-align: center;
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
 
   .gomie-display .gomie-display-accent {

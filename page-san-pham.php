@@ -597,15 +597,18 @@ $theme_uri = get_template_directory_uri();
 }
 
 .shop-hero-title {
-    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-size: clamp(1.5rem, 4.2vw, 3rem);
     font-weight: 800;
     color: #1a1f2c;
     letter-spacing: -0.5px;
-    line-height: 1.2;
+    line-height: 1.25;
     margin-bottom: 1rem;
+    word-break: keep-all;
+    overflow-wrap: break-word;
 }
 .shop-hero-title .highlight-orange {
     color: #e0592a;
+    display: inline-block;
 }
 
 .shop-hero-desc {
