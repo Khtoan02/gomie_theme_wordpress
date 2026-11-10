@@ -1455,21 +1455,32 @@
    PRODUCT CUSTOM CONTENT - EDITORIAL LUXURY STYLING
    ========================================================================== */
 
+/* ==========================================================================
+   ELEGANT & REFINED PRODUCT CONTENT TYPOGRAPHY (Anti-Aggressive Scale)
+   ========================================================================== */
 .gomie-rich-description {
   font-family: inherit;
-  color: #374151;
+  color: #4b5563;
 }
 
 .product-custom-content {
-  color: #374151;
-  font-size: 15.5px;
-  line-height: 1.85;
-  margin-top: 24px;
+  color: #4b5563;
+  font-size: 15px;
+  line-height: 1.8;
+  margin-top: 20px;
 }
 
 .product-custom-content p {
-  margin-bottom: 20px;
-  line-height: 1.85;
+  margin-bottom: 16px;
+  line-height: 1.8;
+  font-size: 15px;
+  color: #4b5563;
+}
+
+.product-custom-content strong,
+.product-custom-content b {
+  color: #1e293b;
+  font-weight: 650;
 }
 
 /* Ẩn tiêu đề trùng lặp với H1 chính của sản phẩm */
@@ -1477,56 +1488,142 @@
   display: none !important;
 }
 
-/* Headings in product content */
+/* Headings in product content - refined, elegant, never shouting */
 .product-custom-content h1,
 .product-custom-content h2,
 .product-custom-content h3,
-.product-custom-content h4 {
-  color: #1e293b;
-  font-weight: 800;
-  line-height: 1.35;
-  letter-spacing: -0.015em;
-  margin-top: 36px;
-  margin-bottom: 18px;
+.product-custom-content h4,
+.product-custom-content h5,
+.product-custom-content h6,
+.product-custom-content .text-2xl,
+.product-custom-content .text-xl,
+.product-custom-content .text-lg {
+  color: #1e293b !important;
+  font-family: inherit;
+  letter-spacing: -0.01em;
+  text-transform: none !important; /* Không viết hoa toàn bộ để tránh cảm giác bị hét vào mặt */
+}
+
+.product-custom-content h1,
+.product-custom-content .text-2xl {
+  font-size: 1.25rem !important; /* ~20px */
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+  margin-top: 24px !important;
+  margin-bottom: 12px !important;
 }
 
 .product-custom-content h2,
-.product-custom-content h3 {
-  font-size: 1.18rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  padding-bottom: 10px;
-  border-bottom: 2px solid rgba(224, 89, 42, 0.12);
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.product-custom-content h3,
+.product-custom-content .text-xl {
+  font-size: 1.125rem !important; /* ~18px - vừa vặn, thanh lịch, sang trọng */
+  font-weight: 700 !important;
+  line-height: 1.45 !important;
+  margin-top: 22px !important;
+  margin-bottom: 12px !important;
 }
 
-.product-custom-content h2::before,
-.product-custom-content h3::before {
-  content: '';
-  display: inline-block;
-  width: 5px;
-  height: 18px;
-  background: linear-gradient(135deg, #e0592a 0%, #c4471b 100%);
-  border-radius: 99px;
-  flex-shrink: 0;
+.product-custom-content h4,
+.product-custom-content .text-lg {
+  font-size: 0.975rem !important; /* ~15.5px */
+  font-weight: 650 !important;
+  line-height: 1.4 !important;
+  margin-top: 14px !important;
+  margin-bottom: 8px !important;
+}
+
+.product-custom-content h5,
+.product-custom-content h6 {
+  font-size: 0.9rem !important; /* ~14.4px */
+  font-weight: 600 !important;
+  line-height: 1.4 !important;
+  margin-top: 10px !important;
+  margin-bottom: 6px !important;
+}
+
+/* Card boxes & grids inside description (e.g. .grid > div, .bg-slate-50, etc.) */
+.product-custom-content .grid {
+  display: grid;
+  gap: 14px !important;
+  margin: 18px 0 24px 0 !important;
+}
+
+.product-custom-content .grid > div,
+.product-custom-content .bg-slate-50,
+.product-custom-content [class*="rounded-xl"] {
+  background-color: #faf8f5 !important;
+  border: 1px solid rgba(226, 232, 240, 0.85) !important;
+  border-radius: 12px !important;
+  padding: 14px 18px !important;
+  transition: all 0.25s ease;
+}
+
+.product-custom-content .grid > div:hover,
+.product-custom-content .bg-slate-50:hover {
+  background-color: #ffffff !important;
+  border-color: rgba(224, 89, 42, 0.3) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+}
+
+.product-custom-content .grid > div h4,
+.product-custom-content .bg-slate-50 h4 {
+  font-size: 15px !important;
+  font-weight: 650 !important;
+  color: #1e293b !important;
+  margin-top: 0 !important;
+  margin-bottom: 6px !important;
+  line-height: 1.35 !important;
+}
+
+.product-custom-content .grid > div p,
+.product-custom-content .bg-slate-50 p {
+  font-size: 13.5px !important;
+  line-height: 1.6 !important;
+  color: #64748b !important;
+  margin-bottom: 0 !important;
+}
+
+/* Tables inside description */
+.product-custom-content table {
+  width: 100% !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  font-size: 13.5px !important;
+  margin: 16px 0 24px 0 !important;
+}
+
+.product-custom-content table td,
+.product-custom-content table th {
+  padding: 10px 14px !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+  color: #475569 !important;
+}
+
+.product-custom-content table td:first-child {
+  background-color: #f8fafc !important;
+  font-weight: 600 !important;
+  color: #334155 !important;
+  width: 32% !important;
 }
 
 /* Fallback & Enhanced list styling */
 .product-custom-content ul {
   list-style: none;
   padding-left: 0;
-  margin: 18px 0 28px 0;
+  margin: 14px 0 22px 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .product-custom-content ul li {
   position: relative;
-  padding-left: 28px;
-  line-height: 1.75;
+  padding-left: 26px;
+  line-height: 1.7;
+  font-size: 14.5px;
   color: #4b5563;
 }
 
@@ -1534,14 +1631,14 @@
   content: '✓';
   position: absolute;
   left: 0;
-  top: 1px;
-  width: 18px;
-  height: 18px;
-  background: rgba(224, 89, 42, 0.12);
+  top: 2px;
+  width: 17px;
+  height: 17px;
+  background: rgba(224, 89, 42, 0.1);
   color: #e0592a;
   border-radius: 50%;
-  font-size: 11px;
-  font-weight: 800;
+  font-size: 10.5px;
+  font-weight: 700;
   display: inline-flex;
   align-items: center;
   justify-content: center;

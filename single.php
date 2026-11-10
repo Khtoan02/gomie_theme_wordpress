@@ -528,49 +528,54 @@ get_header();
     color: #48545e;
   }
 
-  /* Drop Cap for first paragraph */
+  /* Drop Cap for first paragraph - gentle & refined */
   .article-rich-text > p:first-of-type::first-letter {
     float: left;
-    font-size: 3.6rem;
-    line-height: 0.82;
-    font-weight: 850;
+    font-size: 2.75rem;
+    line-height: 0.85;
+    font-weight: 700;
     color: var(--orange, #f47a20);
-    padding-top: 4px;
-    padding-right: 12px;
+    padding-top: 3px;
+    padding-right: 10px;
     padding-bottom: 2px;
     font-family: inherit;
   }
 
   .article-rich-text p {
-    margin-bottom: 24px;
+    font-size: 15.5px;
+    line-height: 1.8;
+    color: #4b5563;
+    margin-bottom: 20px;
   }
 
   .article-rich-text strong {
     color: #1e2830;
-    font-weight: 750;
+    font-weight: 650;
   }
 
   .article-rich-text h2,
-  .article-rich-text h3 {
+  .article-rich-text h3,
+  .article-rich-text h4 {
     color: #1e2830;
-    font-weight: 800;
-    letter-spacing: -.025em;
-    line-height: 1.35;
+    letter-spacing: -.015em;
+    line-height: 1.4;
   }
 
   .article-rich-text h2 {
-    font-size: clamp(22px, 2.6vw, 29px) !important;
-    margin-top: 50px !important;
-    margin-bottom: 22px !important;
-    padding-left: 16px;
-    border-left: 4px solid var(--orange, #f47a20);
+    font-size: clamp(19px, 2vw, 23px) !important;
+    font-weight: 700 !important;
+    margin-top: 38px !important;
+    margin-bottom: 16px !important;
+    padding-left: 12px;
+    border-left: 3.5px solid var(--orange, #f47a20);
     position: relative;
   }
 
   .article-rich-text h3 {
-    font-size: clamp(18px, 2.1vw, 23px) !important;
-    margin-top: 36px !important;
-    margin-bottom: 16px !important;
+    font-size: clamp(16px, 1.6vw, 18.5px) !important;
+    font-weight: 650 !important;
+    margin-top: 26px !important;
+    margin-bottom: 12px !important;
     display: flex;
     align-items: center;
     gap: 8px;
