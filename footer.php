@@ -5,7 +5,7 @@
  * @package Gomie
  */
 ?>
-    </div><!-- #content -->
+    </div><!-- #main-content -->
     
     <footer id="colophon" class="site-footer">
         <!-- Top Footer - 3/5 ratio -->

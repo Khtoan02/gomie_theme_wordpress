@@ -390,6 +390,17 @@ function gomie_enqueue_scripts() {
         wp_enqueue_script('comment-reply');
     }
 
+    // SPA Page Transitions & Persistent Luxury Header
+    if (file_exists(get_template_directory() . '/assets/js/modules/page-transitions.js')) {
+        wp_enqueue_script(
+            'gomie-page-transitions',
+            get_template_directory_uri() . '/assets/js/modules/page-transitions.js',
+            array(),
+            filemtime(get_template_directory() . '/assets/js/modules/page-transitions.js'),
+            true
+        );
+    }
+
     // Localize script for AJAX
     wp_localize_script('gomie-main', 'gomie_ajax', array(
         'ajax_url' => admin_url('admin-ajax.php'),
