@@ -25,11 +25,11 @@
                         <h4 class="footer-title">Khám phá Gomie</h4>
                         <div class="footer-content">
                             <ul class="footer-menu">
-                                <li><a href="/loai-san-pham">Phân loại sản phẩm</a></li>
-                                <li><a href="/mau-men">Bảng 9 màu men gốm</a></li>
-                                <li><a href="/huong-dan-su-dung">Hướng dẫn sử dụng & Bảo quản</a></li>
-                                <li><a href="/heart-of-craftsmanship">Heart of Craftsmanship</a></li>
-                                <li><a href="/chung-nhan">Chứng nhận kiểm định an toàn</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/loai-san-pham/')); ?>">Phân loại sản phẩm</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/mau-men/')); ?>">Bảng 9 màu men gốm</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/huong-dan-su-dung/')); ?>">Hướng dẫn sử dụng &amp; Bảo quản</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/cau-chuyen/')); ?>">Heart of Craftsmanship</a></li>
+                                <li><a href="<?php echo esc_url(home_url('/chung-nhan/')); ?>">Chứng nhận kiểm định an toàn</a></li>
                             </ul>
                         </div>
                     </div>

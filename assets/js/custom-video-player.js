@@ -380,11 +380,29 @@ class CustomVideoPlayer {
   }
 }
 
-// Initialize video player when DOM is loaded
+// Initialize video player on demand or when user clicks play
 document.addEventListener("DOMContentLoaded", function () {
   const videoContainer = document.querySelector(".custom-video-container");
-  if (videoContainer) {
-    const videoUrl = "https://www.youtube.com/watch?v=XWlJn5T81CU";
+  if (!videoContainer) return;
+
+  const poster = videoContainer.querySelector(".hero-video-poster");
+  const videoUrl = "https://www.youtube.com/watch?v=XWlJn5T81CU";
+
+  if (poster) {
+    const playTrigger = (e) => {
+      if (e) e.preventDefault();
+      poster.style.opacity = "0";
+      poster.style.pointerEvents = "none";
+      setTimeout(() => {
+        poster.remove();
+        window.customVideoPlayer = new CustomVideoPlayer(videoContainer, videoUrl);
+      }, 250);
+    };
+
+    const playBtn = videoContainer.querySelector(".hero-play-btn");
+    if (playBtn) playBtn.addEventListener("click", playTrigger);
+    poster.addEventListener("click", playTrigger);
+  } else {
     window.customVideoPlayer = new CustomVideoPlayer(videoContainer, videoUrl);
   }
 });

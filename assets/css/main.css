@@ -277,14 +277,19 @@ body.mobile-menu-active .mobile-menu-overlay {
   font-size: 0.875rem;
 }
 
+.breadcrumb-item + .breadcrumb-item::before {
+  display: none !important;
+}
+
 .breadcrumb-item::after {
   content: "/";
-  margin-left: 10px;
-  color: #999;
+  margin-left: 8px;
+  margin-right: 8px;
+  color: #c4b5a5;
 }
 
 .breadcrumb-item:last-child::after {
-  display: none;
+  display: none !important;
 }
 
 .breadcrumb-item a {

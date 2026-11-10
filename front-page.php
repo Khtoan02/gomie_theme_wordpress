@@ -1500,12 +1500,26 @@ if (!function_exists('gomie_get_product_category')) {
         </div>
       </div>
 
-      <!-- Hàng 2: Khung Video Nghệ Nhân Bát Tràng -->
+      <!-- Hàng 2: Khung Video Nghệ Nhân Bát Tràng (Cinematic Editorial Poster & Player) -->
       <div class="hero-video-row">
         <div class="hero-media">
           <div class="hero-video-frame">
-            <div class="custom-video-container">
-              <!-- Custom Video Player sẽ được khởi tạo bởi JavaScript -->
+            <div class="custom-video-container position-relative overflow-hidden rounded-4 shadow-lg">
+              <!-- Cinematic Video Cover / Poster -->
+              <div class="hero-video-poster position-absolute top-0 start-0 w-100 h-100" style="background: url('<?php echo esc_url(get_template_directory_uri() . '/assets/images/stories/gomie-story-hoa-bien-1300c.jpg'); ?>') center/cover no-repeat; z-index: 2; transition: opacity 0.4s ease;">
+                <div class="video-poster-overlay position-absolute top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center text-center p-4" style="background: linear-gradient(180deg, rgba(20, 15, 10, 0.25) 0%, rgba(20, 15, 10, 0.7) 100%);">
+                  <button type="button" class="hero-play-btn rounded-circle d-flex align-items-center justify-content-center border-0 shadow-lg mb-3" aria-label="Xem video nghệ nhân Bát Tràng" style="width: 76px; height: 76px; background: linear-gradient(135deg, #f47a20 0%, #e0592a 100%); color: #ffffff; font-size: 1.6rem; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <i class="fa-solid fa-play" style="margin-left: 4px;"></i>
+                  </button>
+                  <span class="badge px-3 py-1 rounded-pill mb-2 fw-semibold text-uppercase" style="background: rgba(255,255,255,0.22); backdrop-filter: blur(8px); color: #fff; letter-spacing: 0.05em; font-size: 0.75rem;">
+                    <i class="fa-solid fa-fire-flame-curved me-1 text-warning"></i> Thước Phim Tư Liệu Bát Tràng
+                  </span>
+                  <h3 class="fw-bold text-white fs-4 mb-1">Vũ Điệu Bàn Xoay &amp; Ngọn Lửa 1.300°C</h3>
+                  <p class="text-white-50 small mb-0" style="max-width: 500px;">Hành trình tạo tác từng kiệt tác gốm sứ thủ công bởi nghệ nhân làng nghề Bát Tràng</p>
+                </div>
+              </div>
+              <!-- Embedded iframe wrapper -->
+              <div id="heroVideoEmbedWrapper" class="video-player-embed-target position-absolute top-0 start-0 w-100 h-100" style="display:none; z-index: 3;"></div>
             </div>
           </div>
         </div>
@@ -1970,5 +1984,26 @@ if (!function_exists('gomie_get_product_category')) {
 
   </div><!-- /.gomie-v11 -->
 </main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var poster = document.querySelector('.hero-video-poster');
+  var playBtn = document.querySelector('.hero-play-btn');
+  var wrapper = document.getElementById('heroVideoEmbedWrapper');
+  
+  if (poster && wrapper) {
+    var startVideo = function(e) {
+      if (e) e.preventDefault();
+      poster.style.opacity = '0';
+      poster.style.pointerEvents = 'none';
+      wrapper.style.display = 'block';
+      wrapper.innerHTML = '<iframe width="100%" height="100%" src="https://www.youtube-nocookie.com/embed/XWlJn5T81CU?autoplay=1&rel=0&modestbranding=1" title="Gomie Ceramic - Di sản Bát Tràng" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:18px;"></iframe>';
+    };
+    
+    if (playBtn) playBtn.addEventListener('click', startVideo);
+    poster.addEventListener('click', startVideo);
+  }
+});
+</script>
 
 <?php get_footer(); ?>

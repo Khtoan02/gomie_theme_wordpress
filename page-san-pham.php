@@ -35,15 +35,18 @@ foreach ($query_products as $p) {
     $cat_slugs = wp_get_post_terms($pid, 'product_cat', array('fields' => 'slugs'));
     if (!is_array($cat_slugs)) $cat_slugs = array();
 
-    // Skip LED demo products on local test environment
-    $is_led = false;
+    // Skip non-ceramic legacy demo products on test environment
+    $legacy_demo_prefixes = array('led', 'man-hinh', 'thiet-bi', 'thoi-trang', 'suc-khoe', 'sach-', 'khoa-hoc', 'am-thanh', 'anh-sang', 'robot', 'laptop', 'balo', 'giay', 'tai-nghe', 'sua-hat', 'vitamin', 'duoc-lieu', 'dinh-duong', 'cabin', 'bo-xu-ly', 'dien-thoai', 'dong-ho', 'ebook', 'gia-dung', 'may-loc', 'may-tinh');
+    $is_legacy = false;
     foreach ($cat_slugs as $c_slug) {
-        if (strpos($c_slug, 'led') !== false || strpos($c_slug, 'man-hinh') !== false) {
-            $is_led = true;
-            break;
+        foreach ($legacy_demo_prefixes as $pref) {
+            if (strpos($c_slug, $pref) !== false) {
+                $is_legacy = true;
+                break 2;
+            }
         }
     }
-    if ($is_led && (stripos($title, 'LED') !== false || stripos($title, 'NovaStar') !== false)) {
+    if ($is_legacy) {
         continue;
     }
 

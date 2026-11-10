@@ -27,6 +27,7 @@ require_once GOMIE_THEME_DIR . '/inc/woocommerce-sample-data.php';
 require_once GOMIE_THEME_DIR . '/inc/woocommerce-integration.php';
 require_once GOMIE_THEME_DIR . '/inc/helpers.php';
 require_once GOMIE_THEME_DIR . '/inc/glaze-attribute-meta.php';
+require_once GOMIE_THEME_DIR . '/inc/page-provisioner.php';
 
 // Kích hoạt theme
 add_action('after_setup_theme', 'gomie_theme_setup');
