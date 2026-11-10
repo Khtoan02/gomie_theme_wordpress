@@ -242,6 +242,135 @@
         }, 300);
       }
     }
+
+    // 7. Smart Enhancement for Product Custom Content
+    function enhanceProductContent() {
+      var $content = $('.product-custom-content');
+      if (!$content.length) return;
+
+      // 7.1 Hide duplicate first heading if it repeats product title or Gomie Ceramic
+      var $firstHeading = $content.find('h1, h2, h3').first();
+      if ($firstHeading.length) {
+        var hText = $firstHeading.text().trim().toLowerCase();
+        var pTitle = $('.gomie-product-title').text().trim().toLowerCase();
+        if (hText.indexOf(pTitle) !== -1 || (pTitle && pTitle.indexOf(hText) !== -1) || hText.indexOf('gomie ceramic') !== -1) {
+          $firstHeading.addClass('product-duplicate-title');
+        }
+      }
+
+      // 7.2 Detect "AN TOÀN SỨC KHỎE" or "QUATEST 1" paragraph and convert to Callout
+      $content.find('p').each(function() {
+        var pHtml = $(this).html();
+        var pText = $(this).text();
+        if (pText.indexOf('AN TOÀN SỨC KHỎE') !== -1 || pText.indexOf('QUATEST') !== -1 || pText.indexOf('Không chứa chì') !== -1) {
+          var $callout = $(
+            '<div class="product-cert-callout">' +
+              '<div class="cert-icon"><i class="fa-solid fa-shield-halved"></i></div>' +
+              '<div class="cert-body">' + pHtml + '</div>' +
+            '</div>'
+          );
+          $(this).replaceWith($callout);
+        }
+      });
+
+      // 7.3 Detect Headings and transform following lists
+      $content.find('h1, h2, h3, h4, p > strong').each(function() {
+        var titleText = $(this).text().trim().toUpperCase();
+
+        // 7.3.1 THÔNG TIN SẢN PHẨM -> Specification Grid
+        if (titleText.indexOf('THÔNG TIN SẢN PHẨM') !== -1 || titleText.indexOf('THÔNG SỐ KỸ THUẬT') !== -1) {
+          var $heading = $(this).is('strong') ? $(this).closest('p') : $(this);
+          var $nextUl = $heading.next('ul');
+          if ($nextUl.length) {
+            var $grid = $('<div class="product-spec-grid"></div>');
+            $nextUl.find('li').each(function() {
+              var fullText = $(this).text().trim();
+              var colonIdx = fullText.indexOf(':');
+              if (colonIdx !== -1) {
+                var label = fullText.substring(0, colonIdx).trim();
+                var val = fullText.substring(colonIdx + 1).trim();
+                
+                var iconClass = 'fa-circle-dot';
+                var lowerL = label.toLowerCase();
+                if (lowerL.indexOf('tên') !== -1) iconClass = 'fa-tag';
+                else if (lowerL.indexOf('thương hiệu') !== -1) iconClass = 'fa-award';
+                else if (lowerL.indexOf('chất liệu') !== -1) iconClass = 'fa-gem';
+                else if (lowerL.indexOf('màu men') !== -1) iconClass = 'fa-palette';
+                else if (lowerL.indexOf('kiểu dáng') !== -1) iconClass = 'fa-shapes';
+                else if (lowerL.indexOf('kích thước') !== -1) iconClass = 'fa-ruler-combined';
+                else if (lowerL.indexOf('xuất xứ') !== -1) iconClass = 'fa-location-dot';
+                else if (lowerL.indexOf('quy cách') !== -1) iconClass = 'fa-box-open';
+
+                $grid.append(
+                  '<div class="spec-cell">' +
+                    '<span class="spec-label"><i class="fa-solid ' + iconClass + '"></i> ' + label + '</span>' +
+                    '<span class="spec-value">' + val + '</span>' +
+                  '</div>'
+                );
+              }
+            });
+            if ($grid.children().length > 0) {
+              $nextUl.replaceWith($grid);
+            }
+          }
+        }
+
+        // 7.3.2 ƯU ĐIỂM NỔI BẬT -> Highlights Grid
+        if (titleText.indexOf('ƯU ĐIỂM NỔI BẬT') !== -1 || titleText.indexOf('ĐẶC ĐIỂM NỔI BẬT') !== -1) {
+          var $headingH = $(this).is('strong') ? $(this).closest('p') : $(this);
+          var $nextUlH = $headingH.next('ul');
+          if ($nextUlH.length) {
+            var $hGrid = $('<div class="product-highlights-grid"></div>');
+            $nextUlH.find('li').each(function() {
+              var text = $(this).text().trim();
+              if (text) {
+                $hGrid.append(
+                  '<div class="product-highlight-card">' +
+                    '<div class="highlight-icon"><i class="fa-solid fa-circle-check"></i></div>' +
+                    '<div class="highlight-text">' + text + '</div>' +
+                  '</div>'
+                );
+              }
+            });
+            if ($hGrid.children().length > 0) {
+              $nextUlH.replaceWith($hGrid);
+            }
+          }
+        }
+
+        // 7.3.3 CAM KẾT CỦA GOMIE -> Brand Pledge Grid
+        if (titleText.indexOf('CAM KẾT CỦA GOMIE') !== -1 || titleText.indexOf('CAM KẾT') !== -1) {
+          var $headingC = $(this).is('strong') ? $(this).closest('p') : $(this);
+          var $nextUlC = $headingC.next('ul');
+          var $pGrid = $(
+            '<div class="product-pledge-grid">' +
+              '<div class="product-pledge-card">' +
+                '<div class="pledge-icon"><i class="fa-solid fa-fire-flame-curved"></i></div>' +
+                '<h5 class="pledge-title">Nung Khử 1.300°C</h5>' +
+                '<p class="pledge-desc">Triệt tiêu hoàn toàn chì & kim loại nặng, an toàn thực phẩm 100%.</p>' +
+              '</div>' +
+              '<div class="product-pledge-card">' +
+                '<div class="pledge-icon"><i class="fa-solid fa-shield-halved"></i></div>' +
+                '<h5 class="pledge-title">Bảo Hiểm 100% Vận Chuyển</h5>' +
+                '<p class="pledge-desc">Đổi mới miễn phí ngay lập tức nếu có bất kỳ nứt vỡ nào khi giao hàng.</p>' +
+              '</div>' +
+              '<div class="product-pledge-card">' +
+                '<div class="pledge-icon"><i class="fa-solid fa-hand-sparkles"></i></div>' +
+                '<h5 class="pledge-title">Thủ Công Bát Tràng</h5>' +
+                '<p class="pledge-desc">Nghệ nhân vuốt nặn tỉ mỉ, mỗi tác phẩm là một kiệt tác men độc bản.</p>' +
+              '</div>' +
+            '</div>'
+          );
+          if ($nextUlC.length) {
+            $nextUlC.replaceWith($pGrid);
+          } else {
+            $headingC.after($pGrid);
+          }
+        }
+      });
+    }
+
+    enhanceProductContent();
   });
 
 })(jQuery);

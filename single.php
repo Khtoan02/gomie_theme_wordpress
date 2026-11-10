@@ -9,6 +9,9 @@ get_header();
 ?>
 
 <main id="primary" class="site-main gomie-single-article">
+  <!-- Reading Progress Bar -->
+  <div id="readingProgressBar" class="reading-progress-bar"></div>
+
   <div class="gomie-v11">
 
     <?php while (have_posts()) : the_post();
@@ -86,6 +89,22 @@ get_header();
               <?php echo get_the_excerpt(); ?>
             </div>
           <?php endif; ?>
+
+          <!-- Auto Table of Contents (Mục Lục Bài Viết) -->
+          <div id="articleTOC" class="article-toc-box d-none">
+            <div class="toc-header d-flex justify-content-between align-items-center">
+              <span class="toc-title">
+                <i class="fa-solid fa-list-ul me-2" style="color: var(--orange, #f47a20);"></i> MỤC LỤC BÀI VIẾT
+              </span>
+              <button type="button" class="btn-toggle-toc" id="btnToggleTOC" aria-expanded="true">
+                <span class="toggle-text">Thu gọn</span>
+                <i class="fa-solid fa-chevron-up ms-1"></i>
+              </button>
+            </div>
+            <div class="toc-content" id="tocListWrap">
+              <ul class="toc-list" id="tocList"></ul>
+            </div>
+          </div>
 
           <div class="article-rich-text">
             <?php the_content(); ?>
@@ -403,6 +422,84 @@ get_header();
     border-radius: 999px;
   }
 
+  /* Reading Progress Bar */
+  .reading-progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3.5px;
+    width: 0%;
+    background: linear-gradient(90deg, #e0592a 0%, #f59e0b 50%, #e0592a 100%);
+    z-index: 999999;
+    transition: width 0.1s ease-out;
+    box-shadow: 0 1px 6px rgba(224, 89, 42, 0.4);
+  }
+
+  /* Table of Contents (Mục Lục Bài Viết) */
+  .article-toc-box {
+    background: #faf7f2;
+    border: 1px solid #ebdcd0;
+    border-radius: 20px;
+    padding: 20px 26px;
+    margin-bottom: 38px;
+    box-shadow: 0 6px 20px rgba(45, 30, 15, 0.03);
+  }
+  .article-toc-box .toc-title {
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #1e2830;
+    display: flex;
+    align-items: center;
+  }
+  .article-toc-box .btn-toggle-toc {
+    background: transparent;
+    border: none;
+    font-size: 12px;
+    font-weight: 700;
+    color: #8c827a;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s;
+  }
+  .article-toc-box .btn-toggle-toc:hover {
+    color: var(--orange, #f47a20);
+  }
+  .toc-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 14px 0 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+  .toc-list li a {
+    color: #4a5568;
+    text-decoration: none;
+    font-size: 14.5px;
+    line-height: 1.5;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    transition: all 0.2s ease;
+  }
+  .toc-list li a:hover {
+    color: var(--orange, #f47a20);
+    transform: translateX(4px);
+  }
+  .toc-list li a .toc-num {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--orange, #f47a20);
+    min-width: 20px;
+  }
+  .toc-list li.toc-level-3 {
+    padding-left: 20px;
+    font-size: 13.5px;
+  }
+
   /* 3. Core Body Content */
   .article-body-wrapper {
     background: rgba(255, 255, 255, .92);
@@ -431,6 +528,19 @@ get_header();
     color: #48545e;
   }
 
+  /* Drop Cap for first paragraph */
+  .article-rich-text > p:first-of-type::first-letter {
+    float: left;
+    font-size: 3.6rem;
+    line-height: 0.82;
+    font-weight: 850;
+    color: var(--orange, #f47a20);
+    padding-top: 4px;
+    padding-right: 12px;
+    padding-bottom: 2px;
+    font-family: inherit;
+  }
+
   .article-rich-text p {
     margin-bottom: 24px;
   }
@@ -445,17 +555,106 @@ get_header();
     color: #1e2830;
     font-weight: 800;
     letter-spacing: -.025em;
-    margin-top: 40px;
-    margin-bottom: 18px;
-    line-height: 1.3;
+    line-height: 1.35;
   }
 
   .article-rich-text h2 {
-    font-size: clamp(24px, 2.8vw, 32px);
+    font-size: clamp(22px, 2.6vw, 29px) !important;
+    margin-top: 50px !important;
+    margin-bottom: 22px !important;
+    padding-left: 16px;
+    border-left: 4px solid var(--orange, #f47a20);
+    position: relative;
   }
 
   .article-rich-text h3 {
-    font-size: clamp(20px, 2.2vw, 26px);
+    font-size: clamp(18px, 2.1vw, 23px) !important;
+    margin-top: 36px !important;
+    margin-bottom: 16px !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .article-rich-text h3::before {
+    content: '';
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    background: var(--orange, #f47a20);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* Images inside article */
+  .article-rich-text img,
+  .article-rich-text figure img {
+    border-radius: 20px !important;
+    box-shadow: 0 14px 36px rgba(45, 30, 15, 0.08) !important;
+    border: 1px solid rgba(235, 222, 206, 0.9) !important;
+    margin: 36px auto !important;
+    display: block !important;
+    max-width: 100% !important;
+    height: auto !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .article-rich-text img:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 42px rgba(45, 30, 15, 0.12) !important;
+  }
+  .article-rich-text figcaption {
+    font-size: 13.5px;
+    color: #7b8893;
+    text-align: center;
+    margin-top: -18px;
+    margin-bottom: 30px;
+    font-style: italic;
+  }
+
+  /* Blockquote */
+  .article-rich-text blockquote {
+    position: relative;
+    margin: 36px 0;
+    padding: 24px 30px 24px 32px;
+    background: #faf6f0;
+    border-left: 4px solid var(--orange, #f47a20);
+    border-radius: 0 20px 20px 0;
+    font-style: italic;
+    font-size: 1.08rem;
+    line-height: 1.85;
+    color: #2b3640;
+    box-shadow: 0 4px 16px rgba(45, 30, 15, 0.03);
+  }
+
+  /* Lists inside article */
+  .article-rich-text ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 20px 0 28px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .article-rich-text ul li {
+    position: relative;
+    padding-left: 28px;
+    line-height: 1.8;
+    color: #3f4a54;
+  }
+  .article-rich-text ul li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    top: 2px;
+    width: 18px;
+    height: 18px;
+    background: rgba(224, 89, 42, 0.12);
+    color: var(--orange, #f47a20);
+    border-radius: 50%;
+    font-size: 11px;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   /* Toolbar */
@@ -780,6 +979,62 @@ get_header();
     }
   }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // 1. Reading Progress Bar
+  window.addEventListener('scroll', function() {
+    var winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+    var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    var scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+    var bar = document.getElementById('readingProgressBar');
+    if (bar) bar.style.width = scrolled + '%';
+  });
+
+  // 2. Auto Table of Contents
+  var headings = document.querySelectorAll('.article-rich-text h2, .article-rich-text h3');
+  var tocBox = document.getElementById('articleTOC');
+  var tocList = document.getElementById('tocList');
+  if (headings.length >= 2 && tocBox && tocList) {
+    headings.forEach(function(h, idx) {
+      var id = h.id || 'article-section-' + (idx + 1);
+      h.id = id;
+      var li = document.createElement('li');
+      var isH3 = h.tagName.toLowerCase() === 'h3';
+      if (isH3) li.className = 'toc-level-3';
+      var numStr = (idx + 1 < 10 ? '0' : '') + (idx + 1) + '.';
+      var a = document.createElement('a');
+      a.href = '#' + id;
+      a.innerHTML = '<span class="toc-num">' + numStr + '</span> <span>' + h.textContent.trim() + '</span>';
+      a.addEventListener('click', function(e) {
+        e.preventDefault();
+        var target = document.getElementById(id);
+        if (target) {
+          var offset = 100;
+          var bodyRect = document.body.getBoundingClientRect().top;
+          var elementRect = target.getBoundingClientRect().top;
+          var elementPosition = elementRect - bodyRect;
+          var offsetPosition = elementPosition - offset;
+          window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+        }
+      });
+      li.appendChild(a);
+      tocList.appendChild(li);
+    });
+    tocBox.classList.remove('d-none');
+  }
+
+  var btnToggle = document.getElementById('btnToggleTOC');
+  var listWrap = document.getElementById('tocListWrap');
+  if (btnToggle && listWrap) {
+    btnToggle.addEventListener('click', function() {
+      var isCollapsed = listWrap.classList.toggle('d-none');
+      btnToggle.querySelector('.toggle-text').textContent = isCollapsed ? 'Mở rộng' : 'Thu gọn';
+      btnToggle.querySelector('i').className = isCollapsed ? 'fa-solid fa-chevron-down ms-1' : 'fa-solid fa-chevron-up ms-1';
+    });
+  }
+});
+</script>
 
 <?php
 get_footer();
