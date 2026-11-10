@@ -86,15 +86,75 @@ foreach ($ceramic_products as $item) {
     
     $p_cats = wp_get_post_terms($item['product']->get_id(), 'product_cat');
     if (!empty($p_cats) && !is_wp_error($p_cats)) {
+        $excluded_keywords = array('chua-phan-loai', 'uncategorized', 'led', 'cabin', 'man-hinh', 'am-thanh', 'anh-sang', 'dien-tu', 'ebook', 'khoa-hoc', 'thoi-trang', 'vitamin', 'may-tinh', 'laptop', 'dien-thoai', 'giay', 'robot', 'sach', 'may-loc', 'dinh-duong', 'sua-hat', 'suc-khoe', 'tai-nghe', 'dong-ho', 'duoc-lieu', 'xu-ly', 'chieu-sang', 'thiet-bi');
         foreach ($p_cats as $c) {
-            if (in_array($c->slug, array('chua-phan-loai', 'uncategorized', 'man-hinh-led', 'cabin-led', 'bo-xu-ly-hinh-anh', 'den-led-chieu-sang-thong-minh', 'man-hinh-led-ngoai-troi', 'man-hinh-led-trong-nha', 'ung-dung-man-hinh-led', 'he-thong-am-thanh', 'he-thong-anh-sang'))) {
-                continue;
+            $skip = false;
+            foreach ($excluded_keywords as $ex) {
+                if (strpos($c->slug, $ex) !== false) {
+                    $skip = true;
+                    break;
+                }
             }
+            if ($skip) continue;
+
             if (!isset($seen_cat_ids[$c->term_id])) {
                 $seen_cat_ids[$c->term_id] = true;
                 $active_categories[] = $c;
             }
         }
+    }
+}
+
+// Phân tách danh mục thành 2 nhóm chuyên biệt theo đúng tư duy UX:
+// 1. Nhóm Quà Tặng & Dự Án Doanh Nghiệp (Bộ quà tặng, Quà doanh nghiệp, Quà cá nhân, HoReCa...)
+// 2. Nhóm Đồ Dùng Bàn Ăn & Gia Dụng (Bát ăn, Bát tô, Đĩa ăn, Ấm chén, Cốc ly, Khay gia vị, Thìa, Gác đũa...)
+$tableware_categories = array();
+$gift_categories = array();
+$gift_slug_keywords = array('qua-tang', 'doanh-nghiep', 'ca-nhan', 'set-qua', 'du-an', 'khach-san', 'horeca');
+
+foreach ($active_categories as $cat) {
+    $c_slug = strtolower($cat->slug);
+    $c_name = strtolower($cat->name);
+    $is_gift = false;
+    foreach ($gift_slug_keywords as $kw) {
+        if (strpos($c_slug, $kw) !== false || strpos($c_name, $kw) !== false) {
+            $is_gift = true;
+            break;
+        }
+    }
+    if ($is_gift) {
+        $gift_categories[] = $cat;
+    } else {
+        $tableware_categories[] = $cat;
+    }
+}
+
+// Helper gán icon tương ứng cho từng loại vật phẩm bàn ăn
+if (!function_exists('gomie_get_cat_icon')) {
+    function gomie_get_cat_icon($slug, $name) {
+        $slug_lower = strtolower($slug . ' ' . $name);
+        if (strpos($slug_lower, 'bat-an') !== false || strpos($slug_lower, 'bát ăn') !== false) {
+            return 'fa-solid fa-bowl-rice';
+        } elseif (strpos($slug_lower, 'bat-to') !== false || strpos($slug_lower, 'bát tô') !== false) {
+            return 'fa-solid fa-bowl-food';
+        } elseif (strpos($slug_lower, 'dia') !== false || strpos($slug_lower, 'đĩa') !== false) {
+            return 'fa-solid fa-plate-wheat';
+        } elseif (strpos($slug_lower, 'am-chen') !== false || strpos($slug_lower, 'ấm chén') !== false) {
+            return 'fa-solid fa-mug-hot';
+        } elseif (strpos($slug_lower, 'coc') !== false || strpos($slug_lower, 'cốc') !== false || strpos($slug_lower, 'ly') !== false) {
+            return 'fa-solid fa-mug-saucer';
+        } elseif (strpos($slug_lower, 'khay') !== false || strpos($slug_lower, 'gia-vi') !== false) {
+            return 'fa-solid fa-cubes-stacked';
+        } elseif (strpos($slug_lower, 'thia') !== false || strpos($slug_lower, 'thìa') !== false || strpos($slug_lower, 'muoi') !== false) {
+            return 'fa-solid fa-spoon';
+        } elseif (strpos($slug_lower, 'dua') !== false || strpos($slug_lower, 'đũa') !== false) {
+            return 'fa-solid fa-grip-lines';
+        } elseif (strpos($slug_lower, 'tra') !== false || strpos($slug_lower, 'hũ') !== false) {
+            return 'fa-solid fa-jar';
+        } elseif (strpos($slug_lower, 'am') !== false && strpos($slug_lower, 'ấm') !== false) {
+            return 'fa-solid fa-faucet';
+        }
+        return 'fa-solid fa-utensils';
     }
 }
 
@@ -165,79 +225,108 @@ $theme_uri = get_template_directory_uri();
                         </button>
                     </div>
 
-                    <!-- Widget Block 1: Sắc Men Gốm Bát Tràng -->
-                    <div class="widget-filter-group mb-4">
+                    <!-- Widget Block 1: Sắc Men Gốm Bát Tràng (Lưới 2 cột gọn nhẹ) -->
+                    <div class="widget-filter-group mb-3">
                         <div class="filter-group-title fw-bold text-dark mb-2 d-flex justify-content-between align-items-center">
                             <span><i class="fa-solid fa-palette text-danger me-2"></i>Sắc men gốm</span>
                         </div>
-                        <div class="glaze-filter-list d-flex flex-column gap-1" id="glazeFilter">
-                            <button type="button" class="glaze-chip-widget active" data-glaze="all">
+                        <div class="glaze-filter-list" id="glazeFilter">
+                            <button type="button" class="glaze-chip-widget glaze-all active mb-1" data-glaze="all">
                                 <span class="chip-color chip-all"></span>
                                 <span class="chip-title">Tất cả sắc men</span>
                                 <span class="chip-badge ms-auto"><?php echo count($ceramic_products); ?></span>
                             </button>
-                            <?php if (!empty($detected_glazes)) : ?>
-                                <?php foreach ($detected_glazes as $slug => $glaze_item) : ?>
-                                    <button type="button" class="glaze-chip-widget" data-glaze="<?php echo esc_attr($slug); ?>">
-                                        <span class="chip-color" style="background-color: <?php echo esc_attr($glaze_item['color']); ?>;"></span>
-                                        <span class="chip-title"><?php echo esc_html($glaze_item['name']); ?></span>
-                                        <span class="chip-badge ms-auto"><?php echo esc_html($glaze_item['count']); ?></span>
-                                    </button>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
+                            <div class="glaze-grid-items">
+                                <?php if (!empty($detected_glazes)) : ?>
+                                    <?php foreach ($detected_glazes as $slug => $glaze_item) : 
+                                        $short_name = trim(preg_replace('/^Men\s+/ui', '', $glaze_item['name']));
+                                    ?>
+                                        <button type="button" class="glaze-chip-widget" data-glaze="<?php echo esc_attr($slug); ?>" title="<?php echo esc_attr($glaze_item['name']); ?>">
+                                            <?php if (!empty($glaze_item['image'])) : ?>
+                                                <img src="<?php echo esc_url($glaze_item['image']); ?>" class="chip-img-avatar" alt="<?php echo esc_attr($glaze_item['name']); ?>" />
+                                            <?php else : ?>
+                                                <span class="chip-color" style="background-color: <?php echo esc_attr($glaze_item['color']); ?>;"></span>
+                                            <?php endif; ?>
+                                            <span class="chip-title"><?php echo esc_html($short_name); ?></span>
+                                            <span class="chip-badge ms-auto"><?php echo esc_html($glaze_item['count']); ?></span>
+                                        </button>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Widget Block 2: Danh Mục Tác Phẩm -->
-                    <div class="widget-filter-group mb-4 pt-3 border-top">
+                    <!-- Widget Block 2: Danh Mục Tác Phẩm Bàn Ăn & Gia Dụng (Lưới 2 cột có Icon) -->
+                    <div class="widget-filter-group mb-3 pt-3 border-top">
                         <div class="filter-group-title fw-bold text-dark mb-2 d-flex justify-content-between align-items-center">
-                            <span><i class="fa-solid fa-layer-group text-danger me-2"></i>Danh mục</span>
+                            <span><i class="fa-solid fa-utensils text-danger me-2"></i>Đồ dùng bàn ăn</span>
                         </div>
-                        <div class="category-filter-list d-flex flex-column gap-1" id="categoryFilter">
-                            <button type="button" class="cat-pill-widget active" data-cat="all">
-                                <span class="cat-name">Tất cả danh mục</span>
+                        <div class="category-filter-list" id="categoryFilter">
+                            <button type="button" class="cat-pill-widget cat-pill-all active mb-1" data-cat="all">
+                                <i class="fa-solid fa-boxes-stacked me-1"></i>
+                                <span class="cat-name">Tất cả đồ bàn ăn</span>
                                 <span class="cat-badge ms-auto"><?php echo count($ceramic_products); ?></span>
                             </button>
-                            <?php if (!empty($active_categories)) : ?>
-                                <?php foreach ($active_categories as $cat) : 
-                                    $c_count = $cat_counts[$cat->slug] ?? $cat->count;
-                                ?>
-                                    <button type="button" class="cat-pill-widget" data-cat="<?php echo esc_attr($cat->slug); ?>">
-                                        <span class="cat-name"><?php echo esc_html($cat->name); ?></span>
-                                        <span class="cat-badge ms-auto"><?php echo esc_html($c_count); ?></span>
-                                    </button>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
+                            <div class="cat-grid-items">
+                                <?php if (!empty($tableware_categories)) : ?>
+                                    <?php foreach ($tableware_categories as $cat) : 
+                                        $c_count = $cat_counts[$cat->slug] ?? $cat->count;
+                                        $icon_class = gomie_get_cat_icon($cat->slug, $cat->name);
+                                    ?>
+                                        <button type="button" class="cat-pill-widget" data-cat="<?php echo esc_attr($cat->slug); ?>" title="<?php echo esc_attr($cat->name); ?>">
+                                            <i class="<?php echo esc_attr($icon_class); ?> cat-icon"></i>
+                                            <span class="cat-name"><?php echo esc_html($cat->name); ?></span>
+                                            <span class="cat-badge ms-auto"><?php echo esc_html($c_count); ?></span>
+                                        </button>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Widget Block 3: Khoảng Giá -->
-                    <div class="widget-filter-group mb-4 pt-3 border-top">
+                    <?php if (!empty($gift_categories)) : ?>
+                    <!-- Widget Block 3: Bộ Quà Tặng & Dự Án Doanh Nghiệp (Phần riêng biệt) -->
+                    <div class="widget-filter-group mb-3 pt-3 border-top">
+                        <div class="filter-group-title fw-bold text-dark mb-2 d-flex justify-content-between align-items-center">
+                            <span><i class="fa-solid fa-gift text-danger me-2"></i>Quà tặng & Dự án</span>
+                            <span class="badge bg-danger-subtle text-danger small px-2 py-0 rounded-pill" style="font-size: 10px;">HoReCa</span>
+                        </div>
+                        <div class="gift-filter-list d-flex flex-column gap-1">
+                            <?php foreach ($gift_categories as $cat) : 
+                                $c_count = $cat_counts[$cat->slug] ?? $cat->count;
+                            ?>
+                                <button type="button" class="gift-pill-widget" data-cat="<?php echo esc_attr($cat->slug); ?>">
+                                    <i class="fa-solid fa-award text-danger me-1"></i>
+                                    <span class="gift-name"><?php echo esc_html($cat->name); ?></span>
+                                    <span class="gift-badge ms-auto"><?php echo esc_html($c_count); ?></span>
+                                </button>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                    <?php endif; ?>
+
+                    <!-- Widget Block 4: Khoảng Giá (Lưới nút bấm gọn) -->
+                    <div class="widget-filter-group mb-3 pt-3 border-top">
                         <div class="filter-group-title fw-bold text-dark mb-2 d-flex justify-content-between align-items-center">
                             <span><i class="fa-solid fa-tag text-danger me-2"></i>Khoảng giá</span>
                         </div>
-                        <div class="price-filter-list d-flex flex-column gap-1" id="priceFilter">
-                            <button type="button" class="price-chip-widget active" data-price-range="all">Tất cả mức giá</button>
-                            <button type="button" class="price-chip-widget" data-price-range="under-100k">Dưới 100.000 đ</button>
-                            <button type="button" class="price-chip-widget" data-price-range="100k-300k">100.000 đ - 300.000 đ</button>
-                            <button type="button" class="price-chip-widget" data-price-range="300k-500k">300.000 đ - 500.000 đ</button>
-                            <button type="button" class="price-chip-widget" data-price-range="above-500k">Trên 500.000 đ</button>
+                        <div class="price-grid-items" id="priceFilter">
+                            <button type="button" class="price-chip-widget price-all active" data-price-range="all">Tất cả mức giá</button>
+                            <button type="button" class="price-chip-widget" data-price-range="under-100k">&lt; 100.000 đ</button>
+                            <button type="button" class="price-chip-widget" data-price-range="100k-300k">100k - 300k</button>
+                            <button type="button" class="price-chip-widget" data-price-range="300k-500k">300k - 500k</button>
+                            <button type="button" class="price-chip-widget" data-price-range="above-500k">&gt; 500.000 đ</button>
                         </div>
                     </div>
 
-                    <!-- Widget Block 4: Cam kết Gomie -->
-                    <div class="widget-craft-pledge p-3 rounded-3 mt-3">
-                        <div class="pledge-item d-flex align-items-center gap-2 mb-2">
-                            <i class="fa-solid fa-fire text-danger"></i>
-                            <span class="small fw-semibold text-dark">Nung 1.300°C khử chì</span>
-                        </div>
-                        <div class="pledge-item d-flex align-items-center gap-2 mb-2">
-                            <i class="fa-solid fa-shield-halved text-success"></i>
-                            <span class="small fw-semibold text-dark">Bảo hiểm vỡ hỏng 100%</span>
-                        </div>
-                        <div class="pledge-item d-flex align-items-center gap-2">
-                            <i class="fa-solid fa-hand-sparkles text-primary"></i>
-                            <span class="small fw-semibold text-dark">100% vuốt nặn thủ công</span>
+                    <!-- Widget Block 5: Cam kết Gomie (Tinh gọn 1 hàng) -->
+                    <div class="widget-craft-pledge-mini p-2 px-3 rounded-3 mt-2">
+                        <div class="d-flex align-items-center justify-content-between text-muted" style="font-size: 11px;">
+                            <span><i class="fa-solid fa-fire text-danger me-1"></i>1.300°C</span>
+                            <span>•</span>
+                            <span><i class="fa-solid fa-shield-halved text-success me-1"></i>Bảo hiểm 100%</span>
+                            <span>•</span>
+                            <span><i class="fa-solid fa-hand-sparkles text-primary me-1"></i>Thủ công</span>
                         </div>
                     </div>
                 </div>
@@ -688,130 +777,224 @@ $theme_uri = get_template_directory_uri();
     color: #2b2b2b !important;
 }
 
-/* Glaze Chips Widget */
+/* ==========================================================================
+   TỐI ƯU GIAO DIỆN BỘ LỌC (COMPACT 2-COLUMN SWATCH & ICON GRID)
+   ========================================================================== */
+
+/* Glaze Swatches (Lưới 2 cột sắc men) */
+.glaze-grid-items {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+}
 .glaze-chip-widget {
     display: flex;
     align-items: center;
-    gap: 0.65rem;
-    background: transparent;
-    border: 1px solid transparent;
-    padding: 0.42rem 0.75rem;
-    border-radius: 10px;
-    font-size: 0.88rem;
+    gap: 6px;
+    background: #ffffff;
+    border: 1px solid #f1ece5;
+    padding: 5px 8px;
+    border-radius: 8px;
+    font-size: 11.5px;
+    font-weight: 600;
     color: #4a453f;
     text-align: left;
     width: 100%;
     cursor: pointer;
     transition: all 0.2s ease;
 }
+.glaze-chip-widget.glaze-all {
+    width: 100%;
+    background: #fbf9f6;
+    border-color: #ebdcd0;
+}
 .glaze-chip-widget:hover {
-    background: #fbf7f2;
+    background: #fff8f3;
+    border-color: rgba(224, 89, 42, 0.3);
     color: #e0592a;
-    border-color: rgba(224, 89, 42, 0.15);
 }
 .glaze-chip-widget.active {
-    background: #1a1f2c;
+    background: #1e293b;
+    border-color: #1e293b;
     color: #ffffff;
-    font-weight: 600;
-    box-shadow: 0 4px 12px rgba(26, 31, 44, 0.18);
+    box-shadow: 0 2px 8px rgba(30, 41, 59, 0.25);
 }
 .glaze-chip-widget.active .chip-badge {
-    background: rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.25);
     color: #ffffff;
 }
 
 .chip-color {
-    width: 12px;
-    height: 12px;
+    width: 11px;
+    height: 11px;
     border-radius: 50%;
     display: inline-block;
     flex-shrink: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
 }
 .chip-all { background: conic-gradient(#0b89e7, #78350f, #d97706, #059669, #475569); }
-.chip-sapphire { background: #1e3a8a; }
-.chip-canh-gian { background: #5c3a21; }
-.chip-gam-vang { background: #d97706; }
-.chip-hoa-bien { background: #0284c7; }
-.chip-reu { background: #3f6212; }
-.chip-ngoc-trai { background: #14b8a6; }
-.chip-nau-tuyet { background: #78350f; }
-
-.chip-badge, .cat-badge {
-    font-size: 0.72rem;
-    background: #f1ede8;
-    color: #7a7065;
-    padding: 2px 7px;
-    border-radius: 999px;
-    font-weight: 600;
+.chip-img-avatar {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1px solid rgba(0,0,0,0.1);
 }
 
-/* Category Pills Widget */
+.chip-badge, .cat-badge, .gift-badge {
+    font-size: 10px;
+    background: #f1ede8;
+    color: #7a7065;
+    padding: 1px 5px;
+    border-radius: 999px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+/* Category Tableware (Lưới 2 cột có Icon trực quan) */
+.cat-grid-items {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+}
 .cat-pill-widget {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    background: transparent;
-    border: 1px solid transparent;
-    padding: 0.42rem 0.75rem;
-    border-radius: 10px;
-    font-size: 0.88rem;
+    gap: 6px;
+    background: #ffffff;
+    border: 1px solid #f1ece5;
+    padding: 5px 8px;
+    border-radius: 8px;
+    font-size: 11.5px;
+    font-weight: 600;
     color: #4a453f;
     text-align: left;
     width: 100%;
     cursor: pointer;
     transition: all 0.2s ease;
 }
-.cat-pill-widget:hover {
-    background: #fbf7f2;
+.cat-pill-widget .cat-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1;
+}
+.cat-pill-widget .cat-icon {
+    font-size: 11px;
     color: #e0592a;
-    border-color: rgba(224, 89, 42, 0.15);
+    flex-shrink: 0;
+    width: 13px;
+    text-align: center;
+}
+.cat-pill-widget.cat-pill-all {
+    width: 100%;
+    background: #fbf9f6;
+    border-color: #ebdcd0;
+}
+.cat-pill-widget:hover {
+    background: #fff8f3;
+    border-color: rgba(224, 89, 42, 0.3);
+    color: #e0592a;
 }
 .cat-pill-widget.active {
-    background: rgba(224, 89, 42, 0.08);
-    color: #d9531e;
-    font-weight: 700;
-    border-color: rgba(224, 89, 42, 0.35);
+    background: #e0592a;
+    border-color: #e0592a;
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(224, 89, 42, 0.25);
+}
+.cat-pill-widget.active .cat-icon {
+    color: #ffffff !important;
 }
 .cat-pill-widget.active .cat-badge {
-    background: #e0592a;
+    background: rgba(255, 255, 255, 0.25);
     color: #ffffff;
 }
 
-/* Price Range Widget */
-.price-chip-widget {
-    display: block;
-    background: transparent;
-    border: 1px solid transparent;
-    padding: 0.42rem 0.75rem;
+/* Gift & HoReCa Projects Block (Khối riêng biệt cao cấp) */
+.gift-filter-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.gift-pill-widget {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #fffcf9;
+    border: 1px dashed rgba(224, 89, 42, 0.35);
+    padding: 6px 10px;
     border-radius: 8px;
-    font-size: 0.85rem;
-    color: #4a453f;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #b43403;
     text-align: left;
     width: 100%;
     cursor: pointer;
     transition: all 0.2s ease;
 }
+.gift-pill-widget:hover {
+    background: #fff7ed;
+    border-color: #e0592a;
+    transform: translateX(2px);
+}
+.gift-pill-widget.active {
+    background: linear-gradient(135deg, #e0592a 0%, #c4471b 100%);
+    border-color: #e0592a;
+    color: #ffffff;
+    box-shadow: 0 3px 10px rgba(224, 89, 42, 0.25);
+}
+.gift-pill-widget.active i {
+    color: #ffffff !important;
+}
+.gift-pill-widget.active .gift-badge {
+    background: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+}
+
+/* Price Range (Lưới nút bấm gọn) */
+.price-grid-items {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+}
+.price-chip-widget {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border: 1px solid #f1ece5;
+    padding: 5px 6px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #4a453f;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+.price-chip-widget.price-all {
+    grid-column: span 2;
+    background: #fbf9f6;
+    border-color: #ebdcd0;
+}
 .price-chip-widget:hover {
-    background: #fbf7f2;
+    background: #fff8f3;
+    border-color: rgba(224, 89, 42, 0.3);
     color: #e0592a;
 }
 .price-chip-widget.active {
-    background: #fbf0e9;
-    color: #d9531e;
+    background: #e0592a;
+    border-color: #e0592a;
+    color: #ffffff;
     font-weight: 700;
-    border-left: 3px solid #e0592a;
-    border-radius: 4px 8px 8px 4px;
+    box-shadow: 0 2px 6px rgba(224, 89, 42, 0.2);
 }
 
-/* Widget Craft Pledge */
-.widget-craft-pledge {
-    background: #fdfaf6;
-    border: 1px dashed rgba(224, 89, 42, 0.25);
-}
-.pledge-item i {
-    font-size: 0.95rem;
-    width: 18px;
-    text-align: center;
+/* Mini Craft Pledge */
+.widget-craft-pledge-mini {
+    background: #faf7f2;
+    border: 1px solid #eee7dd;
 }
 
 /* Shop Toolbar (Right Side) */
@@ -1226,7 +1409,7 @@ $theme_uri = get_template_directory_uri();
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const glazeChips = document.querySelectorAll('#glazeFilter .glaze-chip-widget');
-    const catPills = document.querySelectorAll('#categoryFilter .cat-pill-widget');
+    const catPills = document.querySelectorAll('#categoryFilter .cat-pill-widget, .gift-pill-widget');
     const priceChips = document.querySelectorAll('#priceFilter .price-chip-widget');
     const sortSelect = document.getElementById('shopSort');
     const cards = Array.from(document.querySelectorAll('.product-card-col'));
@@ -1258,14 +1441,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         if (currentCat !== 'all') {
-            const activeCatEl = document.querySelector('#categoryFilter .cat-pill-widget.active');
-            const name = activeCatEl ? (activeCatEl.querySelector('.cat-name')?.textContent.trim() || currentCat) : currentCat;
+            const activeCatEl = document.querySelector('#categoryFilter .cat-pill-widget.active, .gift-pill-widget.active');
+            const name = activeCatEl ? (activeCatEl.querySelector('.cat-name, .gift-name')?.textContent.trim() || currentCat) : currentCat;
             const tag = document.createElement('span');
             tag.className = 'active-tag';
             tag.innerHTML = `${name} <i class="fa-solid fa-xmark"></i>`;
             tag.title = 'Bỏ lọc danh mục';
             tag.addEventListener('click', () => {
-                const allBtn = document.querySelector('#categoryFilter .cat-pill-widget[data-cat="all"]');
+                const allBtn = document.querySelector('.cat-pill-all');
                 if (allBtn) allBtn.click();
             });
             activeTagsContainer.appendChild(tag);
@@ -1426,11 +1609,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     window.resetFilters = function() {
         glazeChips.forEach(c => c.classList.remove('active'));
-        if (glazeChips[0]) glazeChips[0].classList.add('active');
+        const allGlaze = document.querySelector('#glazeFilter .glaze-chip-widget[data-glaze="all"]');
+        if (allGlaze) allGlaze.classList.add('active');
+
         catPills.forEach(p => p.classList.remove('active'));
-        if (catPills[0]) catPills[0].classList.add('active');
+        const allCat = document.querySelector('.cat-pill-all');
+        if (allCat) allCat.classList.add('active');
+
         priceChips.forEach(c => c.classList.remove('active'));
-        if (priceChips[0]) priceChips[0].classList.add('active');
+        const allPrice = document.querySelector('#priceFilter .price-chip-widget[data-price-range="all"]');
+        if (allPrice) allPrice.classList.add('active');
+
         currentGlaze = 'all';
         currentCat = 'all';
         currentPriceRange = 'all';
