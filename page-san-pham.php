@@ -164,6 +164,96 @@ if (!function_exists('gomie_get_cat_icon')) {
 $theme_uri = get_template_directory_uri();
 ?>
 
+<!-- Critical Shop CSS: Injected before HTML to guarantee 0ms FOUC & zero black borders -->
+<style id="gomie-shop-critical-css">
+.shop-breadcrumb .breadcrumb-item::after { display: none !important; content: none !important; }
+.shop-breadcrumb .breadcrumb-item + .breadcrumb-item::before { content: "/" !important; padding: 0 8px; color: #c4b5a5 !important; }
+
+/* Filter Buttons Instant Reset: Kills raw browser button borders immediately */
+.glaze-chip-widget, .cat-pill-widget, .gift-pill-widget {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 0.52rem 0.85rem !important;
+    border-radius: 999px !important;
+    border: 1px solid #e5ded6 !important;
+    background: #ffffff !important;
+    font-size: 0.84rem !important;
+    font-weight: 600 !important;
+    color: #4b443d !important;
+    cursor: pointer !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02) !important;
+    outline: none !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    font-family: inherit !important;
+    transition: all 0.2s ease !important;
+}
+.glaze-chip-widget:hover, .cat-pill-widget:hover, .gift-pill-widget:hover {
+    border-color: #d1c5b8 !important;
+    background: #fdfbf8 !important;
+}
+.glaze-chip-widget.active, .cat-pill-widget.active {
+    background: #1a2233 !important;
+    color: #ffffff !important;
+    border-color: #1a2233 !important;
+}
+.glaze-dot-icon {
+    width: 10px !important;
+    height: 10px !important;
+    border-radius: 50% !important;
+    display: inline-block !important;
+    flex-shrink: 0 !important;
+}
+
+/* Product Cards & Images Instant Geometry */
+.gomie-product-item {
+    display: flex;
+    flex-direction: column;
+}
+.gomie-product-card.apple-style {
+    background: #ffffff !important;
+    border-radius: 20px !important;
+    overflow: hidden !important;
+    border: 1px solid #f2ede6 !important;
+    box-shadow: 0 4px 18px rgba(35, 25, 15, 0.04) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+}
+.gomie-product-card.apple-style .product-image-wrapper {
+    position: relative !important;
+    width: 100% !important;
+    aspect-ratio: 1 / 1 !important;
+    overflow: hidden !important;
+    background: #ffffff !important;
+    border-bottom: 1px solid #f6f3ee !important;
+    display: block !important;
+}
+.gomie-product-card.apple-style .product-image-link {
+    display: flex !important;
+    width: 100% !important;
+    height: 100% !important;
+}
+.gomie-product-card.apple-style .product-image-container {
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #ffffff !important;
+}
+.gomie-product-card.apple-style .product-image {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+    padding: 10px !important;
+    display: block !important;
+    transition: transform 0.4s ease !important;
+}
+</style>
+
 <div class="gomie-shop-editorial-page">
     <!-- Hero Canvas Header -->
     <section class="shop-hero-editorial text-center">
@@ -331,7 +421,11 @@ $theme_uri = get_template_directory_uri();
 
                 <!-- Product Grid (Full container width: 4 columns on desktop!) -->
                 <div class="row g-4 shop-product-grid" id="productGrid">
-            <?php foreach ($ceramic_products as $item) : 
+            <?php 
+            $card_idx = 0;
+            foreach ($ceramic_products as $item) : 
+                $is_above_fold = ($card_idx < 8);
+                $card_idx++; 
                 $product = $item['product'];
                 $pid = $product->get_id();
                 $title = $product->get_name();
@@ -397,7 +491,7 @@ $theme_uri = get_template_directory_uri();
                             <div class="product-image-wrapper">
                                 <a href="<?php echo esc_url($permalink); ?>" class="product-image-link" aria-label="<?php echo esc_attr($display_title); ?>">
                                     <div class="product-image-container">
-                                        <img src="<?php echo esc_url($img_url); ?>" alt="<?php echo esc_attr($display_title); ?>" loading="lazy" decoding="async" class="product-image" />
+                                        <img src="<?php echo esc_url($img_url); ?>" alt="<?php echo esc_attr($display_title); ?>" <?php echo $is_above_fold ? 'loading="eager" fetchpriority="high" decoding="sync"' : 'loading="lazy" decoding="async"'; ?> class="product-image" />
                                     </div>
                                 </a>
                             </div>
@@ -540,799 +634,8 @@ $theme_uri = get_template_directory_uri();
     </div>
 </div>
 
-<style>
-.shop-breadcrumb .breadcrumb-item::after {
-    display: none !important;
-    content: none !important;
-}
-.shop-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
-    content: "/" !important;
-    padding: 0 8px;
-    color: #c4b5a5 !important;
-}
-/* ==========================================================================
-   GOMIE EDITORIAL SHOP STYLES
-   ========================================================================== */
-.gomie-shop-editorial-page {
-    background: #fbf8f3 url('<?php echo esc_url($theme_uri . "/assets/images/glazes/Background-1.png"); ?>') repeat;
-    min-height: 100vh;
-    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
-    color: #2b2b2b;
-}
+<!-- Core shop styles loaded in <head> via assets/css/shop-page.css -->
 
-/* Hero Section */
-.shop-hero-editorial {
-    padding: 3rem 1rem 2.5rem;
-    position: relative;
-    border-bottom: 1px solid rgba(224, 89, 42, 0.12);
-}
-
-.shop-breadcrumb .breadcrumb {
-    background: transparent;
-    font-size: 0.88rem;
-}
-.shop-breadcrumb a {
-    color: #8c827a;
-    text-decoration: none;
-    transition: color 0.2s;
-}
-.shop-breadcrumb a:hover {
-    color: #e0592a;
-}
-.shop-breadcrumb .active {
-    color: #e0592a;
-    font-weight: 600;
-}
-
-.shop-pill-badge {
-    display: inline-block;
-    padding: 0.4rem 1.2rem;
-    background: rgba(224, 89, 42, 0.08);
-    color: #b3471e;
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    border-radius: 999px;
-    border: 1px solid rgba(224, 89, 42, 0.25);
-}
-
-.shop-hero-title {
-    font-size: clamp(1.5rem, 4.2vw, 3rem);
-    font-weight: 800;
-    color: #1a1f2c;
-    letter-spacing: -0.5px;
-    line-height: 1.25;
-    margin-bottom: 1rem;
-    word-break: keep-all;
-    overflow-wrap: break-word;
-}
-.shop-hero-title .highlight-orange {
-    color: #e0592a;
-    display: inline-block;
-}
-
-.shop-hero-desc {
-    max-width: 780px;
-    font-size: 1.05rem;
-    line-height: 1.8;
-    color: #5c554e;
-}
-
-/* Trust Bar */
-.shop-trust-pills .trust-pill-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: #ffffff;
-    padding: 0.45rem 1rem;
-    border-radius: 999px;
-    font-size: 0.85rem;
-    color: #3b3530;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-    border: 1px solid rgba(224, 89, 42, 0.12);
-}
-.pill-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    display: inline-block;
-}
-.fire-dot { background: #e0592a; }
-.craft-dot { background: #d97706; }
-.safe-dot { background: #059669; }
-.protect-dot { background: #2563eb; }
-
-/* ==========================================================================
-   GOMIE OUTSIDE SIDEBAR FILTER (NẰM BÊN TRÁI CONTAINER SẢN PHẨM)
-   ========================================================================== */
-.shop-body-section {
-    position: relative;
-    width: 100%;
-    z-index: 1;
-}
-
-.shop-canvas-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 32px;
-    max-width: 1680px;
-    margin: 0 auto;
-    padding: 0 24px;
-}
-
-/* Sidebar nằm bên trái, ngoài container của sản phẩm */
-.shop-outside-sidebar {
-    width: 330px;
-    flex-shrink: 0;
-    position: sticky;
-    top: 100px;
-    z-index: 20;
-    transition: all 0.3s ease;
-}
-
-.filter-widget-card {
-    border: 1px solid rgba(224, 89, 42, 0.15);
-    background: #ffffff;
-    padding: 20px 16px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
-}
-.filter-widget-card::-webkit-scrollbar {
-    width: 4px;
-}
-.filter-widget-card::-webkit-scrollbar-thumb {
-    background: rgba(224, 89, 42, 0.3);
-    border-radius: 999px;
-}
-
-/* Container sản phẩm rộng rãi chứa đầy đủ 4 cột sản phẩm */
-.shop-products-container {
-    flex: 1;
-    max-width: 1320px;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-}
-
-/* Responsive cho màn hình nhỏ hơn 1200px */
-@media (max-width: 1199.98px) {
-    .shop-canvas-wrapper {
-        display: block;
-        padding: 0 16px;
-    }
-    .shop-outside-sidebar {
-        display: none;
-        width: 100%;
-        position: static;
-        margin-bottom: 24px;
-    }
-    .shop-outside-sidebar.show-mobile {
-        display: block;
-        animation: fadeInDown 0.3s ease;
-    }
-    .shop-products-container {
-        max-width: 100%;
-    }
-}
-
-@keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.widget-title {
-    font-size: 1.02rem;
-    letter-spacing: -0.2px;
-}
-.btn-clear-filters {
-    cursor: pointer;
-    font-size: 0.8rem;
-    transition: color 0.2s;
-}
-.btn-clear-filters:hover {
-    color: #e0592a !important;
-}
-
-.filter-group-title {
-    font-size: 0.82rem;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    color: #2b2b2b !important;
-}
-
-/* ==========================================================================
-   TỐI ƯU GIAO DIỆN BỘ LỌC (COMPACT 2-COLUMN SWATCH & ICON GRID - NO COUNTERS)
-   ========================================================================== */
-
-/* Glaze Swatches (Lưới 2 cột sắc men) */
-.glaze-grid-items {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 6px;
-}
-.glaze-chip-widget {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: #ffffff;
-    border: 1px solid #f1ece5;
-    padding: 6px 8px;
-    border-radius: 9px;
-    font-size: 11.5px;
-    letter-spacing: -0.15px;
-    font-weight: 600;
-    color: #4a453f;
-    text-align: left;
-    width: 100%;
-    box-sizing: border-box;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    min-width: 0;
-}
-.glaze-chip-widget .chip-title {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    flex: 1;
-    min-width: 0;
-}
-.glaze-chip-widget.glaze-all {
-    width: 100%;
-    background: #fbf9f6;
-    border-color: #ebdcd0;
-    justify-content: flex-start;
-}
-.glaze-chip-widget:hover {
-    background: #fff8f3;
-    border-color: rgba(224, 89, 42, 0.3);
-    color: #e0592a;
-}
-.glaze-chip-widget.active {
-    background: #1e293b;
-    border-color: #1e293b;
-    color: #ffffff;
-    box-shadow: 0 2px 8px rgba(30, 41, 59, 0.25);
-}
-
-.chip-color {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    display: inline-block;
-    flex-shrink: 0;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-}
-.chip-all { background: conic-gradient(#0b89e7, #78350f, #d97706, #059669, #475569); }
-.chip-img-avatar {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    object-fit: cover;
-    flex-shrink: 0;
-    border: 1px solid rgba(0,0,0,0.1);
-}
-
-/* Category Tableware (Lưới 2 cột có Icon trực quan) */
-.cat-grid-items {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 6px;
-}
-.cat-pill-widget {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: #ffffff;
-    border: 1px solid #f1ece5;
-    padding: 6px 8px;
-    border-radius: 9px;
-    font-size: 11.5px;
-    letter-spacing: -0.15px;
-    font-weight: 600;
-    color: #4a453f;
-    text-align: left;
-    width: 100%;
-    box-sizing: border-box;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    min-width: 0;
-}
-.cat-pill-widget .cat-name {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    flex: 1;
-    min-width: 0;
-}
-.cat-pill-widget .cat-icon {
-    font-size: 12px;
-    color: #e0592a;
-    flex-shrink: 0;
-    width: 14px;
-    text-align: center;
-}
-.cat-pill-widget.cat-pill-all {
-    width: 100%;
-    background: #fbf9f6;
-    border-color: #ebdcd0;
-}
-.cat-pill-widget:hover {
-    background: #fff8f3;
-    border-color: rgba(224, 89, 42, 0.3);
-    color: #e0592a;
-}
-.cat-pill-widget.active {
-    background: #e0592a;
-    border-color: #e0592a;
-    color: #ffffff;
-    box-shadow: 0 2px 8px rgba(224, 89, 42, 0.25);
-}
-.cat-pill-widget.active .cat-icon {
-    color: #ffffff !important;
-}
-
-/* Gift & HoReCa Projects Block (Khối riêng biệt cao cấp) */
-.gift-grid-items {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 6px;
-}
-.gift-pill-widget {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: #fffcf9;
-    border: 1px dashed rgba(224, 89, 42, 0.35);
-    padding: 6px 8px;
-    border-radius: 9px;
-    font-size: 11.5px;
-    letter-spacing: -0.15px;
-    font-weight: 600;
-    color: #b43403;
-    text-align: left;
-    width: 100%;
-    box-sizing: border-box;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    min-width: 0;
-}
-.gift-pill-widget .gift-name {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    flex: 1;
-    min-width: 0;
-}
-.gift-pill-widget:hover {
-    background: #fff7ed;
-    border-color: #e0592a;
-    transform: translateY(-1px);
-}
-.gift-pill-widget.active {
-    background: linear-gradient(135deg, #e0592a 0%, #c4471b 100%);
-    border-color: #e0592a;
-    color: #ffffff;
-    box-shadow: 0 3px 10px rgba(224, 89, 42, 0.25);
-}
-.gift-pill-widget.active i {
-    color: #ffffff !important;
-}
-
-/* Shop Toolbar (Right Side) */
-.shop-toolbar {
-    border: 1px solid rgba(224, 89, 42, 0.14);
-}
-.active-filter-tags .active-tag {
-    background: #f5ebe1;
-    color: #b5491d;
-    font-size: 0.76rem;
-    font-weight: 600;
-    padding: 3px 10px;
-    border-radius: 999px;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-.active-filter-tags .active-tag:hover {
-    background: #edd2be;
-    color: #8f320e;
-}
-.active-filter-tags .active-tag i {
-    font-size: 0.7rem;
-}
-
-
-
-/* Smooth Viewport Rendering for Product Columns (Fluid 60fps/120fps Scroll) */
-.product-card-col {
-    content-visibility: auto;
-    contain-intrinsic-size: 0 440px;
-    transition: opacity 0.25s ease, transform 0.25s ease;
-}
-.product-card-col.d-none {
-    display: none !important;
-}
-
-/* Gomie Apple-Style Product Card Component (Synchronized with Homepage & Editorial Brand) */
-.gomie-product-item {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-}
-
-.gomie-product-card.apple-style {
-    background: #ffffff;
-    border-radius: 20px;
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
-    border: 1px solid rgba(224, 89, 42, 0.08);
-    overflow: hidden;
-    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
-    position: relative;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    will-change: transform, box-shadow;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    transform: translateZ(0);
-}
-
-.gomie-product-card.apple-style:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 16px 32px rgba(224, 89, 42, 0.12);
-    border-color: rgba(224, 89, 42, 0.25);
-}
-
-/* Khối ảnh đồng nhất màu nền với card (Loại bỏ triệt để viền hộp/card-inside-card) */
-.gomie-product-card.apple-style .product-image-wrapper {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    overflow: hidden;
-    background: #ffffff;
-    border-bottom: 1px solid #f6f3ee;
-}
-
-.gomie-product-card.apple-style .product-image-container {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #ffffff;
-}
-
-.gomie-product-card.apple-style .product-image-link {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    background: #ffffff;
-}
-
-.gomie-product-card.apple-style .product-image {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    padding: 16px;
-    image-rendering: auto;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    transform: translateZ(0);
-    transition: transform 0.3s ease;
-}
-
-/* Loại bỏ phóng to scale(1.06) gây vỡ hạt/mờ ảnh trên màn hình Retina khi hover */
-.gomie-product-card.apple-style:hover .product-image {
-    transform: none;
-}
-
-.gomie-product-card.apple-style .product-content {
-    padding: 16px 18px 20px;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    gap: 8px;
-    background: #ffffff;
-}
-
-.gomie-product-card.apple-style .product-category {
-    margin: 0;
-}
-
-.gomie-product-card.apple-style .category-label {
-    display: inline-block;
-    background: #fff7ed;
-    color: #c2410c;
-    padding: 3px 8px;
-    border-radius: 6px;
-    font-size: 11px;
-    font-weight: 700;
-    text-decoration: none;
-    border: 1px solid rgba(234, 88, 12, 0.16);
-    width: fit-content;
-}
-
-.gomie-product-card.apple-style .product-title {
-    margin: 0;
-    font-size: 14.5px;
-    font-weight: 700;
-    line-height: 1.45;
-    color: #1e293b;
-    min-height: 42px;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-.gomie-product-card.apple-style .product-title a {
-    color: #1e293b;
-    text-decoration: none;
-    transition: color 0.2s ease;
-}
-
-.gomie-product-card.apple-style:hover .product-title a {
-    color: #e0592a;
-}
-
-.gomie-product-card.apple-style .product-stats {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 2px 0;
-    padding: 0;
-    gap: 6px;
-}
-
-.gomie-product-card.apple-style .stat-item {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    flex: 1;
-    justify-content: center;
-    padding: 4px 6px;
-    background: #f8fafc;
-    border-radius: 6px;
-    border: none;
-}
-
-.gomie-product-card.apple-style .stat-item i {
-    font-size: 10px;
-    color: #e0592a;
-}
-
-.gomie-product-card.apple-style .stat-value {
-    font-size: 11px;
-    font-weight: 700;
-    color: #475569;
-}
-
-.gomie-product-card.apple-style .star-rating {
-    display: flex;
-    align-items: center;
-    gap: 2px;
-}
-
-.gomie-product-card.apple-style .star-rating i {
-    font-size: 9px;
-    color: #f59e0b;
-}
-
-.gomie-product-card.apple-style .product-price-section {
-    margin: 6px 0;
-    text-align: center;
-    margin-top: auto;
-}
-
-.gomie-product-card.apple-style .product-price {
-    color: #e0592a;
-    font-weight: 800;
-    font-size: 22px;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    line-height: 1.2;
-}
-
-.gomie-product-card.apple-style .product-price del {
-    color: #94a3b8;
-    font-size: 13px;
-    font-weight: 400;
-    text-decoration: line-through;
-}
-
-.gomie-product-card.apple-style .product-price ins {
-    text-decoration: none;
-    color: #e0592a;
-}
-
-.gomie-product-card.apple-style .product-actions {
-    margin-top: 4px;
-}
-
-.gomie-product-card.apple-style .btn-add-to-cart-apple {
-    width: 100%;
-    background: #e0592a;
-    color: #ffffff !important;
-    border: none;
-    border-radius: 12px;
-    padding: 9px 16px;
-    font-size: 13.5px;
-    font-weight: 700;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    transition: all 0.25s ease;
-}
-
-.gomie-product-card.apple-style .btn-add-to-cart-apple:hover {
-    background: #c4471b;
-    box-shadow: 0 4px 12px rgba(224, 89, 42, 0.25);
-    color: #ffffff !important;
-}
-
-/* Nút Xem Thêm Tác Phẩm */
-.btn-load-more-editorial {
-    background: #ffffff;
-    color: #e0592a;
-    border: 1.5px solid #e0592a;
-    padding: 10px 28px;
-    border-radius: 999px;
-    font-weight: 700;
-    font-size: 14px;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.25s ease;
-    cursor: pointer;
-    box-shadow: 0 4px 14px rgba(224, 89, 42, 0.08);
-}
-.btn-load-more-editorial:hover {
-    background: #e0592a;
-    color: #ffffff;
-    box-shadow: 0 6px 20px rgba(224, 89, 42, 0.25);
-    transform: translateY(-2px);
-}
-.btn-load-more-editorial .load-more-badge {
-    background: rgba(224, 89, 42, 0.1);
-    color: #e0592a;
-    border-radius: 999px;
-    padding: 2px 8px;
-    font-size: 12px;
-    font-weight: 800;
-    transition: all 0.2s ease;
-}
-.btn-load-more-editorial:hover .load-more-badge {
-    background: #ffffff;
-    color: #e0592a;
-}
-
-/* Bottom Feature */
-.feature-banner-box {
-    background: #ffffff;
-    border: 1px solid rgba(224, 89, 42, 0.15);
-}
-.banner-title {
-    font-size: clamp(1.4rem, 2.5vw, 2rem);
-}
-.btn-banner-primary {
-    display: inline-flex;
-    align-items: center;
-    background: #e0592a;
-    color: #fff;
-    padding: 0.75rem 1.6rem;
-    border-radius: 999px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: background 0.2s;
-}
-.btn-banner-primary:hover {
-    background: #c4471b;
-    color: #fff;
-}
-.btn-banner-secondary {
-    display: inline-flex;
-    align-items: center;
-    background: transparent;
-    color: #1a1f2c;
-    padding: 0.75rem 1.6rem;
-    border-radius: 999px;
-    border: 1px solid rgba(0,0,0,0.15);
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.2s;
-}
-.btn-banner-secondary:hover {
-    background: #1a1f2c;
-    color: #fff;
-}
-
-.banner-stat-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-}
-.stat-card {
-    background: #fbf8f3;
-    padding: 1.25rem 1.5rem;
-    border-radius: 14px;
-    border-left: 4px solid #e0592a;
-    text-align: left;
-}
-.stat-big {
-    display: block;
-    font-size: 1.6rem;
-    font-weight: 800;
-    color: #1a1f2c;
-    line-height: 1.1;
-}
-.stat-txt {
-    font-size: 0.85rem;
-    color: #736b63;
-}
-
-/* Toast */
-.cart-toast {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    background: #1a1f2c;
-    color: #ffffff;
-    padding: 1rem 1.25rem;
-    border-radius: 14px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-    z-index: 99999;
-    transform: translateY(150%);
-    opacity: 0;
-    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), opacity 0.4s ease;
-    max-width: 420px;
-}
-.cart-toast.show {
-    transform: translateY(0);
-    opacity: 1;
-}
-.toast-icon {
-    width: 32px;
-    height: 32px;
-    background: #10b981;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.85rem;
-    color: #fff;
-    flex-shrink: 0;
-}
-.btn-toast-view {
-    background: #e0592a;
-    color: #fff;
-    padding: 0.4rem 0.9rem;
-    border-radius: 999px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    text-decoration: none;
-    white-space: nowrap;
-}
-.btn-toast-view:hover {
-    background: #c4471b;
-    color: #fff;
-}
-</style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

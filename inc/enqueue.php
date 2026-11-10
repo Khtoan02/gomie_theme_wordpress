@@ -32,7 +32,7 @@ function gomie_enqueue_scripts() {
     wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css', array(), '6.4.0');
 
     // Global flags for optimization
-    $is_woocommerce_page = (is_shop() || is_product_category() || is_product_tag() || is_product_taxonomy());
+    $is_woocommerce_page = (is_shop() || is_product_category() || is_product_tag() || is_product_taxonomy() || is_page('san-pham') || is_page_template('page-san-pham.php'));
     $is_category_page = (is_product_category() && (is_product_category('nha-hang') || is_product_category('khach-san') || is_product_category('qua-tang')));
     $aos_loaded = false;
 
@@ -183,7 +183,7 @@ function gomie_enqueue_scripts() {
     // Shop Page CSS & JS - OPTIMIZED LOADING
     if ($is_woocommerce_page) {
         // Shop Page CSS (depends on homepage-products.css for base styles)
-        wp_enqueue_style('shop-page', get_template_directory_uri() . '/assets/css/shop-page.css', array('homepage-products', 'gomie-colors'), GOMIE_THEME_VERSION);
+        wp_enqueue_style('shop-page', get_template_directory_uri() . '/assets/css/shop-page.css', array('homepage-products', 'gomie-colors'), filemtime(get_template_directory() . '/assets/css/shop-page.css'));
         
         // Only load AOS if not already loaded
         if (!wp_script_is('aos-js', 'enqueued') && !$aos_loaded) {

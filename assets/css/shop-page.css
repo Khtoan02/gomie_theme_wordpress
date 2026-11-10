@@ -1,598 +1,795 @@
 /**
- * Shop Page CSS - Gomie Theme
- * Reuses and optimizes existing styles from homepage-products.css and restaurant-category.css
- * Minimal spacing design with consistent color scheme
+ * Shop Page CSS - Gomie Theme Editorial V11
+ * Loaded in <head> to eliminate Flash of Unstyled Content (FOUC)
  */
-
-/* ===== SHOP PAGE SPECIFIC STYLES ===== */
-
-/* Shop Hero Section - Clean Restaurant Style Design */
-.shop-hero {
-  position: relative;
-  min-height: 60vh;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+.shop-breadcrumb .breadcrumb-item::after {
+    display: none !important;
+    content: none !important;
+}
+.shop-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+    content: "/" !important;
+    padding: 0 8px;
+    color: #c4b5a5 !important;
+}
+/* ==========================================================================
+   GOMIE EDITORIAL SHOP STYLES
+   ========================================================================== */
+.gomie-shop-editorial-page {
+    background: #fbf8f3 url('../images/glazes/Background-1.png') repeat;
+    min-height: 100vh;
+    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+    color: #2b2b2b;
 }
 
-.shop-hero .hero-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
+/* Hero Section */
+.shop-hero-editorial {
+    padding: 3rem 1rem 2.5rem;
+    position: relative;
+    border-bottom: 1px solid rgba(224, 89, 42, 0.12);
 }
 
-.shop-hero .hero-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    135deg,
-    rgba(44, 62, 80, 0.8) 0%,
-    rgba(230, 126, 34, 0.6) 100%
-  );
-  z-index: 2;
+.shop-breadcrumb .breadcrumb {
+    background: transparent;
+    font-size: 0.88rem;
+}
+.shop-breadcrumb a {
+    color: #8c827a;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.shop-breadcrumb a:hover {
+    color: #e0592a;
+}
+.shop-breadcrumb .active {
+    color: #e0592a;
+    font-weight: 600;
 }
 
-.shop-hero .hero-bg-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: brightness(0.7) saturate(1.2);
+.shop-pill-badge {
+    display: inline-block;
+    padding: 0.4rem 1.2rem;
+    background: rgba(224, 89, 42, 0.08);
+    color: #b3471e;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    border-radius: 999px;
+    border: 1px solid rgba(224, 89, 42, 0.25);
 }
 
-/* Hero Content - Restaurant Style - Specific to Shop Hero */
-.shop-hero .hero-content {
-  position: relative;
-  z-index: 3;
-  color: #ffffff;
-  text-align: center;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-}
-
-/* Breadcrumb - Specific to Shop Hero only */
-.shop-hero .breadcrumb-nav {
-  margin-bottom: 2rem;
-}
-
-.shop-hero .breadcrumb-nav .breadcrumb {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  font-size: 0.9rem;
-}
-
-.shop-hero .breadcrumb-nav .breadcrumb li {
-  display: flex;
-  align-items: center;
-}
-
-.shop-hero .breadcrumb-nav .breadcrumb li:not(:last-child)::after {
-  content: "/";
-  margin: 0 0.5rem;
-  opacity: 0.6;
-}
-
-.shop-hero .breadcrumb-nav .breadcrumb a {
-  color: rgba(255, 255, 255, 0.8);
-  text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.shop-hero .breadcrumb-nav .breadcrumb a:hover {
-  color: #f39c12;
-}
-
-.shop-hero .breadcrumb-nav .breadcrumb .current {
-  color: #ffffff;
-  font-weight: 600;
-}
-
-/* Category Badge */
-.shop-hero .category-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 0.75rem 1.5rem;
-  border-radius: 50px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.shop-hero .category-badge:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
-}
-
-/* Category Title */
-.shop-hero .category-title {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: 700;
-  margin-bottom: 1.5rem;
-  background: linear-gradient(135deg, #ffffff 0%, #f39c12 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  line-height: 1.2;
-}
-
-/* Category Description */
-.shop-hero .category-description {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  margin-bottom: 2rem;
-  opacity: 0.9;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Category Stats - Restaurant Style */
-.shop-hero .category-stats {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  flex-wrap: wrap;
-  margin-top: 2rem;
-}
-
-.shop-hero .stat-item {
-  text-align: center;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 1rem 1.5rem;
-  border-radius: 16px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.shop-hero .stat-item:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: translateY(-4px);
-}
-
-.shop-hero .stat-number {
-  display: block;
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #f39c12;
-  margin-bottom: 0.25rem;
-}
-
-.shop-hero .stat-label {
-  font-size: 0.9rem;
-  opacity: 0.8;
-}
-
-/* Category Sections Wrapper */
-.shop-categories-wrapper {
-  background: var(--color-background);
-  padding: 2rem 0; /* Minimal padding as requested */
-}
-
-.category-section {
-  padding: 3rem 0; /* Reduced from default section padding */
-  position: relative;
-}
-
-.category-section-featured {
-  background: linear-gradient(
-    135deg,
-    var(--ceramic-warm) 0%,
-    var(--ceramic-beige) 100%
-  );
-}
-
-/* Section Heading - Reuse with minimal spacing */
-.category-section .section-heading {
-  margin-bottom: 2rem; /* Reduced from 4rem */
-  text-align: center;
-}
-
-.category-section .section-heading .title {
-  font-size: clamp(1.8rem, 3.5vw, 2.5rem); /* Smaller than homepage */
-  margin-bottom: 0.8rem; /* Reduced spacing */
-}
-
-.category-section .section-heading .sub {
-  margin-bottom: 1.5rem; /* Reduced spacing */
-}
-
-.category-section .section-heading .cat-cta {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-/* Badge Category */
-.badge-cat {
-  background: var(--gomie-white);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  padding: 0.5rem 1rem; /* Minimal padding */
-  border-radius: 12px;
-  font-weight: 600;
-  color: var(--gomie-dark);
-  font-size: 0.875rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-}
-
-/* Product Grid - Reuse existing grid with minimal gaps */
-.category-section .gomie-product-grid {
-  gap: 1rem; /* Reduced from 1.5rem for minimal spacing */
-  margin-top: 1.5rem; /* Reduced spacing */
-}
-
-/* WooCommerce Integration */
-.woocommerce-products-wrapper {
-  margin-top: 2rem;
-}
-
-.woocommerce-products-wrapper .woocommerce-result-count,
-.woocommerce-products-wrapper .woocommerce-ordering {
-  margin-bottom: 1rem; /* Minimal spacing */
-}
-
-/* Shop Ordering and Results */
-.woocommerce-ordering select,
-.woocommerce-result-count {
-  font-family: var(--font-primary);
-  color: var(--gomie-dark);
-}
-
-.woocommerce-ordering select {
-  background: var(--gomie-white);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
-}
-
-/* No Products Found */
-.no-products-found {
-  text-align: center;
-  padding: 3rem 1rem;
-  background: var(--gomie-white);
-  border-radius: 20px;
-  box-shadow: var(--shadow-light);
-  margin: 2rem 0;
-}
-
-.no-products-content i {
-  font-size: 3rem;
-  color: var(--gomie-gray-light);
-  margin-bottom: 1rem;
-}
-
-.no-products-content h3 {
-  color: var(--gomie-dark);
-  margin-bottom: 0.5rem;
-}
-
-.no-products-content p {
-  color: var(--gomie-gray);
-  margin-bottom: 1.5rem;
-}
-
-/* SEO Content Section */
-.shop-seo-content {
-  background: var(--gomie-white);
-  padding: 3rem 0; /* Minimal padding */
-}
-
-.seo-content-wrapper {
-  background: var(--ceramic-cream);
-  border-radius: 20px;
-  padding: 2.5rem; /* Reduced padding */
-  box-shadow: var(--shadow-light);
-}
-
-.seo-content-text h2 {
-  color: var(--gomie-dark);
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  font-weight: 700;
-  margin-bottom: 1rem; /* Minimal spacing */
-  line-height: 1.3;
-}
-
-.seo-content-text p {
-  color: var(--gomie-gray);
-  line-height: 1.7;
-  margin-bottom: 1rem; /* Reduced spacing */
-}
-
-.seo-highlights {
-  margin-top: 1.5rem;
-}
-
-.highlight-item {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 0.75rem; /* Minimal spacing */
-  color: var(--gomie-dark);
-  font-size: 0.95rem;
-}
-
-.highlight-item i {
-  color: var(--gomie-primary);
-  font-size: 1rem;
-  flex-shrink: 0;
-}
-
-.seo-content-image img {
-  box-shadow: var(--shadow-medium);
-}
-
-/* Shop CTA Section */
-.shop-cta-section {
-  background: linear-gradient(
-    135deg,
-    var(--gomie-dark) 0%,
-    var(--gomie-dark-light) 100%
-  );
-  padding: 2.5rem 0; /* Minimal padding */
-  color: var(--gomie-white);
-}
-
-.shop-cta-section .cta-final {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 20px;
-  padding: 2rem; /* Reduced padding */
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.shop-cta-section h3 {
-  color: var(--gomie-white);
-  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
-  margin-bottom: 0.5rem; /* Minimal spacing */
-}
-
-.shop-cta-section p {
-  color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 0;
-}
-
-/* Pagination - Reuse existing styles with minimal spacing */
-.woocommerce-pagination {
-  margin-top: 2rem; /* Reduced spacing */
-  text-align: center;
-}
-
-.woocommerce-pagination .page-numbers {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px; /* Smaller pagination buttons */
-  height: 40px;
-  margin: 0 0.25rem; /* Minimal spacing */
-  border-radius: 8px;
-  background: var(--gomie-white);
-  color: var(--gomie-dark);
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.875rem;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  transition: all var(--transition-fast);
-}
-
-.woocommerce-pagination .page-numbers:hover,
-.woocommerce-pagination .page-numbers.current {
-  background: var(--gradient-button);
-  color: var(--gomie-white);
-  border-color: transparent;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-light);
-}
-
-/* ===== RESPONSIVE DESIGN ===== */
-
-/* Tablet */
-@media (max-width: 992px) {
-  .shop-hero {
-    min-height: 50vh;
-  }
-
-  .shop-hero .hero-content {
-    padding: 1.5rem 1rem;
-  }
-
-  .shop-hero .category-title {
-    font-size: clamp(2rem, 5vw, 3rem);
-  }
-
-  .shop-hero .category-stats {
-    gap: 1.5rem;
-  }
-
-  .category-section {
-    padding: 2rem 0;
-  }
-
-  .category-section .section-heading {
-    margin-bottom: 1.5rem;
-  }
-
-  .seo-content-wrapper {
-    padding: 2rem;
-  }
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-  .shop-hero {
-    min-height: 50vh;
-  }
-
-  .shop-hero .hero-content {
-    padding: 1rem;
-  }
-
-  .shop-hero .category-title {
-    font-size: clamp(1.8rem, 6vw, 2.5rem);
-  }
-
-  .shop-hero .category-description {
-    font-size: 1rem;
-  }
-
-  .shop-hero .category-stats {
-    gap: 1rem;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .shop-hero .stat-item {
-    min-width: 120px;
-  }
-
-  .shop-categories-wrapper {
-    padding: 1rem 0;
-  }
-
-  .category-section {
-    padding: 1.5rem 0;
-  }
-
-  .category-section .section-heading {
+.shop-hero-title {
+    font-size: clamp(1.5rem, 4.2vw, 3rem);
+    font-weight: 800;
+    color: #1a1f2c;
+    letter-spacing: -0.5px;
+    line-height: 1.25;
     margin-bottom: 1rem;
-  }
-
-  .category-section .section-heading .cat-cta {
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .category-section .gomie-product-grid {
-    gap: 0.75rem;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  }
-
-  .seo-content-wrapper {
-    padding: 1.5rem;
-  }
-
-  .shop-cta-section {
-    padding: 2rem 0;
-  }
-
-  .shop-cta-section .cta-final {
-    padding: 1.5rem;
-  }
-
-  .shop-cta-section .cta-actions {
-    margin-top: 1rem;
-  }
+    word-break: keep-all;
+    overflow-wrap: break-word;
+}
+.shop-hero-title .highlight-orange {
+    color: #e0592a;
+    display: inline-block;
 }
 
-@media (max-width: 480px) {
-  .shop-hero {
-    min-height: 50vh;
-  }
+.shop-hero-desc {
+    max-width: 780px;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: #5c554e;
+}
 
-  .shop-hero .hero-content {
-    padding: 1rem 0.5rem;
-  }
-
-  .shop-hero .category-title {
-    font-size: clamp(1.5rem, 8vw, 2rem);
-  }
-
-  .shop-hero .category-badge {
-    font-size: 0.8rem;
-    padding: 0.5rem 1rem;
-  }
-
-  .shop-hero .breadcrumb {
-    font-size: 0.8rem;
-  }
-
-  .category-section .gomie-product-grid {
-    grid-template-columns: 1fr;
+/* Trust Bar */
+.shop-trust-pills .trust-pill-item {
+    display: flex;
+    align-items: center;
     gap: 0.5rem;
-  }
+    background: #ffffff;
+    padding: 0.45rem 1rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    color: #3b3530;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    border: 1px solid rgba(224, 89, 42, 0.12);
+}
+.pill-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+.fire-dot { background: #e0592a; }
+.craft-dot { background: #d97706; }
+.safe-dot { background: #059669; }
+.protect-dot { background: #2563eb; }
 
-  .badge-cat {
-    padding: 0.4rem 0.8rem;
+/* ==========================================================================
+   GOMIE OUTSIDE SIDEBAR FILTER (NẰM BÊN TRÁI CONTAINER SẢN PHẨM)
+   ========================================================================== */
+.shop-body-section {
+    position: relative;
+    width: 100%;
+    z-index: 1;
+}
+
+.shop-canvas-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 32px;
+    max-width: 1680px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Sidebar nằm bên trái, ngoài container của sản phẩm */
+.shop-outside-sidebar {
+    width: 330px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 100px;
+    z-index: 20;
+    transition: all 0.3s ease;
+}
+
+.filter-widget-card {
+    border: 1px solid rgba(224, 89, 42, 0.15);
+    background: #ffffff;
+    padding: 20px 16px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+}
+.filter-widget-card::-webkit-scrollbar {
+    width: 4px;
+}
+.filter-widget-card::-webkit-scrollbar-thumb {
+    background: rgba(224, 89, 42, 0.3);
+    border-radius: 999px;
+}
+
+/* Container sản phẩm rộng rãi chứa đầy đủ 4 cột sản phẩm */
+.shop-products-container {
+    flex: 1;
+    max-width: 1320px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Responsive cho màn hình nhỏ hơn 1200px */
+@media (max-width: 1199.98px) {
+    .shop-canvas-wrapper {
+        display: block;
+        padding: 0 16px;
+    }
+    .shop-outside-sidebar {
+        display: none;
+        width: 100%;
+        position: static;
+        margin-bottom: 24px;
+    }
+    .shop-outside-sidebar.show-mobile {
+        display: block;
+        animation: fadeInDown 0.3s ease;
+    }
+    .shop-products-container {
+        max-width: 100%;
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.widget-title {
+    font-size: 1.02rem;
+    letter-spacing: -0.2px;
+}
+.btn-clear-filters {
+    cursor: pointer;
     font-size: 0.8rem;
-  }
+    transition: color 0.2s;
+}
+.btn-clear-filters:hover {
+    color: #e0592a !important;
 }
 
-/* ===== ACCESSIBILITY & PERFORMANCE ===== */
+.filter-group-title {
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #2b2b2b !important;
+}
 
-/* Reduce motion for accessibility */
-@media (prefers-reduced-motion: reduce) {
-  .shop-hero .category-badge,
-  .shop-hero .stat-item {
-    transition: none;
-  }
+/* ==========================================================================
+   TỐI ƯU GIAO DIỆN BỘ LỌC (COMPACT 2-COLUMN SWATCH & ICON GRID - NO COUNTERS)
+   ========================================================================== */
 
-  .shop-hero .category-badge:hover,
-  .shop-hero .stat-item:hover {
+/* Glaze Swatches (Lưới 2 cột sắc men) */
+.glaze-grid-items {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+}
+.glaze-chip-widget {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #ffffff;
+    border: 1px solid #f1ece5;
+    padding: 6px 8px;
+    border-radius: 9px;
+    font-size: 11.5px;
+    letter-spacing: -0.15px;
+    font-weight: 600;
+    color: #4a453f;
+    text-align: left;
+    width: 100%;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 0;
+}
+.glaze-chip-widget .chip-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    min-width: 0;
+}
+.glaze-chip-widget.glaze-all {
+    width: 100%;
+    background: #fbf9f6;
+    border-color: #ebdcd0;
+    justify-content: flex-start;
+}
+.glaze-chip-widget:hover {
+    background: #fff8f3;
+    border-color: rgba(224, 89, 42, 0.3);
+    color: #e0592a;
+}
+.glaze-chip-widget.active {
+    background: #1e293b;
+    border-color: #1e293b;
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(30, 41, 59, 0.25);
+}
+
+.chip-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+.chip-all { background: conic-gradient(#0b89e7, #78350f, #d97706, #059669, #475569); }
+.chip-img-avatar {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+/* Category Tableware (Lưới 2 cột có Icon trực quan) */
+.cat-grid-items {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+}
+.cat-pill-widget {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #ffffff;
+    border: 1px solid #f1ece5;
+    padding: 6px 8px;
+    border-radius: 9px;
+    font-size: 11.5px;
+    letter-spacing: -0.15px;
+    font-weight: 600;
+    color: #4a453f;
+    text-align: left;
+    width: 100%;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 0;
+}
+.cat-pill-widget .cat-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    min-width: 0;
+}
+.cat-pill-widget .cat-icon {
+    font-size: 12px;
+    color: #e0592a;
+    flex-shrink: 0;
+    width: 14px;
+    text-align: center;
+}
+.cat-pill-widget.cat-pill-all {
+    width: 100%;
+    background: #fbf9f6;
+    border-color: #ebdcd0;
+}
+.cat-pill-widget:hover {
+    background: #fff8f3;
+    border-color: rgba(224, 89, 42, 0.3);
+    color: #e0592a;
+}
+.cat-pill-widget.active {
+    background: #e0592a;
+    border-color: #e0592a;
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(224, 89, 42, 0.25);
+}
+.cat-pill-widget.active .cat-icon {
+    color: #ffffff !important;
+}
+
+/* Gift & HoReCa Projects Block (Khối riêng biệt cao cấp) */
+.gift-grid-items {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+}
+.gift-pill-widget {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #fffcf9;
+    border: 1px dashed rgba(224, 89, 42, 0.35);
+    padding: 6px 8px;
+    border-radius: 9px;
+    font-size: 11.5px;
+    letter-spacing: -0.15px;
+    font-weight: 600;
+    color: #b43403;
+    text-align: left;
+    width: 100%;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 0;
+}
+.gift-pill-widget .gift-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    min-width: 0;
+}
+.gift-pill-widget:hover {
+    background: #fff7ed;
+    border-color: #e0592a;
+    transform: translateY(-1px);
+}
+.gift-pill-widget.active {
+    background: linear-gradient(135deg, #e0592a 0%, #c4471b 100%);
+    border-color: #e0592a;
+    color: #ffffff;
+    box-shadow: 0 3px 10px rgba(224, 89, 42, 0.25);
+}
+.gift-pill-widget.active i {
+    color: #ffffff !important;
+}
+
+/* Shop Toolbar (Right Side) */
+.shop-toolbar {
+    border: 1px solid rgba(224, 89, 42, 0.14);
+}
+.active-filter-tags .active-tag {
+    background: #f5ebe1;
+    color: #b5491d;
+    font-size: 0.76rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.active-filter-tags .active-tag:hover {
+    background: #edd2be;
+    color: #8f320e;
+}
+.active-filter-tags .active-tag i {
+    font-size: 0.7rem;
+}
+
+
+
+/* Smooth Viewport Rendering for Product Columns (Fluid 60fps/120fps Scroll) */
+.product-card-col {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 440px;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.product-card-col.d-none {
+    display: none !important;
+}
+
+/* Gomie Apple-Style Product Card Component (Synchronized with Homepage & Editorial Brand) */
+.gomie-product-item {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.gomie-product-card.apple-style {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(224, 89, 42, 0.08);
+    overflow: hidden;
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    will-change: transform, box-shadow;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+}
+
+.gomie-product-card.apple-style:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 32px rgba(224, 89, 42, 0.12);
+    border-color: rgba(224, 89, 42, 0.25);
+}
+
+/* Khối ảnh đồng nhất màu nền với card (Loại bỏ triệt để viền hộp/card-inside-card) */
+.gomie-product-card.apple-style .product-image-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: #ffffff;
+    border-bottom: 1px solid #f6f3ee;
+}
+
+.gomie-product-card.apple-style .product-image-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+}
+
+.gomie-product-card.apple-style .product-image-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+}
+
+.gomie-product-card.apple-style .product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 16px;
+    image-rendering: auto;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    transition: transform 0.3s ease;
+}
+
+/* Loại bỏ phóng to scale(1.06) gây vỡ hạt/mờ ảnh trên màn hình Retina khi hover */
+.gomie-product-card.apple-style:hover .product-image {
     transform: none;
-  }
-
-  .category-section,
-  .seo-content-wrapper,
-  .shop-cta-section {
-    animation: none;
-  }
-
-  .gomie-product-card.apple-style {
-    transition: none;
-  }
-
-  .gomie-product-card.apple-style:hover {
-    transform: none;
-  }
 }
 
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  .category-section-light,
-  .category-section-dark {
-    border: 2px solid var(--gomie-dark);
-  }
-
-  .badge-cat {
-    border: 2px solid var(--gomie-dark);
-  }
+.gomie-product-card.apple-style .product-content {
+    padding: 16px 18px 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 8px;
+    background: #ffffff;
 }
 
-/* Print styles */
-@media print {
-  .shop-hero,
-  .shop-cta-section {
-    display: none;
-  }
+.gomie-product-card.apple-style .product-category {
+    margin: 0;
+}
 
-  .category-section {
-    padding: 1rem 0;
-    background: white !important;
-  }
+.gomie-product-card.apple-style .category-label {
+    display: inline-block;
+    background: #fff7ed;
+    color: #c2410c;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-decoration: none;
+    border: 1px solid rgba(234, 88, 12, 0.16);
+    width: fit-content;
+}
 
-  .gomie-product-card.apple-style {
-    break-inside: avoid;
-    box-shadow: none;
-    border: 1px solid #ccc;
-  }
+.gomie-product-card.apple-style .product-title {
+    margin: 0;
+    font-size: 14.5px;
+    font-weight: 700;
+    line-height: 1.45;
+    color: #1e293b;
+    min-height: 42px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.gomie-product-card.apple-style .product-title a {
+    color: #1e293b;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.gomie-product-card.apple-style:hover .product-title a {
+    color: #e0592a;
+}
+
+.gomie-product-card.apple-style .product-stats {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 2px 0;
+    padding: 0;
+    gap: 6px;
+}
+
+.gomie-product-card.apple-style .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+    justify-content: center;
+    padding: 4px 6px;
+    background: #f8fafc;
+    border-radius: 6px;
+    border: none;
+}
+
+.gomie-product-card.apple-style .stat-item i {
+    font-size: 10px;
+    color: #e0592a;
+}
+
+.gomie-product-card.apple-style .stat-value {
+    font-size: 11px;
+    font-weight: 700;
+    color: #475569;
+}
+
+.gomie-product-card.apple-style .star-rating {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.gomie-product-card.apple-style .star-rating i {
+    font-size: 9px;
+    color: #f59e0b;
+}
+
+.gomie-product-card.apple-style .product-price-section {
+    margin: 6px 0;
+    text-align: center;
+    margin-top: auto;
+}
+
+.gomie-product-card.apple-style .product-price {
+    color: #e0592a;
+    font-weight: 800;
+    font-size: 22px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    line-height: 1.2;
+}
+
+.gomie-product-card.apple-style .product-price del {
+    color: #94a3b8;
+    font-size: 13px;
+    font-weight: 400;
+    text-decoration: line-through;
+}
+
+.gomie-product-card.apple-style .product-price ins {
+    text-decoration: none;
+    color: #e0592a;
+}
+
+.gomie-product-card.apple-style .product-actions {
+    margin-top: 4px;
+}
+
+.gomie-product-card.apple-style .btn-add-to-cart-apple {
+    width: 100%;
+    background: #e0592a;
+    color: #ffffff !important;
+    border: none;
+    border-radius: 12px;
+    padding: 9px 16px;
+    font-size: 13.5px;
+    font-weight: 700;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.25s ease;
+}
+
+.gomie-product-card.apple-style .btn-add-to-cart-apple:hover {
+    background: #c4471b;
+    box-shadow: 0 4px 12px rgba(224, 89, 42, 0.25);
+    color: #ffffff !important;
+}
+
+/* Nút Xem Thêm Tác Phẩm */
+.btn-load-more-editorial {
+    background: #ffffff;
+    color: #e0592a;
+    border: 1.5px solid #e0592a;
+    padding: 10px 28px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.25s ease;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(224, 89, 42, 0.08);
+}
+.btn-load-more-editorial:hover {
+    background: #e0592a;
+    color: #ffffff;
+    box-shadow: 0 6px 20px rgba(224, 89, 42, 0.25);
+    transform: translateY(-2px);
+}
+.btn-load-more-editorial .load-more-badge {
+    background: rgba(224, 89, 42, 0.1);
+    color: #e0592a;
+    border-radius: 999px;
+    padding: 2px 8px;
+    font-size: 12px;
+    font-weight: 800;
+    transition: all 0.2s ease;
+}
+.btn-load-more-editorial:hover .load-more-badge {
+    background: #ffffff;
+    color: #e0592a;
+}
+
+/* Bottom Feature */
+.feature-banner-box {
+    background: #ffffff;
+    border: 1px solid rgba(224, 89, 42, 0.15);
+}
+.banner-title {
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
+}
+.btn-banner-primary {
+    display: inline-flex;
+    align-items: center;
+    background: #e0592a;
+    color: #fff;
+    padding: 0.75rem 1.6rem;
+    border-radius: 999px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+.btn-banner-primary:hover {
+    background: #c4471b;
+    color: #fff;
+}
+.btn-banner-secondary {
+    display: inline-flex;
+    align-items: center;
+    background: transparent;
+    color: #1a1f2c;
+    padding: 0.75rem 1.6rem;
+    border-radius: 999px;
+    border: 1px solid rgba(0,0,0,0.15);
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+.btn-banner-secondary:hover {
+    background: #1a1f2c;
+    color: #fff;
+}
+
+.banner-stat-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+.stat-card {
+    background: #fbf8f3;
+    padding: 1.25rem 1.5rem;
+    border-radius: 14px;
+    border-left: 4px solid #e0592a;
+    text-align: left;
+}
+.stat-big {
+    display: block;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #1a1f2c;
+    line-height: 1.1;
+}
+.stat-txt {
+    font-size: 0.85rem;
+    color: #736b63;
+}
+
+/* Toast */
+.cart-toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: #1a1f2c;
+    color: #ffffff;
+    padding: 1rem 1.25rem;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    z-index: 99999;
+    transform: translateY(150%);
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), opacity 0.4s ease;
+    max-width: 420px;
+}
+.cart-toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+.toast-icon {
+    width: 32px;
+    height: 32px;
+    background: #10b981;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    color: #fff;
+    flex-shrink: 0;
+}
+.btn-toast-view {
+    background: #e0592a;
+    color: #fff;
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.btn-toast-view:hover {
+    background: #c4471b;
+    color: #fff;
 }
