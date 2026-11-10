@@ -287,6 +287,214 @@ class Gomie_Glaze_Attribute_Meta {
     }
 
     /**
+     * Thông tin hình ảnh mẫu và thông số căn chỉnh quang học tương ứng slug
+     */
+    public static function get_curated_asset_info($slug) {
+        $clean = sanitize_title(str_replace('men-', '', $slug));
+        $map = array(
+            'sapphire'          => array('img' => 'Gomie-men-saphire.png', 'scale' => '1.05', 'shift_y' => '13px'),
+            'canh-gian'         => array('img' => 'Gomie-men-canh-gian.png', 'scale' => '1.086', 'shift_y' => '23px'),
+            'gam-vang'          => array('img' => 'Gomie-men-gam-vang.png', 'scale' => '0.98', 'shift_y' => '10.5px'),
+            'hoa-bien'          => array('img' => 'Gomie-men-xanh-song-bien.png', 'scale' => '1.01', 'shift_y' => '15px'),
+            'song-bien'         => array('img' => 'Gomie-men-xanh-song-bien.png', 'scale' => '1.01', 'shift_y' => '15px'),
+            'xanh-song-bien'    => array('img' => 'Gomie-men-xanh-song-bien.png', 'scale' => '1.01', 'shift_y' => '15px'),
+            'xanh-hoa-bien'     => array('img' => 'Gomie-men-xanh-song-bien.png', 'scale' => '1.01', 'shift_y' => '15px'),
+            'reu'               => array('img' => 'Gomie-men-reu.png', 'scale' => '0.903', 'shift_y' => '-11px'),
+            'ngoc-trai'         => array('img' => 'xanh-ngoc-tach-nen-955x800.png', 'scale' => '0.933', 'shift_y' => '2px'),
+            'xanh-ngoc'         => array('img' => 'xanh-ngoc-tach-nen-955x800.png', 'scale' => '0.933', 'shift_y' => '2px'),
+            'hong-tuyet'        => array('img' => 'Bo-hong-tuyet-mh-955x800.png', 'scale' => '0.915', 'shift_y' => '1px'),
+            'nau-tuyet'         => array('img' => 'Gomie-men-nau-tuyet.png', 'scale' => '1.00', 'shift_y' => '15.5px'),
+            'thien-thanh'       => array('img' => 'bo-mau-men-955x800.png', 'scale' => '0.916', 'shift_y' => '1.5px'),
+            'xanh-thien-thanh'  => array('img' => 'bo-mau-men-955x800.png', 'scale' => '0.916', 'shift_y' => '1.5px'),
+        );
+        return $map[$clean] ?? array('img' => 'bo-mau-men-955x800.png', 'scale' => '1.0', 'shift_y' => '0px');
+    }
+
+    /**
+     * Thông tin cốt truyện và miêu tả theo slug
+     */
+    public static function get_curated_text_info($slug) {
+        $clean = sanitize_title(str_replace('men-', '', $slug));
+        $map = array(
+            'sapphire' => array(
+                'storyline' => 'Một khoảng xanh sâu thẳm và kiêu hãnh',
+                'desc'      => 'Sapphire mang sắc xanh thẫm đầy cuốn hút, gợi mặt biển khi chiều buông và bầu trời trước giờ lên đèn. Vừa tĩnh tại vừa có cá tính, sắc men đem tới nét sang trọng riêng cho bàn ăn mang tinh thần đương đại.',
+            ),
+            'canh-gian' => array(
+                'storyline' => 'Nét trầm ấm của những điều thân thuộc',
+                'desc'      => 'Trong sắc nâu sóng sánh của men Cánh Gián là cảm giác thân quen như gian bếp chiều muộn. Vẻ đẹp mộc mạc, có chiều sâu ấy khiến những món gốm trở nên gần gũi, như đã thuộc về mỗi bữa cơm nhà từ lâu.',
+            ),
+            'gam-vang' => array(
+                'storyline' => 'Ánh vàng nâng niu những cuộc sum vầy',
+                'desc'      => 'Gấm Vàng gợi sắc nắng dịu trải trên mặt bàn, vừa rạng rỡ vừa đằm thắm. Sắc men đem lại nét trang nhã cho từng món gốm, để cả bữa ăn thường ngày cũng có chút dư vị của một dịp đặc biệt.',
+            ),
+            'hoa-bien' => array(
+                'storyline' => 'Bản hòa sắc không ngừng biến chuyển',
+                'desc'      => 'Xanh Hỏa Biến cuốn hút bởi những lớp xanh chuyển sắc mềm mại, gợi dòng nước luôn đổi thay dưới ánh sáng. Vẻ đẹp ấy không nằm ở sự đồng nhất, mà ở những biến chuyển đầy ngẫu hứng.',
+            ),
+            'song-bien' => array(
+                'storyline' => 'Bản hòa sắc không ngừng biến chuyển',
+                'desc'      => 'Xanh Hỏa Biến cuốn hút bởi những lớp xanh chuyển sắc mềm mại, gợi dòng nước luôn đổi thay dưới ánh sáng. Vẻ đẹp ấy không nằm ở sự đồng nhất, mà ở những biến chuyển đầy ngẫu hứng.',
+            ),
+            'xanh-song-bien' => array(
+                'storyline' => 'Bản hòa sắc không ngừng biến chuyển',
+                'desc'      => 'Xanh Hỏa Biến cuốn hút bởi những lớp xanh chuyển sắc mềm mại, gợi dòng nước luôn đổi thay dưới ánh sáng. Vẻ đẹp ấy không nằm ở sự đồng nhất, mà ở những biến chuyển đầy ngẫu hứng.',
+            ),
+            'reu' => array(
+                'storyline' => 'Mang bình yên của thiên nhiên vào nhà',
+                'desc'      => 'Sắc Rêu như mảng xanh lặng lẽ giữa khu vườn sau mưa, trầm dịu và đầy sức sống. Trên mỗi món gốm, màu men gợi một nhịp sống thư thả, nơi những khoảnh khắc thường nhật cũng đáng để dừng lại.',
+            ),
+            'ngoc-trai' => array(
+                'storyline' => 'Sự thanh khiết trong từng khoảnh khắc',
+                'desc'      => 'Ngọc Trai tựa ánh sáng dịu trên bề mặt gốm, trong trẻo mà không lạnh lẽo. Sự tinh giản của sắc men nhường chỗ cho dáng gốm lên tiếng, mang đến vẻ thanh lịch bền lâu cho bàn ăn.',
+            ),
+            'xanh-ngoc' => array(
+                'storyline' => 'Sự thanh khiết trong từng khoảnh khắc',
+                'desc'      => 'Ngọc Trai tựa ánh sáng dịu trên bề mặt gốm, trong trẻo mà không lạnh lẽo. Sự tinh giản của sắc men nhường chỗ cho dáng gốm lên tiếng, mang đến vẻ thanh lịch bền lâu cho bàn ăn.',
+            ),
+            'hong-tuyet' => array(
+                'storyline' => 'Dịu dàng như một lời thì thầm',
+                'desc'      => 'Hồng Tuyết mang vẻ thanh tao của sắc hồng phớt nhẹ, êm như cánh hoa vừa chạm sương. Không tìm cách nổi bật, màu men tạo nên một nét duyên kín đáo, đủ làm không gian bàn ăn mềm mại.',
+            ),
+            'nau-tuyet' => array(
+                'storyline' => 'Vẻ đẹp lắng lại cùng thời gian',
+                'desc'      => 'Nâu Tuyết gợi những gam đất bình yên, nơi màu sắc không phô bày mà lặng lẽ lưu giữ cảm xúc. Có chút trầm mặc, chút ấm áp, sắc men làm nổi bật nét đẹp giản dị và chiều sâu của tác phẩm.',
+            ),
+            'thien-thanh' => array(
+                'storyline' => 'Sắc xanh dịu mát của bầu trời',
+                'desc'      => 'Men Xanh Thiên Thanh gợi cảm giác trong trẻo, nhẹ nhàng như sắc trời thanh bình. Gam xanh dịu mát đem đến điểm nhấn tươi sáng cho bàn ăn, đồng thời dễ kết hợp với các sắc men trung tính.',
+            ),
+            'xanh-thien-thanh' => array(
+                'storyline' => 'Sắc xanh dịu mát của bầu trời',
+                'desc'      => 'Men Xanh Thiên Thanh gợi cảm giác trong trẻo, nhẹ nhàng như sắc trời thanh bình. Gam xanh dịu mát đem đến điểm nhấn tươi sáng cho bàn ăn, đồng thời dễ kết hợp với các sắc men trung tính.',
+            ),
+        );
+        return $map[$clean] ?? array(
+            'storyline' => 'Kiệt tác men nung 1.300°C độc bản Bát Tràng',
+            'desc'      => 'Tác phẩm gốm sứ thủ công mang hồn cốt đất và kỹ nghệ nung hỏa biến gia truyền hơn 500 năm, bảo đảm an toàn chuẩn y tế và thẩm mỹ mỹ nghệ đương đại.'
+        );
+    }
+
+    /**
+     * Lấy toàn bộ danh sách màu men ĐỘNG từ hệ thống WooCommerce
+     * Đồng bộ trực tiếp từ các thuộc tính màu sắc (pa_mau-sac, pa_sac-men...)
+     */
+    public static function get_active_glazes() {
+        $glazes = array();
+        $seen_slugs = array();
+
+        foreach (self::$taxonomies as $tax) {
+            if (!taxonomy_exists($tax)) {
+                continue;
+            }
+
+            $terms = get_terms(array(
+                'taxonomy'   => $tax,
+                'hide_empty' => false,
+                'orderby'    => 'name',
+                'order'      => 'ASC'
+            ));
+
+            if (is_wp_error($terms) || empty($terms)) {
+                continue;
+            }
+
+            foreach ($terms as $term) {
+                $slug = $term->slug;
+                $clean_slug = sanitize_title(str_replace('men-', '', $slug));
+                if (isset($seen_slugs[$slug]) || isset($seen_slugs[$clean_slug])) {
+                    continue;
+                }
+                $seen_slugs[$slug] = true;
+                $seen_slugs[$clean_slug] = true;
+
+                // Color
+                $color = get_term_meta($term->term_id, 'glaze_color', true);
+                if (empty($color)) {
+                    $color = self::get_fallback_color($slug);
+                }
+
+                // Image URL
+                $img_url = get_term_meta($term->term_id, 'glaze_image_url', true);
+                if (empty($img_url)) {
+                    $img_id = get_term_meta($term->term_id, 'glaze_image_id', true);
+                    if ($img_id) {
+                        $img_url = wp_get_attachment_image_url($img_id, 'large') ?: wp_get_attachment_image_url($img_id, 'full');
+                    }
+                }
+
+                // Fallback image asset nếu chưa tải ảnh lên
+                $scale = '1.0';
+                $shift_y = '0px';
+                if (empty($img_url)) {
+                    $asset_info = self::get_curated_asset_info($slug);
+                    $img_url = get_template_directory_uri() . '/assets/images/glazes/' . $asset_info['img'];
+                    $scale = $asset_info['scale'];
+                    $shift_y = $asset_info['shift_y'];
+                }
+
+                // Storyline & Description
+                $storyline = get_term_meta($term->term_id, 'glaze_storyline', true);
+                $desc = $term->description;
+
+                $curated = self::get_curated_text_info($slug);
+                if (empty($storyline)) {
+                    $storyline = $curated['storyline'];
+                }
+                if (empty($desc)) {
+                    $desc = $curated['desc'];
+                }
+
+                // Name formatting (Title Case tiếng Việt)
+                $name = mb_convert_case(trim($term->name), MB_CASE_TITLE, 'UTF-8');
+                if (!preg_match('/^Men\s+/ui', $name)) {
+                    $name = 'Men ' . $name;
+                }
+
+                $glazes[] = array(
+                    'id'        => $term->term_id,
+                    'name'      => $name,
+                    'slug'      => $slug,
+                    'color'     => $color,
+                    'img_url'   => $img_url,
+                    'scale'     => $scale,
+                    'shift_y'   => $shift_y,
+                    'storyline' => $storyline,
+                    'desc'      => $desc,
+                    'count'     => $term->count,
+                    'link'      => esc_url(add_query_arg('glaze', $slug, home_url('/san-pham/'))),
+                );
+            }
+        }
+
+        // Fallback nếu hệ thống chưa có term nào
+        if (empty($glazes)) {
+            $default_slugs = array('men-sapphire', 'men-canh-gian', 'men-gam-vang', 'men-xanh-song-bien', 'men-reu', 'men-ngoc-trai', 'men-hong-tuyet', 'men-nau-tuyet', 'men-xanh-thien-thanh');
+            foreach ($default_slugs as $ds) {
+                $asset = self::get_curated_asset_info($ds);
+                $txt = self::get_curated_text_info($ds);
+                $clean = sanitize_title(str_replace('men-', '', $ds));
+                $name = 'Men ' . ucwords(str_replace('-', ' ', $clean));
+                $glazes[] = array(
+                    'id'        => 0,
+                    'name'      => $name,
+                    'slug'      => $ds,
+                    'color'     => self::get_fallback_color($ds),
+                    'img_url'   => get_template_directory_uri() . '/assets/images/glazes/' . $asset['img'],
+                    'scale'     => $asset['scale'],
+                    'shift_y'   => $asset['shift_y'],
+                    'storyline' => $txt['storyline'],
+                    'desc'      => $txt['desc'],
+                    'count'     => 0,
+                    'link'      => esc_url(add_query_arg('glaze', $ds, home_url('/san-pham/'))),
+                );
+            }
+        }
+
+        return $glazes;
+    }
+
+    /**
      * Khởi tạo giá trị mặc định cho các term nếu chưa có meta
      */
     public static function init_default_term_meta() {
@@ -309,6 +517,13 @@ class Gomie_Glaze_Attribute_Meta {
         }
 
         update_option('gomie_glaze_meta_initialized_v1', 1);
+    }
+}
+
+// Global Helper
+if (!function_exists('gomie_get_active_glazes')) {
+    function gomie_get_active_glazes() {
+        return Gomie_Glaze_Attribute_Meta::get_active_glazes();
     }
 }
 

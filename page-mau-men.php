@@ -65,11 +65,19 @@ $faq_schema = array(
     )
 );
 
+// Lấy danh sách sắc men động từ hệ thống WooCommerce
+$dynamic_glazes = function_exists('gomie_get_active_glazes') ? gomie_get_active_glazes() : array();
+$glaze_names_list = !empty($dynamic_glazes) 
+    ? implode(', ', wp_list_pluck($dynamic_glazes, 'name')) 
+    : 'Men Sapphire, Men Cánh Gián, Men Gấm Vàng, Men Xanh Hỏa Biến, Men Rêu, Men Ngọc Trai, Men Hồng Tuyết, Men Nâu Tuyết, Men Xanh Thiên Thanh';
+$glaze_count = count($dynamic_glazes);
+$glaze_count_desc = $glaze_count > 0 ? "{$glaze_count} sắc men" : "các sắc men";
+
 $collection_schema = array(
     '@context'    => 'https://schema.org',
     '@type'       => 'CollectionPage',
     'name'        => 'Khám Phá Nghệ Thuật Màu Men Gốm Sứ Gomie Ceramic',
-    'description' => 'Bộ sưu tập 9 sắc men gốm thủ công Bát Tràng độc bản của Gomie Ceramic: Men Sapphire, Men Cánh Gián, Men Gấm Vàng, Men Xanh Hỏa Biến, Men Rêu, Men Ngọc Trai, Men Hồng Tuyết, Men Nâu Tuyết, Men Xanh Thiên Thanh.',
+    'description' => "Bộ sưu tập {$glaze_count_desc} gốm thủ công Bát Tràng độc bản của Gomie Ceramic: {$glaze_names_list}.",
     'url'         => home_url('/mau-men/'),
     'publisher'   => array(
         '@type' => 'Organization',

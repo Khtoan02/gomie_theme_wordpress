@@ -16,8 +16,14 @@ $gomie_get_glaze_url = function ($slug) use ($glaze_shop_base) {
     return esc_url(add_query_arg(array('swoof' => '1', 'pa_mau-sac' => $slug), $glaze_shop_base));
 };
 
-// Danh sách 9 sắc men kèm thông số căn chỉnh quang học (Optical Calibration) để đồng nhất 100% chiều cao & đường chân đế
-$gomie_glaze_collection = isset($args['items']) && is_array($args['items']) ? $args['items'] : array(
+// Danh sách sắc men: Ưu tiên lấy ĐỘNG từ hệ sinh thái thuộc tính WooCommerce (pa_mau-sac)
+$gomie_glaze_collection = isset($args['items']) && is_array($args['items']) && !empty($args['items']) 
+    ? $args['items'] 
+    : (function_exists('gomie_get_active_glazes') ? gomie_get_active_glazes() : array());
+
+// Fallback danh sách 9 sắc men nếu WooCommerce chưa có term nào
+if (empty($gomie_glaze_collection)) {
+    $gomie_glaze_collection = array(
     array(
         'name'      => 'Men Sapphire',
         'slug'      => 'men-sapphire',
@@ -99,7 +105,8 @@ $gomie_glaze_collection = isset($args['items']) && is_array($args['items']) ? $a
         'storyline' => 'Sắc xanh dịu mát của bầu trời',
         'desc'      => 'Men Xanh Thiên Thanh gợi cảm giác trong trẻo, nhẹ nhàng như sắc trời thanh bình. Gam xanh dịu mát đem đến điểm nhấn tươi sáng cho bàn ăn, đồng thời dễ kết hợp với những sắc men trung tính để tạo nên tổng thể hài hòa.',
     ),
-);
+    );
+}
 
 if (!defined('GOMIE_GLAZE_GRID_COMPONENT_STYLE_LOADED')) :
     define('GOMIE_GLAZE_GRID_COMPONENT_STYLE_LOADED', true);
@@ -267,16 +274,35 @@ if (!defined('GOMIE_GLAZE_GRID_COMPONENT_STYLE_LOADED')) :
 <?php endif; ?>
 
 <div class="grid glaze-component-grid">
-  <?php foreach ($gomie_glaze_collection as $glaze) : ?>
+  <?php foreach ($gomie_glaze_collection as $glaze) : 
+    $glaze_name = !empty($glaze['name']) ? $glaze['name'] : 'Men Gốm';
+    $glaze_slug = !empty($glaze['slug']) ? $glaze['slug'] : '';
+    $glaze_link = !empty($glaze['link']) ? $glaze['link'] : $gomie_get_glaze_url($glaze_slug);
+    $glaze_scale = isset($glaze['scale']) ? $glaze['scale'] : '1.0';
+    $glaze_shift_y = isset($glaze['shift_y']) ? $glaze['shift_y'] : '0px';
+
+    $glaze_img_url = '';
+    if (!empty($glaze['img_url'])) {
+        $glaze_img_url = $glaze['img_url'];
+    } elseif (!empty($glaze['img'])) {
+        $glaze_img_url = get_template_directory_uri() . '/assets/images/glazes/' . $glaze['img'];
+    } else {
+        $glaze_img_url = get_template_directory_uri() . '/assets/images/glazes/bo-mau-men-955x800.png';
+    }
+  ?>
     <article class="card">
-      <a aria-label="Khám phá bộ sưu tập <?php echo esc_attr($glaze['name']); ?>" href="<?php echo $gomie_get_glaze_url($glaze['slug']); ?>">
-        <div class="photo" style="--img-scale: <?php echo esc_attr($glaze['scale']); ?>; --img-y: <?php echo esc_attr($glaze['shift_y']); ?>;">
-          <img alt="Bát gốm sứ <?php echo esc_attr($glaze['name']); ?> Gomie Ceramic" decoding="async" loading="lazy" src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/glazes/' . $glaze['img']); ?>" />
+      <a aria-label="Khám phá bộ sưu tập <?php echo esc_attr($glaze_name); ?>" href="<?php echo esc_url($glaze_link); ?>">
+        <div class="photo" style="--img-scale: <?php echo esc_attr($glaze_scale); ?>; --img-y: <?php echo esc_attr($glaze_shift_y); ?>;">
+          <img alt="Bát gốm sứ <?php echo esc_attr($glaze_name); ?> Gomie Ceramic" decoding="async" loading="lazy" src="<?php echo esc_url($glaze_img_url); ?>" />
         </div>
         <div class="details">
-          <h3 class="name"><?php echo esc_html($glaze['name']); ?></h3>
-          <p class="storyline"><?php echo esc_html($glaze['storyline']); ?></p>
-          <p class="description"><?php echo esc_html($glaze['desc']); ?></p>
+          <h3 class="name"><?php echo esc_html($glaze_name); ?></h3>
+          <?php if (!empty($glaze['storyline'])) : ?>
+            <p class="storyline"><?php echo esc_html($glaze['storyline']); ?></p>
+          <?php endif; ?>
+          <?php if (!empty($glaze['desc'])) : ?>
+            <p class="description"><?php echo esc_html($glaze['desc']); ?></p>
+          <?php endif; ?>
         </div>
       </a>
     </article>

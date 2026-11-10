@@ -769,6 +769,39 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Tự động nhận diện bộ lọc từ URL (hỗ trợ chuyển từ trang Màu Men & Danh mục)
+    try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlGlaze = urlParams.get('glaze') || urlParams.get('pa_mau-sac') || urlParams.get('mau-sac');
+        const urlCat = urlParams.get('cat') || urlParams.get('category') || urlParams.get('product_cat');
+
+        if (urlGlaze) {
+            const targetChip = Array.from(glazeChips).find(c => {
+                const dg = c.getAttribute('data-glaze');
+                return dg === urlGlaze || dg === 'men-' + urlGlaze || ('men-' + dg) === urlGlaze;
+            });
+            if (targetChip) {
+                glazeChips.forEach(c => c.classList.remove('active'));
+                targetChip.classList.add('active');
+                currentGlaze = targetChip.getAttribute('data-glaze');
+            }
+        }
+
+        if (urlCat) {
+            const targetPill = Array.from(catPills).find(p => p.getAttribute('data-cat') === urlCat);
+            if (targetPill) {
+                catPills.forEach(p => p.classList.remove('active'));
+                targetPill.classList.add('active');
+                currentCat = targetPill.getAttribute('data-cat');
+            }
+        }
+
+        // Kích hoạt bộ lọc ban đầu
+        applyFilters();
+    } catch(err) {
+        console.error('Filter URL init error:', err);
+    }
+
     // Sort
     if (sortSelect) {
         sortSelect.addEventListener('change', function() {
