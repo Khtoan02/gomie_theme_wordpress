@@ -43,32 +43,25 @@ get_header();
                     
                     <div class="partners-grid grid grid-4">
                         <?php
-                        // You can use ACF repeater field or custom post type for partners
-                        // For demo purposes, we'll use the brand taxonomy
-                        $brands = get_terms(array(
-                            'taxonomy' => 'thuong-hieu',
-                            'hide_empty' => false,
-                        ));
-                        
-                        if (!empty($brands) && !is_wp_error($brands)) :
-                            foreach ($brands as $brand) :
-                                $logo = get_field('logo', $brand); // Assuming ACF field
-                                $website = get_field('website', $brand);
+                        $partners = function_exists('gomie_get_partners') ? gomie_get_partners() : array();
+                        if (!empty($partners)) :
+                            foreach ($partners as $partner) :
+                                $has_link = !empty($partner['url']);
                                 ?>
                                 <div class="partner-item glass-card">
-                                    <?php if ($website) : ?>
-                                        <a href="<?php echo esc_url($website); ?>" target="_blank" rel="noopener noreferrer">
+                                    <?php if ($has_link) : ?>
+                                        <a href="<?php echo esc_url($partner['url']); ?>" target="<?php echo esc_attr($partner['target']); ?>" rel="noopener noreferrer">
                                     <?php endif; ?>
                                     
-                                    <?php if ($logo) : ?>
-                                        <img src="<?php echo esc_url($logo['url']); ?>" alt="<?php echo esc_attr($brand->name); ?>">
+                                    <?php if (!empty($partner['logo_url'])) : ?>
+                                        <img src="<?php echo esc_url($partner['logo_url']); ?>" alt="<?php echo esc_attr($partner['title']); ?>" loading="lazy">
                                     <?php else : ?>
                                         <div class="partner-name">
-                                            <h4><?php echo esc_html($brand->name); ?></h4>
+                                            <h4 style="font-weight: 850; font-size: 16px; letter-spacing: 0.12em; color: #3a4650; margin: 0;"><?php echo esc_html($partner['text']); ?></h4>
                                         </div>
                                     <?php endif; ?>
                                     
-                                    <?php if ($website) : ?>
+                                    <?php if ($has_link) : ?>
                                         </a>
                                     <?php endif; ?>
                                 </div>

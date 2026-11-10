@@ -1915,24 +1915,21 @@ if (!function_exists('gomie_get_product_category')) {
         </header>
 
         <div class="partners-grid">
-          <div class="partner-item" aria-label="Lotte Hotels & Resorts">
-            <span style="font-weight: 850; font-size: 16px; letter-spacing: 0.14em; color: #3a4650;">LOTTE HOTELS</span>
-          </div>
-          <div class="partner-item" aria-label="Marriott International">
-            <span style="font-weight: 850; font-size: 16px; letter-spacing: 0.14em; color: #3a4650;">MARRIOTT</span>
-          </div>
-          <div class="partner-item" aria-label="Hyatt Regency">
-            <span style="font-weight: 850; font-size: 16px; letter-spacing: 0.16em; color: #3a4650;">HYATT REGENCY</span>
-          </div>
-          <div class="partner-item" aria-label="Golden Gate Restaurant Group">
-            <span style="font-weight: 850; font-size: 15px; letter-spacing: 0.12em; color: #3a4650;">GOLDEN GATE</span>
-          </div>
-          <div class="partner-item" aria-label="InterContinental">
-            <span style="font-weight: 850; font-size: 13.5px; letter-spacing: 0.11em; color: #3a4650;">INTERCONTINENTAL</span>
-          </div>
-          <div class="partner-item" aria-label="Vinpearl Resort & Spa">
-            <span style="font-weight: 850; font-size: 16px; letter-spacing: 0.14em; color: #3a4650;">VINPEARL</span>
-          </div>
+          <?php
+          $partners = function_exists('gomie_get_partners') ? gomie_get_partners() : array();
+          foreach ($partners as $partner) :
+            $has_link = !empty($partner['url']);
+            $tag = $has_link ? 'a' : 'div';
+            $link_attrs = $has_link ? ' href="' . esc_url($partner['url']) . '" target="' . esc_attr($partner['target']) . '" rel="noopener noreferrer"' : '';
+          ?>
+            <<?php echo $tag; ?><?php echo $link_attrs; ?> class="partner-item" aria-label="<?php echo esc_attr($partner['title']); ?>" title="<?php echo esc_attr($partner['title']); ?>">
+              <?php if (!empty($partner['logo_url'])) : ?>
+                <img src="<?php echo esc_url($partner['logo_url']); ?>" alt="<?php echo esc_attr($partner['title']); ?>" loading="lazy" decoding="async">
+              <?php else : ?>
+                <span class="partner-text" style="font-weight: 850; font-size: 15px; letter-spacing: 0.14em; color: #3a4650;"><?php echo esc_html($partner['text']); ?></span>
+              <?php endif; ?>
+            </<?php echo $tag; ?>>
+          <?php endforeach; ?>
         </div>
       </div>
     </section>
