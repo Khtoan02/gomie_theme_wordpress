@@ -4,9 +4,11 @@
  */
 
 .gomie-policy-canvas {
-  background-color: #fbf8f3;
+  background-color: #fffdf9;
   background-image: url('../images/glazes/Background-1.png');
-  background-repeat: repeat;
+  background-position: top center;
+  background-size: 100% auto;
+  background-repeat: no-repeat;
   min-height: 100vh;
   padding-bottom: 90px;
 }

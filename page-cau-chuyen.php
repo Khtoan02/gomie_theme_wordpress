@@ -216,9 +216,9 @@ get_header();
   .gomie-story-page .gomie-v11 {
     background-color: #fffdf9 !important;
     background-image: url('<?php echo esc_url(get_template_directory_uri() . "/assets/images/glazes/Background-1.png"); ?>') !important;
-    background-position: 47% 0% !important;
+    background-position: top center !important;
     background-size: 100% auto !important;
-    background-repeat: repeat-y !important;
+    background-repeat: no-repeat !important;
     min-height: 100vh;
     padding-bottom: 80px;
   }

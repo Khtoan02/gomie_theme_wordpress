@@ -166,6 +166,13 @@ $theme_uri = get_template_directory_uri();
 
 <!-- Critical Shop CSS: Injected before HTML to guarantee 0ms FOUC & zero black borders -->
 <style id="gomie-shop-critical-css">
+.gomie-shop-editorial-page {
+    background-color: #fffdf9 !important;
+    background-image: url('<?php echo esc_url(get_template_directory_uri() . "/assets/images/glazes/Background-1.png"); ?>') !important;
+    background-position: top center !important;
+    background-size: 100% auto !important;
+    background-repeat: no-repeat !important;
+}
 .shop-breadcrumb .breadcrumb-item::after { display: none !important; content: none !important; }
 .shop-breadcrumb .breadcrumb-item + .breadcrumb-item::before { content: "/" !important; padding: 0 8px; color: #c4b5a5 !important; }
 

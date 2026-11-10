@@ -458,3 +458,22 @@ body.mobile-menu-active .mobile-menu-overlay {
   max-width: 100% !important;
   box-sizing: border-box !important;
 }
+
+/* ==========================================================================
+   GOMIE UNIFIED EDITORIAL PAGE BACKGROUND
+   Prevents background tiling/repeat, seams, and visual distortion across all viewports
+   ========================================================================== */
+.gomie-shop-editorial-page,
+.gomie-policy-canvas,
+.gomie-sharing-page-canvas,
+.gomie-cert-page-canvas,
+.gomie-b2b-page-canvas,
+.gomie-editorial-cart-canvas,
+.gomie-v11,
+.gomie-story-page .gomie-v11,
+.gomie-single-article .gomie-v11 {
+  background-color: #fffdf9 !important;
+  background-position: top center !important;
+  background-size: 100% auto !important;
+  background-repeat: no-repeat !important;
+}

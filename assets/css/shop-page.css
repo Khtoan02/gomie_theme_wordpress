@@ -15,7 +15,11 @@
    GOMIE EDITORIAL SHOP STYLES
    ========================================================================== */
 .gomie-shop-editorial-page {
-    background: #fbf8f3 url('../images/glazes/Background-1.png') repeat;
+    background-color: #fffdf9;
+    background-image: url('../images/glazes/Background-1.png');
+    background-position: top center;
+    background-size: 100% auto;
+    background-repeat: no-repeat;
     min-height: 100vh;
     font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
     color: #2b2b2b;

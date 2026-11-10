@@ -277,9 +277,9 @@ if (!function_exists('gomie_get_product_category')) {
     color: var(--ink);
     background-color: #fffdf9 !important;
     background-image: url('<?php echo esc_url(get_template_directory_uri() . "/assets/images/glazes/Background-1.png"); ?>') !important;
-    background-position: 47% 0% !important;
+    background-position: top center !important;
     background-size: 100% auto !important;
-    background-repeat: repeat-y !important;
+    background-repeat: no-repeat !important;
     overflow: hidden;
     position: relative;
   }

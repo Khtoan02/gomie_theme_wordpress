@@ -23,7 +23,7 @@
   color: var(--ink);
   background-color: #fffdf9;
   background-image: url("../images/glazes/Background-1.png");
-  background-position: 47% 0%;
+  background-position: top center;
   background-size: 100% auto;
   background-repeat: no-repeat;
   min-height: 80vh;

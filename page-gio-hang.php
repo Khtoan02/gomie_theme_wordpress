@@ -60,7 +60,11 @@ $theme_uri = get_template_directory_uri();
 
 <style>
 .gomie-editorial-cart-canvas {
-    background: #fbf8f3 url('<?php echo esc_url($theme_uri . "/assets/images/glazes/Background-1.png"); ?>') repeat;
+    background-color: #fffdf9;
+    background-image: url('<?php echo esc_url($theme_uri . "/assets/images/glazes/Background-1.png"); ?>');
+    background-position: top center;
+    background-size: 100% auto;
+    background-repeat: no-repeat;
     min-height: 85vh;
     font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
     color: #2b2b2b;

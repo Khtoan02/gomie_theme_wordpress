@@ -109,11 +109,11 @@ $collection_schema = array(
   --line: #e9edf0;
   font-family: inherit;
   color: var(--ink);
-  background-color: #fffdf9;
-  background-image: url('<?php echo esc_url(get_template_directory_uri() . "/assets/images/glazes/Background-1.png"); ?>');
-  background-position: 47% 0%;
-  background-size: 100% auto;
-  background-repeat: no-repeat;
+  background-color: #fffdf9 !important;
+  background-image: url('<?php echo esc_url(get_template_directory_uri() . "/assets/images/glazes/Background-1.png"); ?>') !important;
+  background-position: top center !important;
+  background-size: 100% auto !important;
+  background-repeat: no-repeat !important;
   overflow: hidden;
 }
 .gomie-v11 a { text-decoration: none !important; }
