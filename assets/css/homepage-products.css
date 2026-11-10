@@ -742,48 +742,24 @@
   gap: 12px;
 }
 
-/* Apple-Style Product Category */
-.gomie-product-card.apple-style .product-category {
-  margin: 0;
-}
-
+/* Apple-Style Product Category (Hidden for equal card heights) */
+.gomie-product-card.apple-style .product-category,
 .gomie-product-card.apple-style .category-label {
-  display: inline-block;
-  background: rgba(230, 126, 34, 0.1);
-  color: var(--gomie-primary);
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-size: 12px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  text-transform: none;
-  letter-spacing: 0.02em;
-  border: 1px solid rgba(230, 126, 34, 0.2);
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-}
-
-.gomie-product-card.apple-style .category-label:hover {
-  background: rgba(230, 126, 34, 0.15);
-  transform: translateY(-1px);
-  border-color: rgba(230, 126, 34, 0.3);
-}
-
-.gomie-product-card.apple-style .category-label a {
-  color: var(--gomie-primary);
-  text-decoration: none;
+  display: none !important;
 }
 
 /* Apple-Style Product Title */
 .gomie-product-card.apple-style .product-title {
-  margin: 0;
-  font-size: 18px;
+  margin: 0 0 6px;
+  font-size: 15px;
   font-weight: 600;
-  line-height: 1.3;
+  line-height: 1.35;
   color: var(--gomie-dark);
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-  letter-spacing: -0.02em;
-  min-height: 46px;
+  letter-spacing: -0.01em;
+  height: 42px;
+  min-height: 42px;
+  max-height: 42px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   line-clamp: 2;
@@ -861,20 +837,44 @@
 
 /* Apple-Style Product Price */
 .gomie-product-card.apple-style .product-price-section {
-  margin: 8px 0;
+  margin-top: auto;
+  margin-bottom: 10px;
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .gomie-product-card.apple-style .product-price {
   color: var(--gomie-primary);
-  font-weight: 700;
-  font-size: 30px;
+  font-weight: 800;
+  font-size: 16.5px;
   margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  line-height: 1.2;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-  letter-spacing: -0.02em;
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 3px;
+  line-height: 1.25;
+  white-space: nowrap;
+  max-width: 100%;
+  letter-spacing: -0.01em;
+}
+
+.gomie-product-card.apple-style .product-price > .woocommerce-Price-amount:only-child {
+  font-size: 18.5px;
+}
+
+.gomie-product-card.apple-style .product-price .woocommerce-Price-currencySymbol {
+  font-size: 0.88em;
+  font-weight: 700;
+  margin-left: 1px;
+}
+
+.gomie-product-card.apple-style .product-price .price-range-sep {
+  color: #94a3b8;
+  font-weight: 600;
+  padding: 0 1px;
 }
 
 .gomie-product-card.apple-style .product-price del {

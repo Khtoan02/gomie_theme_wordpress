@@ -429,18 +429,6 @@ if (!function_exists('gomie_render_product_card')) {
 
                 <!-- Product Content -->
                 <div class="product-content">
-                    <!-- Product Category -->
-                    <div class="product-category">
-                        <?php
-                        $categories = wc_get_product_category_list($product_id, ', ', '', '');
-                        if ($categories) {
-                            echo '<span class="category-label">' . wp_kses_post($categories) . '</span>';
-                        } else {
-                            echo '<span class="category-label">Gốm Sứ Gomie</span>';
-                        }
-                        ?>
-                    </div>
-                    
                     <!-- Product Title -->
                     <h3 class="product-title">
                         <a href="<?php echo esc_url($permalink); ?>" title="<?php echo esc_attr($title); ?>">
@@ -1634,18 +1622,6 @@ if (!function_exists('gomie_render_product_card')) {
 
                 <!-- Product Content -->
                 <div class="product-content">
-                    <!-- Product Category -->
-                    <div class="product-category">
-                        <?php
-                        $categories = wc_get_product_category_list($product_id, ', ', '', '');
-                        if ($categories) {
-                            echo '<span class="category-label">' . wp_kses_post($categories) . '</span>';
-                        } else {
-                            echo '<span class="category-label">Gốm Sứ Gomie</span>';
-                        }
-                        ?>
-                    </div>
-                    
                     <!-- Product Title -->
                     <h3 class="product-title">
                         <a href="<?php echo esc_url($permalink); ?>" title="<?php echo esc_attr($title); ?>">
@@ -1780,18 +1756,6 @@ if (!function_exists('gomie_render_product_card')) {
 
                 <!-- Product Content -->
                 <div class="product-content">
-                    <!-- Product Category -->
-                    <div class="product-category">
-                        <?php
-                        $categories = wc_get_product_category_list($product_id, ', ', '', '');
-                        if ($categories) {
-                            echo '<span class="category-label">' . wp_kses_post($categories) . '</span>';
-                        } else {
-                            echo '<span class="category-label">Gốm Sứ Gomie</span>';
-                        }
-                        ?>
-                    </div>
-                    
                     <!-- Product Title -->
                     <h3 class="product-title">
                         <a href="<?php echo esc_url($permalink); ?>" title="<?php echo esc_attr($title); ?>">

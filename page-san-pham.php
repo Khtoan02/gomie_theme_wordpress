@@ -441,6 +441,14 @@ $theme_uri = get_template_directory_uri();
                 $sale_price = $product->get_sale_price();
                 $price_num = $product->get_price();
                 $price_html = $product->get_price_html();
+                if (!empty($price_html)) {
+                    // Ngăn ngắt dòng rời rạc giữa dấu gạch ngang và số tiền trong khoảng giá
+                    $price_html = str_replace(
+                        array(' &ndash; ', ' - '),
+                        '<span class="price-range-sep">&nbsp;&ndash;&nbsp;</span>',
+                        $price_html
+                    );
+                }
                 $glaze_name = $item['glaze_name'];
                 $glaze_slug = $item['glaze_slug'];
                 $cat_data_attr = !empty($item['cat_slugs']) ? implode(' ', $item['cat_slugs']) : 'all';
@@ -505,11 +513,6 @@ $theme_uri = get_template_directory_uri();
 
                             <!-- Product Content -->
                             <div class="product-content">
-                                <!-- Product Category Badge -->
-                                <div class="product-category">
-                                    <span class="category-label"><?php echo esc_html($cat_label); ?></span>
-                                </div>
-
                                 <!-- Product Title -->
                                 <h3 class="product-title">
                                     <a href="<?php echo esc_url($permalink); ?>" title="<?php echo esc_attr($display_title); ?>">

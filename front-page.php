@@ -109,6 +109,13 @@ if (!function_exists('gomie_render_product_card')) {
         $permalink = get_permalink($product_id);
         $image = gomie_get_product_image_url($product_id, 'full');
         $price_html = $product->get_price_html();
+        if (!empty($price_html)) {
+            $price_html = str_replace(
+                array(' &ndash; ', ' - '),
+                '<span class="price-range-sep">&nbsp;&ndash;&nbsp;</span>',
+                $price_html
+            );
+        }
         $stats = gomie_get_product_stats($product_id);
         
         // Format numbers
@@ -134,18 +141,6 @@ if (!function_exists('gomie_render_product_card')) {
 
                 <!-- Product Content -->
                 <div class="product-content">
-                    <!-- Product Category -->
-                    <div class="product-category">
-                        <?php
-                        $categories = wc_get_product_category_list($product_id, ', ', '', '');
-                        if ($categories) {
-                            echo '<span class="category-label">' . wp_kses_post($categories) . '</span>';
-                        } else {
-                            echo '<span class="category-label">Danh mục sản phẩm</span>';
-                        }
-                        ?>
-                    </div>
-                    
                     <!-- Product Title -->
                     <h3 class="product-title">
                         <a href="<?php echo esc_url($permalink); ?>" title="<?php echo esc_attr($title); ?>">

@@ -87,17 +87,6 @@ if (!function_exists('gomie_render_product_card_shop')) {
                 </div>
 
                 <div class="product-content">
-                    <div class="product-category">
-                        <?php
-                        $categories = wc_get_product_category_list($product_id, ', ', '', '');
-                        if ($categories) {
-                            echo '<span class="category-label">' . wp_kses_post($categories) . '</span>';
-                        } else {
-                            echo '<span class="category-label">Danh mục sản phẩm</span>';
-                        }
-                        ?>
-                    </div>
-                    
                     <h3 class="product-title">
                         <a href="<?php echo esc_url($permalink); ?>" title="<?php echo esc_attr($title); ?>">
                             <?php echo esc_html($title); ?>

@@ -477,3 +477,72 @@ body.mobile-menu-active .mobile-menu-overlay {
   background-size: 100% auto !important;
   background-repeat: no-repeat !important;
 }
+
+/* ==========================================================================
+   GOMIE UNIFIED PRODUCT CARD ALIGNMENT & HARMONIZATION
+   Guarantees equal card heights, removes category badges, and aligns prices/buttons
+   ========================================================================== */
+.gomie-product-card.apple-style .product-category,
+.gomie-product-card .product-category,
+.category-label {
+  display: none !important;
+}
+
+.gomie-product-card.apple-style .product-content {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 auto !important;
+}
+
+.gomie-product-card.apple-style .product-title {
+  height: 40px !important;
+  min-height: 40px !important;
+  max-height: 40px !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  margin-bottom: 6px !important;
+}
+
+.gomie-product-card.apple-style .product-price-section {
+  margin-top: auto !important;
+  margin-bottom: 10px !important;
+  min-height: 38px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+.gomie-product-card.apple-style .product-price {
+  font-size: 16.5px !important;
+  font-weight: 800 !important;
+  white-space: nowrap !important;
+  display: inline-flex !important;
+  align-items: baseline !important;
+  justify-content: center !important;
+  gap: 3px !important;
+  max-width: 100% !important;
+}
+
+.gomie-product-card.apple-style .product-price > .woocommerce-Price-amount:only-child {
+  font-size: 18.5px !important;
+}
+
+.gomie-product-card.apple-style .product-price .woocommerce-Price-currencySymbol {
+  font-size: 0.88em !important;
+  font-weight: 700 !important;
+  margin-left: 1px !important;
+}
+
+.gomie-product-card.apple-style .product-price .price-range-sep {
+  color: #94a3b8 !important;
+  font-weight: 600 !important;
+  padding: 0 1px !important;
+}
+
+.gomie-product-card.apple-style .product-actions {
+  margin-top: 0 !important;
+  width: 100% !important;
+}
