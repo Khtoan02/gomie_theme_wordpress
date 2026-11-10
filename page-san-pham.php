@@ -149,142 +149,129 @@ $theme_uri = get_template_directory_uri();
         </div>
     </section>
 
-    <!-- Floating Left-Edge Dock Button (Outside Container) -->
-    <button type="button" class="btn-filter-dock-toggle" id="btnFilterDockToggle" title="Mở bộ lọc gốm sứ">
-        <i class="fa-solid fa-sliders"></i>
-        <span class="dock-txt">Bộ Lọc</span>
-        <span class="dock-badge" id="dockFilterCount"><?php echo count($ceramic_products); ?></span>
-    </button>
+    <!-- Main Content Area: Sidebar Widget Outside Left + Products in Container-Width -->
+    <div class="shop-body-section py-5">
+        <div class="shop-canvas-wrapper d-flex justify-content-center align-items-start gap-4">
+            <!-- WIDGET BỘ LỌC NẰM BÊN NGOÀI CONTAINER-WIDTH (LỀ TRÁI CỦA SẢN PHẨM) -->
+            <aside class="shop-outside-sidebar" id="shopFilterSidebar">
+                <div class="filter-widget-card p-3 p-xl-4 rounded-4 shadow-sm bg-white" id="filterWidgetCard">
+                    <div class="widget-header d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
+                        <div class="widget-title fw-bold text-dark d-flex align-items-center gap-2">
+                            <i class="fa-solid fa-sliders text-danger"></i>
+                            <span>Bộ lọc sản phẩm</span>
+                        </div>
+                        <button type="button" class="btn-clear-filters text-muted small border-0 bg-transparent" onclick="resetFilters()" title="Xóa tất cả lọc">
+                            <i class="fa-solid fa-rotate-left me-1"></i>Đặt lại
+                        </button>
+                    </div>
 
-    <!-- WIDGET BỘ LỌC NẰM BÊN NGOÀI CONTAINER-WIDTH (LỀ TRÁI MÀN HÌNH) -->
-    <aside class="shop-filter-outside-widget" id="shopFilterSidebar">
-        <!-- Widget Card Panel (Outside Container) -->
-        <div class="filter-widget-card p-3 p-xl-4 rounded-4 shadow-lg bg-white" id="filterWidgetCard">
-            <div class="widget-header d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
-                <div class="widget-title fw-bold text-dark d-flex align-items-center gap-2">
-                    <i class="fa-solid fa-sliders text-danger"></i>
-                    <span>Bộ lọc sản phẩm</span>
-                </div>
-                <div class="d-flex align-items-center gap-2">
-                    <button type="button" class="btn-clear-filters text-muted small border-0 bg-transparent" onclick="resetFilters()" title="Xóa tất cả lọc">
-                        <i class="fa-solid fa-rotate-left me-1"></i>Đặt lại
-                    </button>
-                    <button type="button" class="btn-close-outside-widget border-0 bg-transparent text-muted" id="btnCloseFilterWidget" title="Thu gọn bộ lọc">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Widget Block 1: Sắc Men Gốm Bát Tràng -->
-            <div class="widget-filter-group mb-4">
-                <div class="filter-group-title fw-bold text-dark mb-2 d-flex justify-content-between align-items-center">
-                    <span><i class="fa-solid fa-palette text-danger me-2"></i>Sắc men gốm</span>
-                </div>
-                <div class="glaze-filter-list d-flex flex-column gap-1" id="glazeFilter">
-                    <button type="button" class="glaze-chip-widget active" data-glaze="all">
-                        <span class="chip-color chip-all"></span>
-                        <span class="chip-title">Tất cả sắc men</span>
-                        <span class="chip-badge ms-auto"><?php echo count($ceramic_products); ?></span>
-                    </button>
-                    <?php if (!empty($detected_glazes)) : ?>
-                        <?php foreach ($detected_glazes as $slug => $glaze_item) : ?>
-                            <button type="button" class="glaze-chip-widget" data-glaze="<?php echo esc_attr($slug); ?>">
-                                <span class="chip-color" style="background-color: <?php echo esc_attr($glaze_item['color']); ?>;"></span>
-                                <span class="chip-title"><?php echo esc_html($glaze_item['name']); ?></span>
-                                <span class="chip-badge ms-auto"><?php echo esc_html($glaze_item['count']); ?></span>
+                    <!-- Widget Block 1: Sắc Men Gốm Bát Tràng -->
+                    <div class="widget-filter-group mb-4">
+                        <div class="filter-group-title fw-bold text-dark mb-2 d-flex justify-content-between align-items-center">
+                            <span><i class="fa-solid fa-palette text-danger me-2"></i>Sắc men gốm</span>
+                        </div>
+                        <div class="glaze-filter-list d-flex flex-column gap-1" id="glazeFilter">
+                            <button type="button" class="glaze-chip-widget active" data-glaze="all">
+                                <span class="chip-color chip-all"></span>
+                                <span class="chip-title">Tất cả sắc men</span>
+                                <span class="chip-badge ms-auto"><?php echo count($ceramic_products); ?></span>
                             </button>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </div>
-            </div>
+                            <?php if (!empty($detected_glazes)) : ?>
+                                <?php foreach ($detected_glazes as $slug => $glaze_item) : ?>
+                                    <button type="button" class="glaze-chip-widget" data-glaze="<?php echo esc_attr($slug); ?>">
+                                        <span class="chip-color" style="background-color: <?php echo esc_attr($glaze_item['color']); ?>;"></span>
+                                        <span class="chip-title"><?php echo esc_html($glaze_item['name']); ?></span>
+                                        <span class="chip-badge ms-auto"><?php echo esc_html($glaze_item['count']); ?></span>
+                                    </button>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+                    </div>
 
-            <!-- Widget Block 2: Danh Mục Tác Phẩm -->
-            <div class="widget-filter-group mb-4 pt-3 border-top">
-                <div class="filter-group-title fw-bold text-dark mb-2 d-flex justify-content-between align-items-center">
-                    <span><i class="fa-solid fa-layer-group text-danger me-2"></i>Danh mục</span>
-                </div>
-                <div class="category-filter-list d-flex flex-column gap-1" id="categoryFilter">
-                    <button type="button" class="cat-pill-widget active" data-cat="all">
-                        <span class="cat-name">Tất cả danh mục</span>
-                        <span class="cat-badge ms-auto"><?php echo count($ceramic_products); ?></span>
-                    </button>
-                    <?php if (!empty($active_categories)) : ?>
-                        <?php foreach ($active_categories as $cat) : 
-                            $c_count = $cat_counts[$cat->slug] ?? $cat->count;
-                        ?>
-                            <button type="button" class="cat-pill-widget" data-cat="<?php echo esc_attr($cat->slug); ?>">
-                                <span class="cat-name"><?php echo esc_html($cat->name); ?></span>
-                                <span class="cat-badge ms-auto"><?php echo esc_html($c_count); ?></span>
+                    <!-- Widget Block 2: Danh Mục Tác Phẩm -->
+                    <div class="widget-filter-group mb-4 pt-3 border-top">
+                        <div class="filter-group-title fw-bold text-dark mb-2 d-flex justify-content-between align-items-center">
+                            <span><i class="fa-solid fa-layer-group text-danger me-2"></i>Danh mục</span>
+                        </div>
+                        <div class="category-filter-list d-flex flex-column gap-1" id="categoryFilter">
+                            <button type="button" class="cat-pill-widget active" data-cat="all">
+                                <span class="cat-name">Tất cả danh mục</span>
+                                <span class="cat-badge ms-auto"><?php echo count($ceramic_products); ?></span>
                             </button>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </div>
-            </div>
+                            <?php if (!empty($active_categories)) : ?>
+                                <?php foreach ($active_categories as $cat) : 
+                                    $c_count = $cat_counts[$cat->slug] ?? $cat->count;
+                                ?>
+                                    <button type="button" class="cat-pill-widget" data-cat="<?php echo esc_attr($cat->slug); ?>">
+                                        <span class="cat-name"><?php echo esc_html($cat->name); ?></span>
+                                        <span class="cat-badge ms-auto"><?php echo esc_html($c_count); ?></span>
+                                    </button>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+                    </div>
 
-            <!-- Widget Block 3: Khoảng Giá -->
-            <div class="widget-filter-group mb-4 pt-3 border-top">
-                <div class="filter-group-title fw-bold text-dark mb-2 d-flex justify-content-between align-items-center">
-                    <span><i class="fa-solid fa-tag text-danger me-2"></i>Khoảng giá</span>
-                </div>
-                <div class="price-filter-list d-flex flex-column gap-1" id="priceFilter">
-                    <button type="button" class="price-chip-widget active" data-price-range="all">Tất cả mức giá</button>
-                    <button type="button" class="price-chip-widget" data-price-range="under-100k">Dưới 100.000 đ</button>
-                    <button type="button" class="price-chip-widget" data-price-range="100k-300k">100.000 đ - 300.000 đ</button>
-                    <button type="button" class="price-chip-widget" data-price-range="300k-500k">300.000 đ - 500.000 đ</button>
-                    <button type="button" class="price-chip-widget" data-price-range="above-500k">Trên 500.000 đ</button>
-                </div>
-            </div>
+                    <!-- Widget Block 3: Khoảng Giá -->
+                    <div class="widget-filter-group mb-4 pt-3 border-top">
+                        <div class="filter-group-title fw-bold text-dark mb-2 d-flex justify-content-between align-items-center">
+                            <span><i class="fa-solid fa-tag text-danger me-2"></i>Khoảng giá</span>
+                        </div>
+                        <div class="price-filter-list d-flex flex-column gap-1" id="priceFilter">
+                            <button type="button" class="price-chip-widget active" data-price-range="all">Tất cả mức giá</button>
+                            <button type="button" class="price-chip-widget" data-price-range="under-100k">Dưới 100.000 đ</button>
+                            <button type="button" class="price-chip-widget" data-price-range="100k-300k">100.000 đ - 300.000 đ</button>
+                            <button type="button" class="price-chip-widget" data-price-range="300k-500k">300.000 đ - 500.000 đ</button>
+                            <button type="button" class="price-chip-widget" data-price-range="above-500k">Trên 500.000 đ</button>
+                        </div>
+                    </div>
 
-            <!-- Widget Block 4: Cam kết Gomie -->
-            <div class="widget-craft-pledge p-3 rounded-3 mt-3">
-                <div class="pledge-item d-flex align-items-center gap-2 mb-2">
-                    <i class="fa-solid fa-fire text-danger"></i>
-                    <span class="small fw-semibold text-dark">Nung 1.300°C khử chì</span>
+                    <!-- Widget Block 4: Cam kết Gomie -->
+                    <div class="widget-craft-pledge p-3 rounded-3 mt-3">
+                        <div class="pledge-item d-flex align-items-center gap-2 mb-2">
+                            <i class="fa-solid fa-fire text-danger"></i>
+                            <span class="small fw-semibold text-dark">Nung 1.300°C khử chì</span>
+                        </div>
+                        <div class="pledge-item d-flex align-items-center gap-2 mb-2">
+                            <i class="fa-solid fa-shield-halved text-success"></i>
+                            <span class="small fw-semibold text-dark">Bảo hiểm vỡ hỏng 100%</span>
+                        </div>
+                        <div class="pledge-item d-flex align-items-center gap-2">
+                            <i class="fa-solid fa-hand-sparkles text-primary"></i>
+                            <span class="small fw-semibold text-dark">100% vuốt nặn thủ công</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="pledge-item d-flex align-items-center gap-2 mb-2">
-                    <i class="fa-solid fa-shield-halved text-success"></i>
-                    <span class="small fw-semibold text-dark">Bảo hiểm vỡ hỏng 100%</span>
-                </div>
-                <div class="pledge-item d-flex align-items-center gap-2">
-                    <i class="fa-solid fa-hand-sparkles text-primary"></i>
-                    <span class="small fw-semibold text-dark">100% vuốt nặn thủ công</span>
-                </div>
-            </div>
-        </div>
-    </aside>
+            </aside>
 
-    <!-- Overlay Backdrop for Floating Outside Widget -->
-    <div class="filter-widget-backdrop" id="filterWidgetBackdrop"></div>
+            <!-- SẢN PHẨM NẰM TRỌN VẸN TRONG CONTAINER-WIDTH (FULL 4 CỘT) -->
+            <div class="container shop-products-container">
+                <!-- Shop Controls Toolbar -->
+                <div class="shop-toolbar mb-4 p-3 rounded-4 shadow-sm bg-white d-flex flex-wrap justify-content-between align-items-center gap-3">
+                    <div class="toolbar-left d-flex align-items-center gap-2 flex-wrap">
+                        <button type="button" class="btn btn-outline-danger btn-sm rounded-pill d-xl-none" id="btnToggleMobileFilter">
+                            <i class="fa-solid fa-sliders me-1"></i> <strong>Bộ lọc</strong>
+                        </button>
+                        <div class="products-counter text-muted small ms-1">
+                            Hiển thị <strong class="text-dark" id="productCount"><?php echo count($ceramic_products); ?></strong> tác phẩm gốm sứ
+                        </div>
+                        <div id="activeFilterTags" class="active-filter-tags d-flex flex-wrap gap-1 ms-md-2">
+                            <!-- Dynamic Active Filter Tags -->
+                        </div>
+                    </div>
 
-    <!-- SẢN PHẨM NẰM TRỌN VẸN TRONG CONTAINER-WIDTH (FULL 4 CỘT) -->
-    <div class="container shop-body-container py-5">
-        <!-- Shop Controls Toolbar -->
-        <div class="shop-toolbar mb-4 p-3 rounded-4 shadow-sm bg-white d-flex flex-wrap justify-content-between align-items-center gap-3">
-            <div class="toolbar-left d-flex align-items-center gap-2 flex-wrap">
-                <button type="button" class="btn btn-outline-danger btn-sm rounded-pill" id="btnToggleOutsideFilter">
-                    <i class="fa-solid fa-sliders me-1"></i> <strong>Bộ lọc</strong> (<span id="toolbarFilterCount"><?php echo count($ceramic_products); ?></span>)
-                </button>
-                <div class="products-counter text-muted small ms-1">
-                    Hiển thị <strong class="text-dark" id="productCount"><?php echo count($ceramic_products); ?></strong> tác phẩm gốm sứ
+                    <div class="toolbar-right d-flex align-items-center gap-2 ms-auto">
+                        <label for="shopSort" class="text-nowrap small text-muted"><i class="fa-solid fa-arrow-down-short-wide me-1"></i>Sắp xếp:</label>
+                        <select id="shopSort" class="form-select form-select-sm border-0 bg-light rounded-pill px-3 py-1">
+                            <option value="featured">Nổi bật nhất</option>
+                            <option value="price-asc">Giá: Thấp đến Cao</option>
+                            <option value="price-desc">Giá: Cao đến Thấp</option>
+                            <option value="title-asc">Tên: A - Z</option>
+                        </select>
+                    </div>
                 </div>
-                <div id="activeFilterTags" class="active-filter-tags d-flex flex-wrap gap-1 ms-md-2">
-                    <!-- Dynamic Active Filter Tags -->
-                </div>
-            </div>
 
-            <div class="toolbar-right d-flex align-items-center gap-2 ms-auto">
-                <label for="shopSort" class="text-nowrap small text-muted"><i class="fa-solid fa-arrow-down-short-wide me-1"></i>Sắp xếp:</label>
-                <select id="shopSort" class="form-select form-select-sm border-0 bg-light rounded-pill px-3 py-1">
-                    <option value="featured">Nổi bật nhất</option>
-                    <option value="price-asc">Giá: Thấp đến Cao</option>
-                    <option value="price-desc">Giá: Cao đến Thấp</option>
-                    <option value="title-asc">Tên: A - Z</option>
-                </select>
-            </div>
-        </div>
-
-        <!-- Product Grid (Full container width: 4 columns on desktop!) -->
-        <div class="row g-4 shop-product-grid" id="productGrid">
+                <!-- Product Grid (Full container width: 4 columns on desktop!) -->
+                <div class="row g-4 shop-product-grid" id="productGrid">
             <?php foreach ($ceramic_products as $item) : 
                 $product = $item['product'];
                 $pid = $product->get_id();
@@ -417,7 +404,9 @@ $theme_uri = get_template_directory_uri();
             <p class="text-muted">Vui lòng chọn bộ lọc khác hoặc đặt chế tác men riêng theo yêu cầu.</p>
             <button type="button" class="btn btn-outline-dark rounded-pill px-4" onclick="resetFilters()">Xem tất cả sản phẩm</button>
         </div>
-    </div> <!-- /.container.shop-body-container -->
+            </div> <!-- /.container.shop-products-container -->
+        </div> <!-- /.shop-canvas-wrapper -->
+    </div> <!-- /.shop-body-section -->
 
     <!-- Editorial Commitment Banner -->
     <section class="shop-bottom-feature py-5">
@@ -579,80 +568,43 @@ $theme_uri = get_template_directory_uri();
 .protect-dot { background: #2563eb; }
 
 /* ==========================================================================
-   GOMIE OUTSIDE-CONTAINER FILTER WIDGET STYLES (LỀ TRÁI MÀN HÌNH)
+   GOMIE OUTSIDE SIDEBAR FILTER (NẰM BÊN TRÁI CONTAINER SẢN PHẨM)
    ========================================================================== */
+.shop-body-section {
+    position: relative;
+    width: 100%;
+    z-index: 1;
+}
 
-/* 1. Floating Left-Edge Dock Button */
-.btn-filter-dock-toggle {
-    position: fixed;
-    left: 0;
-    top: 240px;
-    z-index: 1040;
-    background: linear-gradient(135deg, #e0592a 0%, #c44317 100%);
-    color: #ffffff;
-    border: none;
-    border-radius: 0 12px 12px 0;
-    padding: 12px 12px 12px 8px;
-    box-shadow: 4px 6px 20px rgba(224, 89, 42, 0.35);
+.shop-canvas-wrapper {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    cursor: pointer;
-    font-size: 0.8rem;
-    font-weight: 700;
-    transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
-}
-.btn-filter-dock-toggle:hover {
-    transform: translateX(4px);
-    box-shadow: 6px 8px 24px rgba(224, 89, 42, 0.45);
-    background: linear-gradient(135deg, #ea6638 0%, #d44d20 100%);
-}
-.btn-filter-dock-toggle i {
-    font-size: 1.15rem;
-}
-.btn-filter-dock-toggle .dock-txt {
-    writing-mode: vertical-rl;
-    text-orientation: mixed;
-    letter-spacing: 1.5px;
-    font-size: 0.78rem;
-}
-.btn-filter-dock-toggle .dock-badge {
-    background: #ffffff;
-    color: #c44317;
-    font-size: 0.7rem;
-    font-weight: 800;
-    padding: 1px 6px;
-    border-radius: 999px;
-    margin-top: 2px;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 32px;
+    max-width: 1680px;
+    margin: 0 auto;
+    padding: 0 24px;
 }
 
-/* 2. Outside Filter Widget Card */
-.shop-filter-outside-widget {
-    position: fixed;
-    top: 90px;
-    left: 0;
-    z-index: 1050;
-    width: 320px;
-    max-width: 90vw;
-    transform: translateX(-110%);
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    pointer-events: none;
-}
-.shop-filter-outside-widget.open {
-    transform: translateX(16px);
-    pointer-events: auto;
+/* Sidebar nằm bên trái, ngoài container của sản phẩm */
+.shop-outside-sidebar {
+    width: 280px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 100px;
+    z-index: 20;
+    transition: all 0.3s ease;
 }
 
 .filter-widget-card {
-    border: 1px solid rgba(224, 89, 42, 0.2);
+    border: 1px solid rgba(224, 89, 42, 0.15);
     background: #ffffff;
-    max-height: calc(100vh - 110px);
+    max-height: calc(100vh - 120px);
     overflow-y: auto;
     border-radius: 20px;
     scrollbar-width: thin;
     scrollbar-color: rgba(224, 89, 42, 0.3) transparent;
-    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.16) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
 }
 .filter-widget-card::-webkit-scrollbar {
     width: 4px;
@@ -662,55 +614,44 @@ $theme_uri = get_template_directory_uri();
     border-radius: 999px;
 }
 
-.btn-close-outside-widget {
-    font-size: 1.2rem;
-    cursor: pointer;
-    line-height: 1;
-    padding: 4px 6px;
-    transition: color 0.2s ease;
-}
-.btn-close-outside-widget:hover {
-    color: #e0592a !important;
+/* Container sản phẩm rộng rãi chứa đầy đủ 4 cột sản phẩm */
+.shop-products-container {
+    flex: 1;
+    max-width: 1320px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
 }
 
-/* 3. Backdrop */
-.filter-widget-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(2px);
-    z-index: 1045;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-}
-.filter-widget-backdrop.show {
-    opacity: 1;
-    pointer-events: auto;
+/* Responsive cho màn hình nhỏ hơn 1200px */
+@media (max-width: 1199.98px) {
+    .shop-canvas-wrapper {
+        display: block;
+        padding: 0 16px;
+    }
+    .shop-outside-sidebar {
+        display: none;
+        width: 100%;
+        position: static;
+        margin-bottom: 24px;
+    }
+    .shop-outside-sidebar.show-mobile {
+        display: block;
+        animation: fadeInDown 0.3s ease;
+    }
+    .shop-products-container {
+        max-width: 100%;
+    }
 }
 
-/* 4. On Ultra-Wide Screens (>= 1720px): Pin outside permanently in the left gutter */
-@media (min-width: 1720px) {
-    .btn-filter-dock-toggle {
-        display: none !important;
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
     }
-    .filter-widget-backdrop {
-        display: none !important;
-    }
-    .btn-close-outside-widget {
-        display: none !important;
-    }
-    .shop-filter-outside-widget {
-        transform: none !important;
-        pointer-events: auto !important;
-        left: calc((100vw - 1320px) / 2 - 335px);
-        width: 310px;
-    }
-    .filter-widget-card {
-        box-shadow: 0 10px 30px rgba(224, 89, 42, 0.08) !important;
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
@@ -1368,29 +1309,17 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Outside Widget Open/Close Triggers
+    // Mobile Filter Toggle Trigger
     const sidebarEl = document.getElementById('shopFilterSidebar');
-    const backdropEl = document.getElementById('filterWidgetBackdrop');
-    const btnDockToggle = document.getElementById('btnFilterDockToggle');
-    const btnToolbarToggle = document.getElementById('btnToggleOutsideFilter');
-    const btnCloseWidget = document.getElementById('btnCloseFilterWidget');
+    const btnToggleMobile = document.getElementById('btnToggleMobileFilter');
 
-    function openOutsideWidget() {
-        if (sidebarEl) sidebarEl.classList.add('open');
-        if (backdropEl) backdropEl.classList.add('show');
-    }
-
-    function closeOutsideWidget() {
-        if (sidebarEl) sidebarEl.classList.remove('open');
-        if (backdropEl) backdropEl.classList.remove('show');
-    }
-
-    if (btnDockToggle) btnDockToggle.addEventListener('click', openOutsideWidget);
-    if (btnToolbarToggle) btnToolbarToggle.addEventListener('click', openOutsideWidget);
-    if (btnCloseWidget) btnCloseWidget.addEventListener('click', closeOutsideWidget);
-    if (backdropEl) backdropEl.addEventListener('click', closeOutsideWidget);
-    if (window.location.hash === '#open') {
-        openOutsideWidget();
+    if (btnToggleMobile && sidebarEl) {
+        btnToggleMobile.addEventListener('click', function() {
+            sidebarEl.classList.toggle('show-mobile');
+            if (sidebarEl.classList.contains('show-mobile')) {
+                sidebarEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
     }
 
     window.resetFilters = function() {
