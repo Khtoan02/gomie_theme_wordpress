@@ -292,8 +292,12 @@ $theme_uri = get_template_directory_uri();
 
                 $display_title = trim($title);
                 if (empty($display_title) || strcasecmp($display_title, '(no title)') === 0 || strcasecmp($display_title, 'no title') === 0) {
-                    $display_title = $cat_label . ' Men ' . $glaze_name . ' Bát Tràng';
+                    $glaze_display = (stripos($glaze_name, 'men') === 0) ? $glaze_name : 'Men ' . $glaze_name;
+                    $display_title = $cat_label . ' ' . $glaze_display . ' Bát Tràng';
                 }
+                // Chuẩn hóa tên sản phẩm: loại bỏ lặp từ như "Men Men"
+                $display_title = preg_replace('/\bMen\s+Men\b/ui', 'Men', $display_title);
+                $display_title = preg_replace('/\s+/', ' ', $display_title);
 
                 // Stats tương tác đồng bộ
                 $stats = function_exists('gomie_get_product_stats') ? gomie_get_product_stats($pid) : array(
@@ -304,12 +308,12 @@ $theme_uri = get_template_directory_uri();
                 $views_formatted = number_format($stats['views']);
                 $sales_formatted = number_format($stats['sales']);
 
-                // Image with prioritized detection (High-res Full)
+                // Image with prioritized detection (Optimized large size first for instant load & 60fps scrolling)
                 $img_url = '';
                 if (has_post_thumbnail($pid)) {
-                    $img_url = get_the_post_thumbnail_url($pid, 'full');
+                    $img_url = get_the_post_thumbnail_url($pid, 'large') ?: get_the_post_thumbnail_url($pid, 'full');
                 } elseif ($product->get_image_id()) {
-                    $img_url = wp_get_attachment_image_url($product->get_image_id(), 'full');
+                    $img_url = wp_get_attachment_image_url($product->get_image_id(), 'large') ?: wp_get_attachment_image_url($product->get_image_id(), 'full');
                 }
                 
                 if (empty($img_url)) {
@@ -334,7 +338,7 @@ $theme_uri = get_template_directory_uri();
                             <div class="product-image-wrapper">
                                 <a href="<?php echo esc_url($permalink); ?>" class="product-image-link" aria-label="<?php echo esc_attr($display_title); ?>">
                                     <div class="product-image-container">
-                                        <img src="<?php echo esc_url($img_url); ?>" alt="<?php echo esc_attr($display_title); ?>" loading="lazy" class="product-image" />
+                                        <img src="<?php echo esc_url($img_url); ?>" alt="<?php echo esc_attr($display_title); ?>" loading="lazy" decoding="async" class="product-image" />
                                     </div>
                                 </a>
                             </div>
@@ -403,6 +407,15 @@ $theme_uri = get_template_directory_uri();
             <h4 class="text-dark fw-bold">Không tìm thấy sản phẩm phù hợp</h4>
             <p class="text-muted">Vui lòng chọn bộ lọc khác hoặc đặt chế tác men riêng theo yêu cầu.</p>
             <button type="button" class="btn btn-outline-dark rounded-pill px-4" onclick="resetFilters()">Xem tất cả sản phẩm</button>
+        </div>
+
+        <!-- Load More Products Button for Ultra Smooth Scroll Experience -->
+        <div class="shop-load-more-wrap text-center mt-5 mb-2 d-none" id="loadMoreWrap">
+            <button type="button" class="btn-load-more-editorial" id="btnLoadMore">
+                <i class="fa-solid fa-sparkles text-danger me-1"></i>
+                <span>Xem thêm tác phẩm</span>
+                <span class="load-more-badge" id="loadMoreBadge">+16</span>
+            </button>
         </div>
             </div> <!-- /.container.shop-products-container -->
         </div> <!-- /.shop-canvas-wrapper -->
@@ -828,7 +841,17 @@ $theme_uri = get_template_directory_uri();
 
 
 
-/* Gomie Apple-Style Product Card Component (Synchronized with Homepage) */
+/* Smooth Viewport Rendering for Product Columns (Fluid 60fps/120fps Scroll) */
+.product-card-col {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 440px;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.product-card-col.d-none {
+    display: none !important;
+}
+
+/* Gomie Apple-Style Product Card Component (Synchronized with Homepage & Editorial Brand) */
 .gomie-product-item {
     margin: 0;
     padding: 0;
@@ -838,29 +861,34 @@ $theme_uri = get_template_directory_uri();
 .gomie-product-card.apple-style {
     background: #ffffff;
     border-radius: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    border: 1px solid rgba(0, 0, 0, 0.07);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(224, 89, 42, 0.08);
     overflow: hidden;
-    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s ease, border-color 0.3s ease;
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
     position: relative;
     height: 100%;
     display: flex;
     flex-direction: column;
+    will-change: transform, box-shadow;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: translateZ(0);
 }
 
 .gomie-product-card.apple-style:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 16px 36px rgba(224, 89, 42, 0.12);
-    border-color: rgba(224, 89, 42, 0.3);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 32px rgba(224, 89, 42, 0.12);
+    border-color: rgba(224, 89, 42, 0.25);
 }
 
+/* Khối ảnh đồng nhất màu nền với card (Loại bỏ triệt để viền hộp/card-inside-card) */
 .gomie-product-card.apple-style .product-image-wrapper {
     position: relative;
     width: 100%;
     aspect-ratio: 1 / 1;
     overflow: hidden;
-    background: #faf9f6;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    background: #ffffff;
+    border-bottom: 1px solid #f6f3ee;
 }
 
 .gomie-product-card.apple-style .product-image-container {
@@ -869,34 +897,41 @@ $theme_uri = get_template_directory_uri();
     display: flex;
     align-items: center;
     justify-content: center;
+    background: #ffffff;
 }
 
 .gomie-product-card.apple-style .product-image-link {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: 100%;
+    background: #ffffff;
 }
 
 .gomie-product-card.apple-style .product-image {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    padding: 10px;
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    padding: 16px;
+    image-rendering: auto;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    transition: transform 0.3s ease;
 }
 
+/* Loại bỏ phóng to scale(1.06) gây vỡ hạt/mờ ảnh trên màn hình Retina khi hover */
 .gomie-product-card.apple-style:hover .product-image {
-    transform: scale(1.06);
+    transform: none;
 }
 
 .gomie-product-card.apple-style .product-content {
-    padding: 18px 20px 22px;
+    padding: 16px 18px 20px;
     display: flex;
     flex-direction: column;
     flex: 1;
-    gap: 10px;
+    gap: 8px;
     background: #ffffff;
 }
 
@@ -906,24 +941,24 @@ $theme_uri = get_template_directory_uri();
 
 .gomie-product-card.apple-style .category-label {
     display: inline-block;
-    background: rgba(230, 126, 34, 0.08);
-    color: #d96528;
-    padding: 4px 10px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 600;
+    background: #fff7ed;
+    color: #c2410c;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
     text-decoration: none;
-    border: 1px solid rgba(230, 126, 34, 0.2);
+    border: 1px solid rgba(234, 88, 12, 0.16);
     width: fit-content;
 }
 
 .gomie-product-card.apple-style .product-title {
     margin: 0;
-    font-size: 15px;
+    font-size: 14.5px;
     font-weight: 700;
     line-height: 1.45;
     color: #1e293b;
-    min-height: 44px;
+    min-height: 42px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -946,30 +981,30 @@ $theme_uri = get_template_directory_uri();
     justify-content: space-between;
     margin: 2px 0;
     padding: 0;
-    gap: 8px;
+    gap: 6px;
 }
 
 .gomie-product-card.apple-style .stat-item {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 4px;
     flex: 1;
     justify-content: center;
-    padding: 5px 6px;
+    padding: 4px 6px;
     background: #f8fafc;
-    border-radius: 8px;
-    border: 1px solid rgba(0, 0, 0, 0.03);
+    border-radius: 6px;
+    border: none;
 }
 
 .gomie-product-card.apple-style .stat-item i {
-    font-size: 11px;
+    font-size: 10px;
     color: #e0592a;
 }
 
 .gomie-product-card.apple-style .stat-value {
-    font-size: 11.5px;
+    font-size: 11px;
     font-weight: 700;
-    color: #334155;
+    color: #475569;
 }
 
 .gomie-product-card.apple-style .star-rating {
@@ -979,7 +1014,7 @@ $theme_uri = get_template_directory_uri();
 }
 
 .gomie-product-card.apple-style .star-rating i {
-    font-size: 10px;
+    font-size: 9px;
     color: #f59e0b;
 }
 
@@ -992,18 +1027,18 @@ $theme_uri = get_template_directory_uri();
 .gomie-product-card.apple-style .product-price {
     color: #e0592a;
     font-weight: 800;
-    font-size: 24px;
+    font-size: 22px;
     margin: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 6px;
     line-height: 1.2;
 }
 
 .gomie-product-card.apple-style .product-price del {
     color: #94a3b8;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 400;
     text-decoration: line-through;
 }
@@ -1019,27 +1054,61 @@ $theme_uri = get_template_directory_uri();
 
 .gomie-product-card.apple-style .btn-add-to-cart-apple {
     width: 100%;
-    background: linear-gradient(135deg, #e0592a 0%, #c4471b 100%);
+    background: #e0592a;
     color: #ffffff !important;
     border: none;
     border-radius: 12px;
-    padding: 10px 16px;
-    font-size: 14px;
+    padding: 9px 16px;
+    font-size: 13.5px;
     font-weight: 700;
     text-decoration: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 6px;
     transition: all 0.25s ease;
-    box-shadow: 0 2px 8px rgba(224, 89, 42, 0.2);
 }
 
 .gomie-product-card.apple-style .btn-add-to-cart-apple:hover {
-    background: linear-gradient(135deg, #c4471b 0%, #a83811 100%);
-    box-shadow: 0 6px 18px rgba(224, 89, 42, 0.35);
-    transform: translateY(-2px);
+    background: #c4471b;
+    box-shadow: 0 4px 12px rgba(224, 89, 42, 0.25);
     color: #ffffff !important;
+}
+
+/* Nút Xem Thêm Tác Phẩm */
+.btn-load-more-editorial {
+    background: #ffffff;
+    color: #e0592a;
+    border: 1.5px solid #e0592a;
+    padding: 10px 28px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.25s ease;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(224, 89, 42, 0.08);
+}
+.btn-load-more-editorial:hover {
+    background: #e0592a;
+    color: #ffffff;
+    box-shadow: 0 6px 20px rgba(224, 89, 42, 0.25);
+    transform: translateY(-2px);
+}
+.btn-load-more-editorial .load-more-badge {
+    background: rgba(224, 89, 42, 0.1);
+    color: #e0592a;
+    border-radius: 999px;
+    padding: 2px 8px;
+    font-size: 12px;
+    font-weight: 800;
+    transition: all 0.2s ease;
+}
+.btn-load-more-editorial:hover .load-more-badge {
+    background: #ffffff;
+    color: #e0592a;
 }
 
 /* Bottom Feature */
@@ -1217,8 +1286,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    const pageSize = 16;
+    let currentlyVisibleLimit = 16;
+    const btnLoadMore = document.getElementById('btnLoadMore');
+    const loadMoreWrap = document.getElementById('loadMoreWrap');
+    const loadMoreBadge = document.getElementById('loadMoreBadge');
+
     function applyFilters() {
-        let visibleCount = 0;
+        let matchingCards = [];
 
         cards.forEach(card => {
             const cardGlaze = card.getAttribute('data-glaze');
@@ -1241,24 +1316,51 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             if (glazeMatch && catMatch && priceMatch) {
-                card.classList.remove('d-none');
-                visibleCount++;
+                matchingCards.push(card);
             } else {
                 card.classList.add('d-none');
             }
         });
 
-        if (countEl) countEl.textContent = visibleCount;
-        const dockCount = document.getElementById('dockFilterCount');
+        const totalMatches = matchingCards.length;
+        if (countEl) countEl.textContent = totalMatches;
         const tbCount = document.getElementById('toolbarFilterCount');
-        if (dockCount) dockCount.textContent = visibleCount;
-        if (tbCount) tbCount.textContent = visibleCount;
+        if (tbCount) tbCount.textContent = totalMatches;
+
+        const isFiltered = (currentGlaze !== 'all' || currentCat !== 'all' || currentPriceRange !== 'all');
+        const activeLimit = isFiltered ? Math.max(currentlyVisibleLimit, pageSize) : currentlyVisibleLimit;
+
+        matchingCards.forEach((card, index) => {
+            if (index < activeLimit) {
+                card.classList.remove('d-none');
+            } else {
+                card.classList.add('d-none');
+            }
+        });
+
+        if (loadMoreWrap && btnLoadMore) {
+            const remaining = totalMatches - activeLimit;
+            if (remaining > 0) {
+                loadMoreWrap.classList.remove('d-none');
+                if (loadMoreBadge) loadMoreBadge.textContent = '+' + (remaining > pageSize ? pageSize : remaining);
+            } else {
+                loadMoreWrap.classList.add('d-none');
+            }
+        }
+
         if (emptyAlert) {
-            if (visibleCount === 0) emptyAlert.classList.remove('d-none');
+            if (totalMatches === 0) emptyAlert.classList.remove('d-none');
             else emptyAlert.classList.add('d-none');
         }
 
         renderActiveTags();
+    }
+
+    if (btnLoadMore) {
+        btnLoadMore.addEventListener('click', function() {
+            currentlyVisibleLimit += pageSize;
+            applyFilters();
+        });
     }
 
     // Glaze chip clicks
@@ -1332,6 +1434,7 @@ document.addEventListener('DOMContentLoaded', function() {
         currentGlaze = 'all';
         currentCat = 'all';
         currentPriceRange = 'all';
+        currentlyVisibleLimit = pageSize;
         applyFilters();
     };
 
