@@ -1924,3 +1924,368 @@
 .product-custom-content img:hover {
   transform: scale(1.01);
 }
+
+/* ==========================================================================
+   PRODUCT CUSTOM CONTENT MODERN REFINEMENT (Server-side & Client-side)
+   ========================================================================== */
+
+/* Triệt tiêu mọi inline font-size quá khổ do copy từ Word/Editor */
+.product-custom-content *[style*="font-size"] {
+  font-size: inherit !important;
+}
+
+/* Headings chuẩn hóa - Không bao giờ to đùng, thô hay tạo cảm giác hét vào mặt */
+.product-custom-content h1,
+.product-custom-content h2,
+.product-custom-content h3 {
+  font-size: 1.15rem !important; /* ~18.5px */
+  font-weight: 750 !important;
+  color: #1e293b !important;
+  letter-spacing: -0.01em !important;
+  line-height: 1.45 !important;
+  margin-top: 28px !important;
+  margin-bottom: 14px !important;
+  text-transform: none !important;
+}
+
+.product-custom-content h4,
+.product-custom-content h5,
+.product-custom-content h6 {
+  font-size: 1rem !important; /* ~16px */
+  font-weight: 700 !important;
+  color: #1e293b !important;
+  line-height: 1.4 !important;
+  margin-top: 20px !important;
+  margin-bottom: 10px !important;
+}
+
+/* Triệt tiêu bullet đen cổ điển cho mọi thẻ UL chưa được chuyển thành bảng */
+.product-custom-content ul {
+  list-style: none !important;
+  padding-left: 0 !important;
+  margin: 14px 0 22px 0 !important;
+}
+
+.product-custom-content ul li {
+  position: relative;
+  padding-left: 24px !important;
+  line-height: 1.7 !important;
+  font-size: 14.5px !important;
+  color: #4b5563 !important;
+  margin-bottom: 8px !important;
+}
+
+.product-custom-content ul li::before {
+  content: '✓' !important;
+  position: absolute;
+  left: 0;
+  top: 3px;
+  width: 16px;
+  height: 16px;
+  background: rgba(196, 77, 24, 0.12) !important;
+  color: #c44d18 !important;
+  border-radius: 50%;
+  font-size: 10px;
+  font-weight: 750;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 1. Subtitle / Kicker đầu nội dung */
+.gomie-editorial-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: #fdf6ec;
+  border: 1px solid #faecd8;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #c44d18;
+  margin-bottom: 18px;
+}
+
+.gomie-editorial-kicker .kicker-dot {
+  width: 6px;
+  height: 6px;
+  background: #c44d18;
+  border-radius: 50%;
+}
+
+/* 2. Callout An Toàn Sức Khỏe QUATEST 1 */
+.gomie-safety-callout {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+  border: 1px solid #bbf7d0;
+  border-left: 4px solid #16a34a;
+  border-radius: 12px;
+  padding: 14px 20px;
+  margin: 20px 0 26px 0;
+  box-shadow: 0 4px 14px rgba(22, 163, 74, 0.05);
+}
+
+.gomie-safety-callout .safety-icon-wrap {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #dcfce7;
+  color: #16a34a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.gomie-safety-callout .safety-content {
+  flex: 1;
+}
+
+.gomie-safety-callout .safety-badge-title {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #14532d;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 2px;
+}
+
+.gomie-safety-callout .safety-badge-desc {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #166534;
+}
+
+.gomie-safety-callout .safety-seal {
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #16a34a;
+  background: #dcfce7;
+  padding: 5px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+@media (max-width: 576px) {
+  .gomie-safety-callout {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
+
+/* 3. Section Heading phân đoạn */
+.gomie-content-heading {
+  position: relative;
+  font-size: 1.05rem !important; /* ~16.8px */
+  font-weight: 750 !important;
+  color: #1e293b !important;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 28px 0 16px 0 !important;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #f1ece5;
+  display: flex;
+  align-items: center;
+}
+
+.gomie-content-heading .heading-accent {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 44px;
+  height: 2px;
+  background: #c44d18;
+  border-radius: 2px;
+}
+
+/* 4. Modern Specs Table */
+.gomie-specs-table-card {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #ede7df;
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+  margin-bottom: 24px;
+}
+
+.gomie-specs-table-modern {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 !important;
+}
+
+.gomie-specs-table-modern tr {
+  border-bottom: 1px solid #ede7df;
+  transition: background 0.15s ease;
+}
+
+.gomie-specs-table-modern tr:last-child {
+  border-bottom: none;
+}
+
+.gomie-specs-table-modern tr:hover {
+  background: #fdfbf7;
+}
+
+.gomie-specs-table-modern .gomie-spec-col-label {
+  width: 240px;
+  max-width: 280px;
+  background: #faf7f2;
+  padding: 12px 18px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #1e293b;
+  border-right: 1px solid #ede7df;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.gomie-specs-table-modern .gomie-spec-col-label i {
+  color: #c44d18;
+  margin-right: 8px;
+  font-size: 12px;
+  width: 16px;
+  text-align: center;
+}
+
+.gomie-specs-table-modern .gomie-spec-col-value {
+  padding: 12px 20px;
+  font-size: 14px;
+  color: #374151;
+  font-weight: 500;
+  line-height: 1.55;
+  vertical-align: middle;
+}
+
+@media (max-width: 768px) {
+  .gomie-specs-table-modern .gomie-spec-col-label {
+    width: 135px;
+    padding: 10px 12px;
+    font-size: 12.5px;
+  }
+  .gomie-specs-table-modern .gomie-spec-col-value {
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+}
+
+/* 5. Highlights Grid */
+.gomie-highlights-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 16px 0 28px 0;
+}
+
+@media (max-width: 768px) {
+  .gomie-highlights-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.gomie-highlight-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #ffffff;
+  border: 1px solid #ede7df;
+  border-radius: 12px;
+  padding: 12px 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s ease;
+}
+
+.gomie-highlight-item:hover {
+  border-color: rgba(196, 77, 24, 0.4);
+  background: #fdfbf7;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(196, 77, 24, 0.08);
+}
+
+.gomie-highlight-item .highlight-bullet {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(196, 77, 24, 0.12);
+  color: #c44d18;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.gomie-highlight-item .highlight-text {
+  font-size: 13.5px;
+  color: #374151;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+/* 6. Brand Pledge Cards Grid */
+.gomie-pledge-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 16px 0 24px 0;
+}
+
+@media (max-width: 768px) {
+  .gomie-pledge-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.gomie-pledge-cards-grid .pledge-card {
+  background: linear-gradient(180deg, #ffffff 0%, #faf8f5 100%);
+  border: 1px solid #ede7df;
+  border-radius: 14px;
+  padding: 18px 16px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s ease;
+}
+
+.gomie-pledge-cards-grid .pledge-card:hover {
+  border-color: rgba(196, 77, 24, 0.4);
+  box-shadow: 0 6px 20px rgba(196, 77, 24, 0.08);
+  transform: translateY(-2px);
+}
+
+.gomie-pledge-cards-grid .pledge-icon {
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 10px auto;
+  border-radius: 50%;
+  background: rgba(196, 77, 24, 0.1);
+  color: #c44d18;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.gomie-pledge-cards-grid .pledge-name {
+  font-size: 14.5px;
+  font-weight: 750;
+  color: #1e293b;
+  margin-bottom: 6px;
+}
+
+.gomie-pledge-cards-grid .pledge-desc {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: #64748b;
+  margin: 0;
+}

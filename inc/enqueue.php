@@ -273,10 +273,10 @@ function gomie_enqueue_scripts() {
     // Single Product Page CSS & JS - Load on product detail page
     if (function_exists('is_product') && is_product()) {
         if (file_exists(get_template_directory() . '/assets/css/single-product.css')) {
-            wp_enqueue_style('gomie-single-product', get_template_directory_uri() . '/assets/css/single-product.css', array('gomie-style', 'gomie-colors', 'homepage-products'), GOMIE_THEME_VERSION);
+            wp_enqueue_style('gomie-single-product', get_template_directory_uri() . '/assets/css/single-product.css', array('gomie-style', 'gomie-colors', 'homepage-products'), filemtime(get_template_directory() . '/assets/css/single-product.css'));
         }
         if (file_exists(get_template_directory() . '/assets/js/single-product.js')) {
-            wp_enqueue_script('gomie-single-product-js', get_template_directory_uri() . '/assets/js/single-product.js', array('jquery'), GOMIE_THEME_VERSION, true);
+            wp_enqueue_script('gomie-single-product-js', get_template_directory_uri() . '/assets/js/single-product.js', array('jquery'), filemtime(get_template_directory() . '/assets/js/single-product.js'), true);
             $wc_scripts[] = 'gomie-single-product-js';
         }
     }

@@ -248,6 +248,11 @@
       var $content = $('.product-custom-content');
       if (!$content.length) return;
 
+      // Nếu đã được Server-side PHP (Gomie_Product_Content_Styler) render chuẩn rồi thì không lặp lại
+      if ($content.find('.gomie-specs-section, .gomie-safety-callout, .gomie-pledge-section').length) {
+        return;
+      }
+
       // 7.1 Hide duplicate first heading if it repeats product title or Gomie Ceramic
       var $firstHeading = $content.find('h1, h2, h3').first();
       if ($firstHeading.length) {
@@ -371,6 +376,10 @@
     }
 
     enhanceProductContent();
+
+    $(document).on('wp:page-transitioned', function() {
+      enhanceProductContent();
+    });
   });
 
 })(jQuery);

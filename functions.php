@@ -31,6 +31,7 @@ require_once GOMIE_THEME_DIR . '/inc/page-provisioner.php';
 require_once GOMIE_THEME_DIR . '/inc/native-cache.php';
 require_once GOMIE_THEME_DIR . '/inc/performance-core.php';
 require_once GOMIE_THEME_DIR . '/inc/smart-specs-table.php';
+require_once GOMIE_THEME_DIR . '/inc/product-content-styler.php';
 
 // Kích hoạt theme
 add_action('after_setup_theme', 'gomie_theme_setup');

@@ -391,7 +391,10 @@ $schema_data = array(
 
                     <?php if ($product->get_description()) : ?>
                         <div class="product-custom-content mt-4 pt-3 border-top border-light-subtle">
-                            <?php the_content(); ?>
+                            <?php 
+                            $content = get_the_content();
+                            echo apply_filters('the_content', $content); 
+                            ?>
                         </div>
                     <?php endif; ?>
 
