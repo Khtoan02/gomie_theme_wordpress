@@ -47,10 +47,11 @@ get_header();
       <article id="post-<?php the_ID(); ?>" <?php post_class('editorial-single-entry'); ?>>
 
         <!-- ═══════════════════════════════════════════════
-             TẦNG 1: EDITORIAL HERO HEADER (Nằm trên cùng)
+             TẦNG 1: EDITORIAL HERO HEADER (Ảnh đại diện làm Background)
         ════════════════════════════════════════════════ -->
-        <header class="article-hero-header">
-          <div class="gomie-single-article-container">
+        <header class="article-hero-header" style="<?php echo !empty($hero_img_url) ? 'background-image: url(' . esc_url($hero_img_url) . ');' : ''; ?>">
+          <div class="hero-overlay"></div>
+          <div class="gomie-single-article-container hero-container">
             <!-- Breadcrumbs -->
             <nav class="article-breadcrumbs" aria-label="Breadcrumb">
               <a href="<?php echo esc_url(home_url('/')); ?>">Trang chủ</a>
@@ -102,21 +103,13 @@ get_header();
         <div class="gomie-single-article-container article-content-section">
           <div class="article-layout-grid">
 
-            <!-- CỘT TRÁI: Main Article Card Shell & Discussions -->
+            <!-- CỘT TRÁI: Main Article Content (Bắt đầu từ nội dung luôn, không đóng khối hộp) -->
             <div class="article-main-content">
 
-              <!-- Article Card Shell (Nền trắng sang trọng bo góc mềm) -->
-              <div class="article-card-shell">
+              <!-- Article Body Shell (Không đóng khối hộp, nền thoáng rộng rãi) -->
+              <div class="article-body-wrapper">
 
-                <!-- 1. Featured Image bắt buộc ép chuẩn tỉ lệ 16:9 bất kể kích thước ảnh gốc -->
-                <?php if (!empty($hero_img_url)) : ?>
-                  <div class="article-featured-image-stage">
-                    <img src="<?php echo $hero_img_url; ?>" alt="<?php the_title_attribute(); ?>" class="article-featured-img-16-9" />
-                    <div class="featured-image-watermark">Gomie Ceramic · Bát Tràng</div>
-                  </div>
-                <?php endif; ?>
-
-                <!-- 2. Mobile Table of Contents Accordion (<= 1040px) -->
+                <!-- 1. Mobile Table of Contents Accordion (<= 1040px) -->
                 <div id="mobileTOCBox" class="mobile-toc-accordion d-none">
                   <button type="button" class="btn-toggle-mobile-toc" id="btnToggleMobileTOC" aria-expanded="false">
                     <span><i class="fa-solid fa-list-ul me-2" style="color: var(--orange, #f47a20);"></i> Mục lục bài viết</span>
@@ -127,19 +120,19 @@ get_header();
                   </div>
                 </div>
 
-                <!-- 3. Lead Paragraph (nếu có excerpt) -->
+                <!-- 2. Lead Paragraph (nếu có excerpt) -->
                 <?php if (has_excerpt()) : ?>
                   <div class="article-lead-paragraph">
                     <?php echo get_the_excerpt(); ?>
                   </div>
                 <?php endif; ?>
 
-                <!-- 4. Core Body Rich Text with Standardized Typography & 16:9 Media -->
+                <!-- 3. Core Body Rich Text with Standardized Typography & 16:9 Media -->
                 <div class="article-rich-text gomie-prose">
                   <?php the_content(); ?>
                 </div>
 
-                <!-- 5. Tags & Social Share Strip (Facebook, Zalo, Twitter, Copy Link) -->
+                <!-- 4. Tags & Social Share Strip (Facebook, Zalo, Twitter, Copy Link) -->
                 <footer class="article-footer-toolbar">
                   <div class="article-tags-cluster">
                     <span class="tags-title">Chủ đề:</span>
@@ -189,7 +182,7 @@ get_header();
                   </div>
                 </div>
 
-              </div><!-- /.article-card-shell -->
+              </div><!-- /.article-body-wrapper -->
 
               <!-- ═══════════════════════════════════════════════
                    BÀI VIẾT LIÊN QUAN CUỐI BÀI (Lưới 3 Card - Ảnh 16:9)
@@ -510,15 +503,32 @@ get_header();
   }
 
   /* ═══════════════════════════════════════════════
-     1. TẦNG 1: EDITORIAL HERO HEADER
+     1. TẦNG 1: EDITORIAL HERO HEADER (ẢNH BACKGROUND)
      ════════════════════════════════════════════════ */
   .article-hero-header {
-    padding-top: clamp(28px, 4vw, 44px);
-    padding-bottom: clamp(24px, 3.5vw, 36px);
+    position: relative;
     width: 100%;
     box-sizing: border-box;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding-top: clamp(38px, 5.5vw, 64px);
+    padding-bottom: clamp(34px, 4.5vw, 54px);
+    overflow: hidden;
     border-bottom: 1px solid rgba(235, 222, 206, 0.6);
-    background: #fffdfa;
+  }
+
+  .article-hero-header .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.78) 0%, rgba(15, 23, 42, 0.88) 100%);
+    backdrop-filter: blur(2px);
+    z-index: 1;
+  }
+
+  .article-hero-header .hero-container {
+    position: relative;
+    z-index: 2;
   }
 
   .article-breadcrumbs {
@@ -527,7 +537,7 @@ get_header();
     gap: 8px;
     font-size: 13px;
     font-family: var(--font-body), sans-serif;
-    color: #64748b;
+    color: rgba(255, 255, 255, 0.75);
     margin-bottom: 14px;
     flex-wrap: wrap;
     justify-content: flex-start;
@@ -536,22 +546,22 @@ get_header();
   }
 
   .article-breadcrumbs a {
-    color: #64748b !important;
+    color: rgba(255, 255, 255, 0.75) !important;
     text-decoration: none !important;
     transition: color .2s;
   }
 
   .article-breadcrumbs a:hover {
-    color: var(--orange, #f47a20) !important;
+    color: #ff9d47 !important;
   }
 
   .article-breadcrumbs .sep {
-    color: #cbd5e1;
+    color: rgba(255, 255, 255, 0.4);
     font-size: 12px;
   }
 
   .article-breadcrumbs .current {
-    color: #1e293b;
+    color: #ffffff;
     font-weight: 600;
     max-width: 100%;
     word-break: break-word;
@@ -559,31 +569,33 @@ get_header();
 
   .article-tag-badge {
     display: inline-block;
-    padding: 4px 14px;
+    padding: 5px 14px;
     border-radius: 999px;
-    background: #ffffff;
-    border: 1px solid rgba(235, 222, 206, .9);
-    box-shadow: 0 2px 8px rgba(45, 30, 15, .03);
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
     font-size: 11px;
-    font-weight: 700;
+    font-weight: 750;
     letter-spacing: .08em;
     text-transform: uppercase;
-    color: var(--orange-deep, #db6109);
-    margin-bottom: 14px;
+    color: #ff9d47;
+    margin-bottom: 16px;
   }
 
-  /* Harmonized H1 Typography - Controlled, balanced, and elegant */
+  /* Harmonized H1 Typography on Dark Hero - Clear, luxurious, bold */
   .article-headline {
     font-family: var(--font-heading), 'Plus Jakarta Sans', sans-serif !important;
-    font-size: clamp(21px, 2.5vw, 29px) !important;
+    font-size: clamp(23px, 2.8vw, 32px) !important;
     font-weight: 750 !important;
-    line-height: 1.38 !important;
+    line-height: 1.35 !important;
     letter-spacing: -.015em !important;
-    color: #0f172a !important;
-    margin: 0 0 18px 0 !important;
-    max-width: 940px;
+    color: #ffffff !important;
+    margin: 0 0 20px 0 !important;
+    max-width: 960px;
     text-align: left;
     word-break: break-word;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
   }
 
   .article-meta-row {
@@ -592,11 +604,12 @@ get_header();
     justify-content: flex-start;
     gap: 16px;
     flex-wrap: wrap;
-    padding: 7px 18px;
+    padding: 8px 20px;
     border-radius: 999px;
-    background: #ffffff;
-    border: 1px solid rgba(238, 228, 214, .9);
-    box-shadow: 0 2px 10px rgba(45, 30, 15, .03);
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
     max-width: 100%;
     box-sizing: border-box;
   }
@@ -608,8 +621,8 @@ get_header();
   }
 
   .author-avatar-seal {
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     background: linear-gradient(135deg, #f47a20 0%, #db6109 100%);
     color: #ffffff;
@@ -618,28 +631,28 @@ get_header();
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 6px rgba(244, 122, 32, .25);
+    box-shadow: 0 2px 8px rgba(244, 122, 32, .4);
   }
 
   .author-name {
     display: block;
     font-size: 13px;
     font-weight: 700;
-    color: #0f172a;
+    color: #ffffff;
     line-height: 1.25;
   }
 
   .author-role {
     display: block;
     font-size: 11px;
-    color: #64748b;
+    color: rgba(255, 255, 255, 0.75);
     line-height: 1.25;
   }
 
   .meta-divider {
     width: 1px;
     height: 20px;
-    background: rgba(45, 30, 15, .1);
+    background: rgba(255, 255, 255, 0.25);
   }
 
   .meta-item {
@@ -652,7 +665,7 @@ get_header();
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: .05em;
-    color: #64748b;
+    color: rgba(255, 255, 255, 0.65);
     line-height: 1.25;
   }
 
@@ -660,7 +673,7 @@ get_header();
     display: block;
     font-size: 12.5px;
     font-weight: 650;
-    color: #334155;
+    color: #ffffff;
     line-height: 1.25;
   }
 
@@ -684,17 +697,16 @@ get_header();
     width: 100%;
   }
 
-  /* Article Card Shell */
-  .article-card-shell {
-    background: #ffffff;
-    border-radius: 22px;
-    border: 1px solid rgba(235, 222, 206, 0.85);
-    box-shadow: 0 4px 20px rgba(45, 30, 15, 0.04);
-    padding: clamp(24px, 3.5vw, 44px);
+  /* Article Body Wrapper (Không đóng khối hộp, nền thoáng rộng rãi theo đúng yêu cầu) */
+  .article-body-wrapper {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
     margin-bottom: 36px;
-    overflow: hidden !important;
-    box-sizing: border-box !important;
+    border-radius: 0 !important;
     width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   /* ═══════════════════════════════════════════════
@@ -1375,32 +1387,28 @@ get_header();
   }
 
   /* ═══════════════════════════════════════════════
-     3. CỘT PHẢI: STICKY MULTI-WIDGET SIDEBAR
+     3. CỘT PHẢI: MULTI-WIDGET SIDEBAR
      - Nằm CÙNG TẦNG với nội dung bài viết
+     - Cuộn cùng trang bài viết (hoàn toàn không cuộn riêng lẻ)
      ════════════════════════════════════════════════ */
   .article-sidebar-widget {
     width: 100%;
     min-width: 0;
   }
 
-  @media (min-width: 1041px) {
-    .sidebar-sticky-inner {
-      position: sticky;
-      top: 90px;
-      max-height: calc(100vh - 105px);
-      overflow-y: auto;
-      overscroll-behavior: contain;
-      padding-right: 4px;
-      scrollbar-width: thin;
-      scrollbar-color: rgba(244, 122, 32, 0.3) transparent;
-    }
-    .sidebar-sticky-inner::-webkit-scrollbar {
-      width: 4px;
-    }
-    .sidebar-sticky-inner::-webkit-scrollbar-thumb {
-      background: rgba(244, 122, 32, 0.3);
-      border-radius: 999px;
-    }
+  .sidebar-sticky-inner {
+    position: static !important;
+    max-height: none !important;
+    overflow: visible !important;
+    overscroll-behavior: auto !important;
+    padding-right: 0 !important;
+    scrollbar-width: none !important;
+  }
+
+  .sidebar-sticky-inner::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
   }
 
   .editorial-widget-card {
@@ -1863,9 +1871,8 @@ get_header();
     .meta-divider {
       display: none;
     }
-    .article-card-shell {
-      padding: 18px 16px !important;
-      border-radius: 16px !important;
+    .article-body-wrapper {
+      padding: 0 !important;
     }
     .related-posts-grid {
       grid-template-columns: 1fr;
