@@ -377,8 +377,185 @@
 
     enhanceProductContent();
 
+    // =========================================================================
+    // 8. VARIABLE PRODUCT SWATCHES & VARIATION PRICE / ADD TO CART CONTROLLER
+    // =========================================================================
+    function initVariableProductSwatches() {
+      var $form = $('.gomie-action-trio-form.variations_form');
+      if (!$form.length) return;
+
+      var variationsData = [];
+      try {
+        var rawData = $form.attr('data-product_variations');
+        if (rawData) {
+          variationsData = JSON.parse(rawData);
+        }
+      } catch (err) {
+        variationsData = [];
+      }
+
+      var $priceDisplay = $('#gomie-variable-price-display');
+      var $varIdInput = $form.find('input[name="variation_id"]');
+      var $addCartBtn = $('#gomie-add-cart-btn');
+      var $buyNowBtn = $('#gomie-buy-now-btn');
+      var $alertBox = $('.gomie-variation-alert');
+
+      function formatVNCurrency(num) {
+        return new Intl.NumberFormat('vi-VN').format(num) + '&nbsp;₫';
+      }
+
+      function updateMatchingVariation() {
+        var selectedAttrs = {};
+        var totalGroups = 0;
+        var selectedCount = 0;
+
+        $('.gomie-attribute-group').each(function() {
+          totalGroups++;
+          var attrKey = $(this).data('attribute');
+          var val = $(this).find('.gomie-hidden-variation-select').val();
+          if (val) {
+            selectedAttrs[attrKey] = val;
+            selectedCount++;
+          }
+        });
+
+        if (selectedCount === totalGroups && totalGroups > 0 && variationsData.length > 0) {
+          // Find matching variation
+          var matched = variationsData.find(function(v) {
+            for (var k in selectedAttrs) {
+              if (v.attributes.hasOwnProperty(k)) {
+                if (v.attributes[k] !== '' && v.attributes[k] !== selectedAttrs[k]) {
+                  return false;
+                }
+              }
+            }
+            return true;
+          });
+
+          if (matched) {
+            $varIdInput.val(matched.variation_id);
+            $alertBox.addClass('d-none');
+
+            // Update Dynamic Price
+            if ($priceDisplay.length) {
+              $priceDisplay.addClass('price-updating');
+              setTimeout(function() {
+                if (matched.price_html && matched.price_html.trim() !== '') {
+                  $priceDisplay.html(matched.price_html);
+                } else if (matched.display_price) {
+                  var pStr = formatVNCurrency(matched.display_price);
+                  if (matched.display_regular_price && matched.display_regular_price > matched.display_price) {
+                    var rStr = formatVNCurrency(matched.display_regular_price);
+                    $priceDisplay.html('<ins>' + pStr + '</ins> <del>' + rStr + '</del>');
+                  } else {
+                    $priceDisplay.html(pStr);
+                  }
+                }
+                $priceDisplay.removeClass('price-updating');
+              }, 120);
+            }
+
+            // Update Stock Status
+            if (matched.is_in_stock) {
+              $('.stock-status').removeClass('out-stock').addClass('in-stock').html('<span class="status-dot"></span>Còn hàng');
+              $addCartBtn.prop('disabled', false).removeClass('disabled');
+              $buyNowBtn.prop('disabled', false).removeClass('disabled');
+            } else {
+              $('.stock-status').removeClass('in-stock').addClass('out-stock').html('<span class="status-dot"></span>Tạm hết hàng');
+              $addCartBtn.prop('disabled', true).addClass('disabled');
+              $buyNowBtn.prop('disabled', true).addClass('disabled');
+            }
+
+            // Update gallery image if variation has custom image
+            if (matched.image && matched.image.src && matched.image.src !== '') {
+              var $mainImg = $('#gomie-main-product-img');
+              if ($mainImg.length && $mainImg.attr('src') !== matched.image.src) {
+                $mainImg.css('opacity', '0.4').attr('src', matched.image.src);
+                setTimeout(function() { $mainImg.css('opacity', '1'); }, 150);
+              }
+            }
+
+            return matched;
+          }
+        }
+
+        $varIdInput.val('0');
+        return null;
+      }
+
+      // Swatch Pill Click Event
+      $(document).off('click', '.gomie-swatch-pill').on('click', '.gomie-swatch-pill', function(e) {
+        e.preventDefault();
+        var $pill = $(this);
+        var attrKey = $pill.data('attr-key');
+        var val = $pill.data('value');
+
+        var $group = $pill.closest('.gomie-attribute-group');
+        $group.find('.gomie-swatch-pill').removeClass('active');
+        $pill.addClass('active');
+
+        $group.find('.attr-selected-value').text(val);
+        $group.find('.gomie-hidden-variation-select').val(val).trigger('change');
+
+        updateMatchingVariation();
+      });
+
+      // Form submission validation
+      $form.off('submit.gomieVar').on('submit.gomieVar', function(e) {
+        var varId = parseInt($varIdInput.val(), 10);
+        if (!varId || varId <= 0) {
+          e.preventDefault();
+          $alertBox.removeClass('d-none');
+          $('.gomie-swatch-pills-list').addClass('animate-shake');
+          setTimeout(function() {
+            $('.gomie-swatch-pills-list').removeClass('animate-shake');
+          }, 600);
+          return false;
+        }
+      });
+
+      // Buy Now Button Click
+      $buyNowBtn.off('click.gomieBuyNow').on('click.gomieBuyNow', function(e) {
+        e.preventDefault();
+        var varId = parseInt($varIdInput.val(), 10);
+        if (!varId || varId <= 0) {
+          $alertBox.removeClass('d-none');
+          $('html, body').animate({
+            scrollTop: $('.gomie-variations-section').offset().top - 120
+          }, 300);
+          $('.gomie-swatch-pills-list').addClass('animate-shake');
+          setTimeout(function() {
+            $('.gomie-swatch-pills-list').removeClass('animate-shake');
+          }, 600);
+          return false;
+        }
+
+        var productId = $form.find('input[name="product_id"]').val() || $form.find('input[name="add-to-cart"]').val();
+        var qty = parseInt($form.find('input[name="quantity"]').val(), 10) || 1;
+        var baseUrl = window.location.origin + '/thanh-toan/';
+
+        var checkoutUrl = baseUrl + '?add-to-cart=' + encodeURIComponent(productId) + '&variation_id=' + encodeURIComponent(varId) + '&quantity=' + encodeURIComponent(qty);
+
+        $form.find('.gomie-hidden-variation-select').each(function() {
+          var name = $(this).attr('name');
+          var val = $(this).val();
+          if (val) {
+            checkoutUrl += '&' + encodeURIComponent(name) + '=' + encodeURIComponent(val);
+          }
+        });
+
+        window.location.href = checkoutUrl;
+      });
+
+      // Initial check on page load
+      updateMatchingVariation();
+    }
+
+    initVariableProductSwatches();
+
     $(document).on('wp:page-transitioned', function() {
       enhanceProductContent();
+      initVariableProductSwatches();
     });
   });
 

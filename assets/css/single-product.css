@@ -2289,3 +2289,111 @@
   color: #64748b;
   margin: 0;
 }
+
+/* ==========================================================================
+   VARIABLE PRODUCT ATTRIBUTE SWATCHES & PILLS (GOMIE QUIET LUXURY STYLE)
+   ========================================================================== */
+.gomie-variations-section {
+  background: #ffffff;
+  border: 1px solid rgba(235, 222, 206, 0.7);
+  border-radius: 16px;
+  padding: 16px 18px;
+  box-shadow: 0 2px 10px rgba(45, 30, 15, 0.03);
+}
+
+.gomie-attribute-group:last-child {
+  margin-bottom: 0 !important;
+}
+
+.attr-group-label {
+  font-size: 13.5px;
+  font-weight: 750;
+  color: #1e2830;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+}
+
+.attr-selected-value {
+  color: #f47a20;
+  font-weight: 800;
+}
+
+.gomie-swatch-pills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.gomie-swatch-pill {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 8px 18px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #334155;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  user-select: none;
+}
+
+.gomie-swatch-pill:hover {
+  border-color: #f47a20;
+  color: #f47a20;
+  background: #fffdfa;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(244, 122, 32, 0.12);
+}
+
+.gomie-swatch-pill.active {
+  background: #fff7ed;
+  border-color: #f47a20;
+  color: #db6109;
+  font-weight: 800;
+  box-shadow: 0 4px 14px rgba(244, 122, 32, 0.2);
+}
+
+.gomie-swatch-pill .pill-check-indicator {
+  display: none;
+  font-size: 11px;
+  color: #f47a20;
+}
+
+.gomie-swatch-pill.active .pill-check-indicator {
+  display: inline-block;
+}
+
+.gomie-variation-alert {
+  border-left: 4px solid #f59e0b;
+  background: #fffbeb;
+  color: #b45309;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+@keyframes gomieShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+.animate-shake {
+  animation: gomieShake 0.5s ease-in-out;
+}
+
+/* Dynamic Price Transition */
+.gomie-current-price {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.gomie-current-price.price-updating {
+  opacity: 0.3;
+  transform: scale(0.98);
+}
+
