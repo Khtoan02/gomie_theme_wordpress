@@ -463,7 +463,7 @@ get_header();
     padding: 0;
     background-color: #fffdfa !important;
     background-image: none !important;
-    overflow-x: hidden !important;
+    overflow-x: clip !important;
   }
 
   .gomie-single-article .gomie-v11 {
@@ -471,7 +471,7 @@ get_header();
     background-image: none !important;
     min-height: 100vh;
     padding-bottom: 90px;
-    overflow-x: hidden !important;
+    overflow-x: clip !important;
   }
 
   /* Full Website Container Width (matches 1280px standard) */
@@ -1316,28 +1316,42 @@ get_header();
   }
 
   /* ═══════════════════════════════════════════════
-     3. CỘT PHẢI: MULTI-WIDGET SIDEBAR
+     3. CỘT PHẢI: STICKY SIDEBAR (Cuộn cùng khi cuộn trang)
      - Nằm CÙNG TẦNG với nội dung bài viết
-     - Cuộn cùng trang bài viết (hoàn toàn không cuộn riêng lẻ)
+     - Trôi theo nhịp cuộn trang (Sticky), không bị fix cứng ở đỉnh
+     - Hoàn toàn không có thanh cuộn riêng lẻ
      ════════════════════════════════════════════════ */
   .article-sidebar-widget {
     width: 100%;
     min-width: 0;
   }
 
-  .sidebar-sticky-inner {
-    position: static !important;
-    max-height: none !important;
-    overflow: visible !important;
-    overscroll-behavior: auto !important;
-    padding-right: 0 !important;
-    scrollbar-width: none !important;
-  }
+  @media (min-width: 1041px) {
+    .article-sidebar-widget {
+      position: -webkit-sticky !important;
+      position: sticky !important;
+      top: 85px !important;
+      align-self: flex-start !important;
+      z-index: 10;
+    }
 
-  .sidebar-sticky-inner::-webkit-scrollbar {
-    display: none !important;
-    width: 0 !important;
-    height: 0 !important;
+    .sidebar-sticky-inner {
+      position: static !important;
+      max-height: none !important;
+      overflow: visible !important;
+      overscroll-behavior: auto !important;
+      padding-right: 0 !important;
+      scrollbar-width: none !important;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .sidebar-sticky-inner::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
   }
 
   .editorial-widget-card {
@@ -1820,6 +1834,17 @@ get_header();
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+  // 0. Auto-sync Sidebar Sticky Top with Header height (so it floats smoothly along scroll)
+  function applySidebarStickyTop() {
+    var sidebar = document.querySelector('.article-sidebar-widget');
+    if (!sidebar || window.innerWidth <= 1040) return;
+    var header = document.querySelector('.gomie-header-wrapper, .site-header, header');
+    var h = header ? header.offsetHeight : 80;
+    sidebar.style.top = (h + 16) + 'px';
+  }
+  applySidebarStickyTop();
+  window.addEventListener('resize', applySidebarStickyTop, { passive: true });
+
   // 1. Reading Progress Bar
   window.addEventListener('scroll', function() {
     var winScroll = document.documentElement.scrollTop || document.body.scrollTop;
