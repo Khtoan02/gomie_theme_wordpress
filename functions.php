@@ -909,3 +909,14 @@ function gomie_ajax_load_restaurant_products() {
 
 add_action('wp_ajax_load_restaurant_products', 'gomie_ajax_load_restaurant_products');
 add_action('wp_ajax_nopriv_load_restaurant_products', 'gomie_ajax_load_restaurant_products');
+
+/**
+ * Chuẩn hoá hiển thị khoảng giá WooCommerce cho giao diện gốm sứ Gomie
+ * Tránh gãy dòng phân cách &ndash; và tối ưu thẩm mỹ UI/UX
+ */
+add_filter('woocommerce_format_price_range', 'gomie_standardize_price_range', 10, 3);
+function gomie_standardize_price_range($price, $from, $to) {
+    $from_price = is_numeric($from) ? wc_price($from) : $from;
+    $to_price = is_numeric($to) ? wc_price($to) : $to;
+    return '<span class="price-range-wrapper"><span class="price-from">' . $from_price . '</span><span class="price-range-sep">&nbsp;&ndash;&nbsp;</span><span class="price-to">' . $to_price . '</span></span>';
+}

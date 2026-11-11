@@ -3417,7 +3417,7 @@ img {
   gap: 1rem;
 }
 
-.product-price {
+.product-footer .product-price {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
@@ -7483,3 +7483,104 @@ img {
   padding: 0.7rem 0;
   border-radius: 7px;
 }
+
+/* ==========================================================================
+   CHUẨN HOÁ HIỂN THỊ GIÁ SẢN PHẨM & KHOẢNG GIÁ (PRICE RANGE) GOMIE CERAMIC
+   ========================================================================== */
+.gomie-product-card.apple-style .product-price,
+.product-price {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: baseline !important;
+  justify-content: center !important;
+  color: var(--orange-deep, #e0592a) !important;
+  font-weight: 800 !important;
+  font-size: 15.5px !important;
+  line-height: 1.25 !important;
+  white-space: nowrap !important;
+  max-width: 100% !important;
+  letter-spacing: -0.01em;
+  margin: 0 !important;
+}
+
+.price-range-wrapper {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: baseline !important;
+  justify-content: center !important;
+  white-space: nowrap !important;
+  gap: 2px !important;
+  max-width: 100% !important;
+}
+
+.price-range-sep {
+  color: #94a3b8 !important;
+  font-weight: 600 !important;
+  font-size: 13.5px !important;
+  padding: 0 1px !important;
+  display: inline-block !important;
+  user-select: none !important;
+}
+
+.gomie-product-card.apple-style .product-price > .woocommerce-Price-amount:only-child,
+.product-price > .woocommerce-Price-amount:only-child {
+  font-size: 18px !important;
+}
+
+.product-price .woocommerce-Price-currencySymbol {
+  font-size: 0.85em !important;
+  font-weight: 700 !important;
+  margin-left: 1px !important;
+}
+
+.product-price del {
+  color: #94a3b8 !important;
+  font-size: 12.5px !important;
+  font-weight: 400 !important;
+  text-decoration: line-through !important;
+  margin-right: 5px !important;
+  display: inline-block !important;
+}
+
+.product-price ins {
+  text-decoration: none !important;
+  color: var(--orange-deep, #e0592a) !important;
+  font-weight: 800 !important;
+  font-size: 18px !important;
+  display: inline-block !important;
+}
+
+.product-price .screen-reader-text {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+@media (max-width: 576px) {
+  .gomie-product-card.apple-style .product-price,
+  .product-price {
+    font-size: 13.5px !important;
+  }
+  .price-range-wrapper {
+    font-size: 13px !important;
+  }
+  .gomie-product-card.apple-style .product-price > .woocommerce-Price-amount:only-child,
+  .product-price > .woocommerce-Price-amount:only-child {
+    font-size: 16px !important;
+  }
+  .product-price del {
+    font-size: 11px !important;
+  }
+  .product-price ins {
+    font-size: 15.5px !important;
+  }
+}
+
