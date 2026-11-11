@@ -237,7 +237,9 @@ $schema_data = array(
                     <div class="gomie-editorial-price-wrap mb-3 pb-3 border-bottom border-light-subtle">
                         <div class="d-flex align-items-baseline flex-wrap gap-3 gomie-price-box">
                             <?php if ($is_variable) : ?>
-                                <div class="editorial-sale-price gomie-current-price" id="gomie-variable-price-display">
+                                <div class="editorial-sale-price gomie-current-price" 
+                                     id="gomie-variable-price-display"
+                                     data-initial-price="<?php echo esc_attr($product->get_price_html()); ?>">
                                     <?php echo $product->get_price_html(); ?>
                                 </div>
                             <?php elseif ($is_on_sale && $product->get_regular_price()) : ?>
@@ -290,54 +292,79 @@ $schema_data = array(
                     </div>
 
                     <!-- Variable Product Attribute Swatches & Selection Pills -->
-                    <?php if ($is_variable && !empty($variation_attributes)) : ?>
-                        <div class="gomie-variations-section mb-4">
+                    <?php if ($is_variable && !empty($variation_attributes)) : 
+                        // Filter attributes: only display groups that have 2 or more options
+                        $visible_attr_count = 0;
+                        foreach ($variation_attributes as $opts) {
+                            if (count($opts) >= 2) {
+                                $visible_attr_count++;
+                            }
+                        }
+                    ?>
+                        <div class="gomie-variations-section mb-4 <?php echo $visible_attr_count === 0 ? 'd-none' : ''; ?>">
                             <?php foreach ($variation_attributes as $attribute_name => $options) : 
                                 $sanitized_attr_name = sanitize_title($attribute_name);
                                 $attr_key = 'attribute_' . $sanitized_attr_name;
-                                $selected_val = isset($_REQUEST[$attr_key]) ? wc_clean(wp_unslash($_REQUEST[$attr_key])) : (isset($default_attributes[$sanitized_attr_name]) ? $default_attributes[$sanitized_attr_name] : '');
-                                // Auto-select first option if none is pre-selected for seamless UX
-                                if (empty($selected_val) && !empty($options)) {
-                                    $selected_val = $options[0];
-                                }
+                                $has_multiple = (count($options) >= 2);
                                 $attr_label = wc_attribute_label($attribute_name, $product);
-                            ?>
-                                <div class="gomie-attribute-group mb-3" data-attribute="<?php echo esc_attr($attr_key); ?>">
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <span class="attr-group-label fw-bold text-dark">
-                                            <?php echo esc_html($attr_label); ?>:
-                                            <span class="attr-selected-value text-orange ms-1"><?php echo $selected_val ? esc_html($selected_val) : 'Vui lòng chọn'; ?></span>
-                                        </span>
-                                    </div>
-                                    
-                                    <div class="gomie-swatch-pills-list d-flex flex-wrap gap-2">
-                                        <?php foreach ($options as $option) : 
-                                            $is_active = ($selected_val === $option);
-                                        ?>
-                                            <button type="button" 
-                                                    class="gomie-swatch-pill <?php echo $is_active ? 'active' : ''; ?>" 
-                                                    data-attr-key="<?php echo esc_attr($attr_key); ?>" 
-                                                    data-value="<?php echo esc_attr($option); ?>"
-                                                    title="<?php echo esc_attr($option); ?>">
-                                                <span class="pill-check-indicator"><i class="fa-solid fa-check"></i></span>
-                                                <span class="pill-text"><?php echo esc_html($option); ?></span>
-                                            </button>
-                                        <?php endforeach; ?>
-                                    </div>
 
-                                    <!-- Hidden Native Select for WooCommerce Standard Synchronization -->
+                                // If only 1 option (e.g. single glaze color): do not display UI pills, but keep value in hidden input/select
+                                if (!$has_multiple) :
+                                    $single_val = !empty($options) ? $options[0] : '';
+                                ?>
                                     <select name="<?php echo esc_attr($attr_key); ?>" 
                                             id="<?php echo esc_attr($sanitized_attr_name); ?>" 
-                                            class="d-none gomie-hidden-variation-select" 
-                                            data-attribute_name="<?php echo esc_attr($attr_key); ?>">
-                                        <option value="">Chọn một tùy chọn</option>
-                                        <?php foreach ($options as $option) : ?>
-                                            <option value="<?php echo esc_attr($option); ?>" <?php selected($selected_val, $option); ?>>
-                                                <?php echo esc_html($option); ?>
-                                            </option>
-                                        <?php endforeach; ?>
+                                            form="gomie-cart-form"
+                                            class="d-none gomie-hidden-variation-select gomie-single-option-fixed" 
+                                            data-attribute_name="<?php echo esc_attr($attr_key); ?>"
+                                            data-fixed="true">
+                                        <option value="<?php echo esc_attr($single_val); ?>" selected="selected">
+                                            <?php echo esc_html($single_val); ?>
+                                        </option>
                                     </select>
-                                </div>
+                                <?php else : 
+                                    // Attribute has 2+ options: Render visual swatch pills
+                                    // Initial state: Not pre-selected unless explicitly in URL query
+                                    $selected_val = isset($_REQUEST[$attr_key]) ? wc_clean(wp_unslash($_REQUEST[$attr_key])) : '';
+                                ?>
+                                    <div class="gomie-attribute-group mb-3" data-attribute="<?php echo esc_attr($attr_key); ?>">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="attr-group-label fw-bold text-dark">
+                                                <?php echo esc_html($attr_label); ?>:
+                                                <span class="attr-selected-value text-orange ms-1"><?php echo $selected_val ? esc_html($selected_val) : '<span class="text-muted fw-normal fst-italic">Vui lòng chọn</span>'; ?></span>
+                                            </span>
+                                        </div>
+                                        
+                                        <div class="gomie-swatch-pills-list d-flex flex-wrap gap-2">
+                                            <?php foreach ($options as $option) : 
+                                                $is_active = ($selected_val === $option);
+                                            ?>
+                                                <button type="button" 
+                                                        class="gomie-swatch-pill <?php echo $is_active ? 'active' : ''; ?>" 
+                                                        data-attr-key="<?php echo esc_attr($attr_key); ?>" 
+                                                        data-value="<?php echo esc_attr($option); ?>"
+                                                        title="<?php echo esc_attr($option); ?>">
+                                                    <span class="pill-check-indicator"><i class="fa-solid fa-check"></i></span>
+                                                    <span class="pill-text"><?php echo esc_html($option); ?></span>
+                                                </button>
+                                            <?php endforeach; ?>
+                                        </div>
+
+                                        <!-- Hidden Native Select for WooCommerce Standard Synchronization -->
+                                        <select name="<?php echo esc_attr($attr_key); ?>" 
+                                                id="<?php echo esc_attr($sanitized_attr_name); ?>" 
+                                                form="gomie-cart-form"
+                                                class="d-none gomie-hidden-variation-select" 
+                                                data-attribute_name="<?php echo esc_attr($attr_key); ?>">
+                                            <option value="">Chọn một tùy chọn</option>
+                                            <?php foreach ($options as $option) : ?>
+                                                <option value="<?php echo esc_attr($option); ?>" <?php selected($selected_val, $option); ?>>
+                                                    <?php echo esc_html($option); ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                <?php endif; ?>
                             <?php endforeach; ?>
 
                             <!-- Alert when user attempts to add to cart without selecting variations -->
@@ -351,7 +378,7 @@ $schema_data = array(
                 <!-- Purchase Action Bar (Gomie Trio: Stepper + Cam + Xanh) -->
                 <div class="gomie-purchase-actions mt-auto pt-3">
                     <?php if ($product->is_in_stock()) : ?>
-                        <form class="cart gomie-action-trio-form <?php echo $is_variable ? 'variations_form' : ''; ?>" 
+                        <form id="gomie-cart-form" class="cart gomie-action-trio-form <?php echo $is_variable ? 'variations_form' : ''; ?>" 
                               action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $product->get_permalink())); ?>" 
                               method="post" 
                               enctype='multipart/form-data'

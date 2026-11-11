@@ -406,20 +406,40 @@
 
       function updateMatchingVariation() {
         var selectedAttrs = {};
-        var totalGroups = 0;
+        var totalRequiredGroups = $('.gomie-attribute-group').length;
         var selectedCount = 0;
 
+        // 1. Scan visible attribute groups (user must choose from these)
         $('.gomie-attribute-group').each(function() {
-          totalGroups++;
           var attrKey = $(this).data('attribute');
           var val = $(this).find('.gomie-hidden-variation-select').val();
-          if (val) {
+          if (val && val !== '') {
             selectedAttrs[attrKey] = val;
             selectedCount++;
           }
         });
 
-        if (selectedCount === totalGroups && totalGroups > 0 && variationsData.length > 0) {
+        // 2. Scan single-option fixed attributes (hidden from UI, but pre-set value)
+        $('.gomie-single-option-fixed').each(function() {
+          var attrKey = $(this).data('attribute_name') || $(this).attr('name');
+          var val = $(this).val();
+          if (val) {
+            selectedAttrs[attrKey] = val;
+          }
+        });
+
+        // 3. If not all visible groups have been selected, revert to initial range price and variation_id = 0
+        if (selectedCount < totalRequiredGroups) {
+          $varIdInput.val('0');
+          var initialPrice = $priceDisplay.attr('data-initial-price');
+          if (initialPrice && initialPrice.trim() !== '') {
+            $priceDisplay.html(initialPrice);
+          }
+          return null;
+        }
+
+        // 4. If all required groups are selected, match variation
+        if (totalRequiredGroups >= 0 && selectedCount === totalRequiredGroups && variationsData.length > 0) {
           // Find matching variation
           var matched = variationsData.find(function(v) {
             for (var k in selectedAttrs) {
@@ -480,6 +500,10 @@
         }
 
         $varIdInput.val('0');
+        var initialPriceFallback = $priceDisplay.attr('data-initial-price');
+        if (initialPriceFallback && initialPriceFallback.trim() !== '') {
+          $priceDisplay.html(initialPriceFallback);
+        }
         return null;
       }
 
@@ -500,7 +524,7 @@
         updateMatchingVariation();
       });
 
-      // Form submission validation
+      // Form submission validation & attribute synchronization
       $form.off('submit.gomieVar').on('submit.gomieVar', function(e) {
         var varId = parseInt($varIdInput.val(), 10);
         if (!varId || varId <= 0) {
@@ -512,6 +536,24 @@
           }, 600);
           return false;
         }
+
+        // Ensure all attribute values (including fixed single option) are present in form submission
+        $('.gomie-single-option-fixed, .gomie-hidden-variation-select').each(function() {
+          var name = $(this).attr('name');
+          var val = $(this).val();
+          if (name && val) {
+            var $existing = $form.find('input[type="hidden"][name="' + name + '"]');
+            if (!$existing.length) {
+              $('<input>').attr({
+                type: 'hidden',
+                name: name,
+                value: val
+              }).appendTo($form);
+            } else {
+              $existing.val(val);
+            }
+          }
+        });
       });
 
       // Buy Now Button Click
@@ -536,10 +578,10 @@
 
         var checkoutUrl = baseUrl + '?add-to-cart=' + encodeURIComponent(productId) + '&variation_id=' + encodeURIComponent(varId) + '&quantity=' + encodeURIComponent(qty);
 
-        $form.find('.gomie-hidden-variation-select').each(function() {
+        $('.gomie-single-option-fixed, .gomie-hidden-variation-select').each(function() {
           var name = $(this).attr('name');
           var val = $(this).val();
-          if (val) {
+          if (name && val) {
             checkoutUrl += '&' + encodeURIComponent(name) + '=' + encodeURIComponent(val);
           }
         });
