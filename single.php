@@ -1,7 +1,11 @@
 <?php
 /**
  * The template for displaying all single posts in Gomie Ceramic Editorial V11 style.
- * 2-Column High-End Editorial Layout: Content (Left) + Multi-Widget Sticky Sidebar (Right).
+ * Layout architecture inspired by Tavaled:
+ * - Top Tier: Full-Width Editorial Hero Header (Breadcrumbs, Category Badge, H1 Title, Meta Row).
+ * - Content Tier (2 Columns starting at the same level):
+ *   + Left: Article Card Shell (16:9 Featured Image, Lead Excerpt, Content with standardized typography & 16:9 media, Tags, Social Share Facebook/Zalo, Author Box) + Related Posts Grid (3 cards with 16:9 thumbnails) + B2B HoReCa CTA Banner.
+ *   + Right: Sticky Sidebar Widgets (TOC ScrollSpy, Curated Ceramic Products, Related Articles with 16:9 thumbnails, B2B Consultation Box) starting aligned at the content level.
  *
  * @package Gomie
  */
@@ -18,9 +22,12 @@ get_header();
     <?php while (have_posts()) : the_post();
       gomie_set_post_views();
       $custom_tag = get_post_meta(get_the_ID(), '_gomie_editorial_tag', true);
-      $article_tag = !empty($custom_tag) ? $custom_tag : 'GOMIE CERAMIC · CẨM NANG GỐM SỨ';
+      $categories = get_the_category();
+      $cat_name   = !empty($categories) ? esc_html($categories[0]->name) : 'Góc chia sẻ';
+      $cat_link   = !empty($categories) ? esc_url(get_category_link($categories[0]->term_id)) : esc_url(home_url('/chia-se/'));
+      $article_tag = !empty($custom_tag) ? $custom_tag : ('GOMIE CERAMIC · ' . mb_strtoupper($cat_name, 'UTF-8'));
       
-      // Determine article hero image
+      // Determine article hero / featured image
       $custom_img = get_post_meta(get_the_ID(), '_gomie_editorial_img', true);
       $hero_img_url = '';
       if (!empty($custom_img)) {
@@ -30,137 +37,232 @@ get_header();
       } else {
         $hero_img_url = esc_url(get_template_directory_uri() . '/assets/images/stories/gomie-story-ban-tiec.jpg');
       }
+
+      $post_id    = get_the_ID();
+      $tags       = get_the_tags();
+      $read_time  = gomie_reading_time();
+      $view_count = gomie_get_post_views($post_id);
     ?>
 
       <article id="post-<?php the_ID(); ?>" <?php post_class('editorial-single-entry'); ?>>
 
-        <!-- Main Two-Column Editorial Canvas (Content Left + Sidebar Right) -->
-        <div class="gomie-single-article-container">
-          <div class="article-layout-grid">
+        <!-- ═══════════════════════════════════════════════
+             TẦNG 1: EDITORIAL HERO HEADER (Nằm trên cùng)
+        ════════════════════════════════════════════════ -->
+        <header class="article-hero-header">
+          <div class="gomie-single-article-container">
+            <!-- Breadcrumbs -->
+            <nav class="article-breadcrumbs" aria-label="Breadcrumb">
+              <a href="<?php echo esc_url(home_url('/')); ?>">Trang chủ</a>
+              <span class="sep">/</span>
+              <a href="<?php echo $cat_link; ?>"><?php echo $cat_name; ?></a>
+              <span class="sep">/</span>
+              <span class="current"><?php the_title(); ?></span>
+            </nav>
 
-            <!-- LEFT COLUMN: Main Post Content & Discussion -->
-            <div class="article-main-content">
+            <!-- Category / Editorial Tag Badge -->
+            <div class="article-tag-badge">
+              <span><?php echo esc_html($article_tag); ?></span>
+            </div>
 
-              <!-- 1. Editorial Header (Breadcrumbs, Tag, Headline & Meta Row) -->
-              <header class="article-header">
-                <nav class="article-breadcrumbs" aria-label="Breadcrumb">
-                  <a href="<?php echo esc_url(home_url('/')); ?>">Trang chủ</a>
-                  <span class="sep">/</span>
-                  <a href="<?php echo esc_url(home_url('/chia-se/')); ?>">Góc chia sẻ</a>
-                  <span class="sep">/</span>
-                  <span class="current"><?php the_title(); ?></span>
-                </nav>
+            <!-- Standardized H1 Headline -->
+            <h1 class="article-headline"><?php the_title(); ?></h1>
 
-                <div class="article-tag-badge">
-                  <span><?php echo esc_html($article_tag); ?></span>
-                </div>
-
-                <h1 class="article-headline"><?php the_title(); ?></h1>
-
-                <div class="article-meta-row">
-                  <div class="meta-author">
-                    <span class="author-avatar-seal">G</span>
-                    <div>
-                      <span class="author-name">Gomie Art Studio</span>
-                      <span class="author-role">Nghệ nhân Bát Tràng</span>
-                    </div>
-                  </div>
-                  <div class="meta-divider"></div>
-                  <div class="meta-item">
-                    <span class="meta-label">Ngày xuất bản</span>
-                    <span class="meta-val"><?php echo get_the_date('d/m/Y'); ?></span>
-                  </div>
-                  <div class="meta-divider"></div>
-                  <div class="meta-item">
-                    <span class="meta-label">Thời gian đọc</span>
-                    <span class="meta-val"><?php echo gomie_reading_time(); ?></span>
-                  </div>
-                  <div class="meta-divider"></div>
-                  <div class="meta-item">
-                    <span class="meta-label">Lượt xem</span>
-                    <span class="meta-val"><?php echo number_format(gomie_get_post_views(get_the_ID()), 0, ',', '.'); ?> view</span>
-                  </div>
-                </div>
-              </header>
-
-              <!-- Hero Featured Photography -->
-              <?php if (!empty($hero_img_url)) : ?>
-                <div class="article-hero-media">
-                  <div class="hero-image-stage">
-                    <img src="<?php echo $hero_img_url; ?>" alt="<?php the_title_attribute(); ?>" />
-                    <div class="hero-image-watermark">Gomie Ceramic · Bát Tràng</div>
-                  </div>
-                </div>
-              <?php endif; ?>
-
-              <!-- Mobile Table of Contents (visible only on screens <= 1040px) -->
-              <div id="mobileTOCBox" class="mobile-toc-accordion d-none">
-                <button type="button" class="btn-toggle-mobile-toc" id="btnToggleMobileTOC" aria-expanded="false">
-                  <span><i class="fa-solid fa-list-ul me-2" style="color: var(--orange, #f47a20);"></i> Mục lục bài viết</span>
-                  <i class="fa-solid fa-chevron-down chevron-icon"></i>
-                </button>
-                <div class="mobile-toc-content d-none" id="mobileTocContent">
-                  <ul class="mobile-toc-list" id="mobileTocList"></ul>
+            <!-- Meta Information Bar -->
+            <div class="article-meta-row">
+              <div class="meta-author">
+                <span class="author-avatar-seal">G</span>
+                <div>
+                  <span class="author-name">Gomie Art Studio</span>
+                  <span class="author-role">Nghệ nhân Bát Tràng</span>
                 </div>
               </div>
+              <div class="meta-divider"></div>
+              <div class="meta-item">
+                <span class="meta-label">Ngày xuất bản</span>
+                <span class="meta-val"><?php echo get_the_date('d/m/Y'); ?></span>
+              </div>
+              <div class="meta-divider"></div>
+              <div class="meta-item">
+                <span class="meta-label">Thời gian đọc</span>
+                <span class="meta-val"><?php echo esc_html($read_time); ?></span>
+              </div>
+              <div class="meta-divider"></div>
+              <div class="meta-item">
+                <span class="meta-label">Lượt xem</span>
+                <span class="meta-val"><?php echo number_format($view_count, 0, ',', '.'); ?> view</span>
+              </div>
+            </div>
+          </div>
+        </header>
 
-              <!-- Article Core Body -->
-              <div class="article-body-wrapper">
+        <!-- ═══════════════════════════════════════════════
+             TẦNG 2: MAIN CONTENT & SIDEBAR (Bắt đầu cùng tầng)
+        ════════════════════════════════════════════════ -->
+        <div class="gomie-single-article-container article-content-section">
+          <div class="article-layout-grid">
+
+            <!-- CỘT TRÁI: Main Article Card Shell & Discussions -->
+            <div class="article-main-content">
+
+              <!-- Article Card Shell (Nền trắng sang trọng bo góc mềm) -->
+              <div class="article-card-shell">
+
+                <!-- 1. Featured Image bắt buộc ép chuẩn tỉ lệ 16:9 bất kể kích thước ảnh gốc -->
+                <?php if (!empty($hero_img_url)) : ?>
+                  <div class="article-featured-image-stage">
+                    <img src="<?php echo $hero_img_url; ?>" alt="<?php the_title_attribute(); ?>" class="article-featured-img-16-9" />
+                    <div class="featured-image-watermark">Gomie Ceramic · Bát Tràng</div>
+                  </div>
+                <?php endif; ?>
+
+                <!-- 2. Mobile Table of Contents Accordion (<= 1040px) -->
+                <div id="mobileTOCBox" class="mobile-toc-accordion d-none">
+                  <button type="button" class="btn-toggle-mobile-toc" id="btnToggleMobileTOC" aria-expanded="false">
+                    <span><i class="fa-solid fa-list-ul me-2" style="color: var(--orange, #f47a20);"></i> Mục lục bài viết</span>
+                    <i class="fa-solid fa-chevron-down chevron-icon"></i>
+                  </button>
+                  <div class="mobile-toc-content d-none" id="mobileTocContent">
+                    <ul class="mobile-toc-list" id="mobileTocList"></ul>
+                  </div>
+                </div>
+
+                <!-- 3. Lead Paragraph (nếu có excerpt) -->
                 <?php if (has_excerpt()) : ?>
                   <div class="article-lead-paragraph">
                     <?php echo get_the_excerpt(); ?>
                   </div>
                 <?php endif; ?>
 
-                <div class="article-rich-text">
+                <!-- 4. Core Body Rich Text with Standardized Typography & 16:9 Media -->
+                <div class="article-rich-text gomie-prose">
                   <?php the_content(); ?>
                 </div>
 
-                <!-- Tags & Social Share Toolbar -->
+                <!-- 5. Tags & Social Share Strip (Facebook, Zalo, Twitter, Copy Link) -->
                 <footer class="article-footer-toolbar">
                   <div class="article-tags-cluster">
                     <span class="tags-title">Chủ đề:</span>
                     <?php
-                    $tags = get_the_tags();
                     if ($tags) {
                       foreach ($tags as $tag) {
-                        echo '<a href="' . esc_url(get_tag_link($tag->term_id)) . '" class="tag-pill">' . esc_html($tag->name) . '</a>';
+                        echo '<a href="' . esc_url(get_tag_link($tag->term_id)) . '" class="tag-pill">#' . esc_html($tag->name) . '</a>';
                       }
                     } else {
-                      echo '<span class="tag-pill">Gốm Bát Tràng</span><span class="tag-pill">Nghệ thuật Sắc Men</span><span class="tag-pill">Bàn Tiệc Đương Đại</span>';
+                      echo '<span class="tag-pill">#Gốm Bát Tràng</span><span class="tag-pill">#Men Hỏa Biến</span><span class="tag-pill">#Bàn Tiệc Đương Đại</span>';
                     }
                     ?>
                   </div>
 
                   <div class="article-share-strip">
                     <span class="share-title">Chia sẻ:</span>
-                    <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode(get_permalink()); ?>" target="_blank" rel="noopener noreferrer" class="share-btn" aria-label="Chia sẻ lên Facebook" title="Chia sẻ lên Facebook">
+                    <!-- Facebook Share -->
+                    <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode(get_permalink()); ?>" target="_blank" rel="noopener noreferrer" class="share-btn fb-share-btn" aria-label="Chia sẻ lên Facebook" title="Chia sẻ Facebook">
                       <i class="fab fa-facebook-f"></i>
                     </a>
-                    <a href="https://twitter.com/intent/tweet?url=<?php echo urlencode(get_permalink()); ?>&text=<?php echo urlencode(get_the_title()); ?>" target="_blank" rel="noopener noreferrer" class="share-btn" aria-label="Chia sẻ lên Twitter" title="Chia sẻ lên Twitter">
+                    <!-- Zalo Share -->
+                    <a href="https://sp.zalo.me/share_button?url=<?php echo urlencode(get_permalink()); ?>" target="_blank" rel="noopener noreferrer" class="share-btn zalo-share-btn" aria-label="Chia sẻ qua Zalo" title="Chia sẻ Zalo">
+                      Zalo
+                    </a>
+                    <!-- Twitter/X Share -->
+                    <a href="https://twitter.com/intent/tweet?url=<?php echo urlencode(get_permalink()); ?>&text=<?php echo urlencode(get_the_title()); ?>" target="_blank" rel="noopener noreferrer" class="share-btn twitter-share-btn" aria-label="Chia sẻ lên Twitter" title="Chia sẻ Twitter">
                       <i class="fab fa-twitter"></i>
                     </a>
-                    <button type="button" class="share-btn copy-url-btn" onclick="navigator.clipboard.writeText(window.location.href); alert('Đã sao chép liên kết bài viết!');" aria-label="Sao chép link" title="Sao chép liên kết">
+                    <!-- Copy Link -->
+                    <button type="button" class="share-btn copy-url-btn" onclick="navigator.clipboard.writeText(window.location.href); alert('Đã sao chép liên kết bài viết vào bộ nhớ tạm!');" aria-label="Sao chép link" title="Sao chép liên kết">
                       <i class="fas fa-link"></i>
                     </button>
                   </div>
                 </footer>
 
-                <!-- Author Bio Card -->
+                <!-- 6. Author Bio Card -->
                 <div class="article-author-card">
                   <div class="author-badge-large">G</div>
                   <div class="author-details">
-                    <h4>Gomie Ceramic · Heart of Craftsmanship</h4>
+                    <h4>Gomie Ceramic · Tinh Hoa Bát Tràng</h4>
                     <p>
-                      Được nuôi dưỡng từ làng gốm Bát Tràng hơn 500 năm tuổi, Gomie kết hợp kỹ nghệ vuốt nặn truyền thống với thiết kế đương đại và chuẩn an toàn quốc tế HoReCa nung ở 1.300°C.
+                      Được nuôi dưỡng từ làng gốm Bát Tràng hơn 500 năm tuổi, Gomie kết hợp kỹ nghệ vuốt nặn thủ công truyền thống với thiết kế đương đại và chuẩn an toàn quốc tế HoReCa nung ở 1.300°C.
                     </p>
-                    <a href="<?php echo esc_url(home_url('/cau-chuyen/')); ?>" class="author-more-link">Đọc câu chuyện thương hiệu Gomie →</a>
+                    <a href="<?php echo esc_url(home_url('/cau-chuyen/')); ?>" class="author-more-link">
+                      Tìm hiểu câu chuyện thương hiệu Gomie <i class="fa-solid fa-arrow-right ms-1"></i>
+                    </a>
                   </div>
                 </div>
 
-              </div><!-- /.article-body-wrapper -->
+              </div><!-- /.article-card-shell -->
 
-              <!-- Comments Section -->
+              <!-- ═══════════════════════════════════════════════
+                   BÀI VIẾT LIÊN QUAN CUỐI BÀI (Lưới 3 Card - Ảnh 16:9)
+              ════════════════════════════════════════════════ -->
+              <?php
+              $cat_ids = wp_get_post_categories($post_id);
+              $related_args = array(
+                'post_type'      => 'post',
+                'post_status'    => 'publish',
+                'posts_per_page' => 3,
+                'post__not_in'   => array($post_id),
+              );
+              if (!empty($cat_ids)) {
+                $related_args['category__in'] = $cat_ids;
+              }
+              $related_query = new WP_Query($related_args);
+              if (!$related_query->have_posts()) {
+                unset($related_args['category__in']);
+                $related_query = new WP_Query($related_args);
+              }
+              if ($related_query->have_posts()) :
+              ?>
+                <section class="related-posts-section">
+                  <div class="related-section-header">
+                    <span class="accent-bar"></span>
+                    <h2 class="related-section-title">Bài viết liên quan</h2>
+                  </div>
+                  <div class="related-posts-grid">
+                    <?php while ($related_query->have_posts()) : $related_query->the_post();
+                      $rp_thumb = get_the_post_thumbnail_url(get_the_ID(), 'medium_large');
+                      if (!$rp_thumb) {
+                        $custom_rp_img = get_post_meta(get_the_ID(), '_gomie_editorial_img', true);
+                        $rp_thumb = !empty($custom_rp_img) ? esc_url(get_template_directory_uri() . '/assets/images/stories/' . $custom_rp_img) : esc_url(get_template_directory_uri() . '/assets/images/stories/gomie-story-ban-tiec.jpg');
+                      }
+                      $rp_cats = get_the_category();
+                      $rp_cat_name = !empty($rp_cats) ? esc_html($rp_cats[0]->name) : 'Góc chia sẻ';
+                    ?>
+                      <a href="<?php the_permalink(); ?>" class="related-post-card group">
+                        <div class="card-thumb-wrap">
+                          <img src="<?php echo esc_url($rp_thumb); ?>" alt="<?php the_title_attribute(); ?>" class="post-thumb-16-9" loading="lazy" />
+                        </div>
+                        <div class="card-body">
+                          <span class="card-cat-badge"><?php echo $rp_cat_name; ?></span>
+                          <h3 class="card-title"><?php the_title(); ?></h3>
+                          <p class="card-date"><i class="fa-regular fa-calendar-days me-1"></i> <?php echo get_the_date('d/m/Y'); ?></p>
+                        </div>
+                      </a>
+                    <?php endwhile; wp_reset_postdata(); ?>
+                  </div>
+                </section>
+              <?php endif; ?>
+
+              <!-- ═══════════════════════════════════════════════
+                   CTA BANNER: TƯ VẤN DỰ ÁN HORECA & QUÀ TẶNG B2B
+              ════════════════════════════════════════════════ -->
+              <div class="editorial-cta-banner">
+                <div class="cta-glow-orb"></div>
+                <div class="cta-content">
+                  <span class="cta-eyebrow">Tư vấn miễn phí</span>
+                  <h3 class="cta-headline">Cần tư vấn giải pháp gốm sứ cho nhà hàng & khách sạn?</h3>
+                  <p class="cta-subtext">Đội ngũ nghệ nhân Gomie Ceramic hỗ trợ thiết kế độc bản, in ấn logo và nung nhiệt độ cao 1.300°C chuẩn HoReCa.</p>
+                </div>
+                <div class="cta-actions">
+                  <a href="tel:0335059889" class="btn-cta-phone">
+                    <i class="fa-solid fa-phone-volume"></i> 0335 059 889
+                  </a>
+                  <a href="<?php echo esc_url(home_url('/bao-gia/')); ?>" class="btn-cta-quote">
+                    Nhận báo giá dự án
+                  </a>
+                </div>
+              </div>
+
+              <!-- Comments Section (nếu có) -->
               <?php if (comments_open() || get_comments_number()) : ?>
                 <section class="article-comments-section">
                   <div class="comments-card-box">
@@ -171,15 +273,17 @@ get_header();
 
             </div><!-- /.article-main-content -->
 
-            <!-- RIGHT COLUMN: Sticky Multi-Widget Editorial Sidebar -->
+            <!-- ═══════════════════════════════════════════════
+                 CỘT PHẢI: STICKY SIDEBAR (Nằm cùng tầng với nội dung)
+            ════════════════════════════════════════════════ -->
             <aside class="article-sidebar-widget">
               <div class="sidebar-sticky-inner">
 
-                <!-- Widget 1: Mục Lục Bài Viết (Table of Contents) -->
+                <!-- Widget 1: Mục Lục Bài Viết (Table of Contents ScrollSpy) -->
                 <div id="sidebarTOCWidget" class="editorial-widget-card toc-widget d-none">
                   <div class="widget-header">
                     <h3 class="widget-title">
-                      <i class="fa-solid fa-list-ul"></i> Mục lục bài viết
+                      <span class="title-accent-pill"></span> Mục lục bài viết
                     </h3>
                     <button type="button" class="btn-toggle-toc" id="btnToggleTOC" aria-expanded="true" title="Thu gọn/Mở rộng">
                       <i class="fa-solid fa-chevron-up"></i>
@@ -187,23 +291,22 @@ get_header();
                   </div>
                   <div class="widget-body" id="tocListWrap">
                     <ul class="sidebar-toc-list" id="sidebarTocList">
-                      <!-- Dynamically populated from H2, H3 with ScrollSpy -->
+                      <!-- Tự động trích xuất H2, H3 với ScrollSpy -->
                     </ul>
                   </div>
                 </div>
 
-                <!-- Widget 2: Tác Phẩm Gốm Sứ Đề Xuất (Sản phẩm nổi bật / liên quan) -->
+                <!-- Widget 2: Tác Phẩm Gốm Sứ Tiêu Biểu (Sản phẩm thủ công nổi bật) -->
                 <div class="editorial-widget-card products-widget">
                   <div class="widget-header">
                     <h3 class="widget-title">
-                      <i class="fa-solid fa-fire"></i> Tác phẩm gốm sứ
+                      <span class="title-accent-pill"></span> Tác phẩm gốm sứ
                     </h3>
                     <span class="widget-badge">Chế tác thủ công</span>
                   </div>
                   <div class="widget-body">
                     <div class="sidebar-products-list">
                       <?php
-                      // Query 3 authentic ceramic WooCommerce products
                       $ceramic_cats = array('bat-an', 'bat-dia', 'bat-to', 'bo-am-chen', 'am-chen', 'bo-qua-tang', 'dia-an', 'khach-san', 'nha-hang', 'qua-tang', 'an-uong');
                       $prod_query = new WP_Query(array(
                         'post_type'      => 'product',
@@ -263,32 +366,30 @@ get_header();
                   </div>
                 </div>
 
-                <!-- Widget 3: Bài Viết Cùng Chuyên Mục (Bài viết liên quan) -->
+                <!-- Widget 3: Bài Viết Cùng Chuyên Mục (Ảnh thumbnail 16:9) -->
                 <div class="editorial-widget-card articles-widget">
                   <div class="widget-header">
                     <h3 class="widget-title">
-                      <i class="fa-solid fa-newspaper"></i> Bài viết liên quan
+                      <span class="title-accent-pill"></span> Bài viết liên quan
                     </h3>
-                    <span class="widget-badge">Góc chia sẻ</span>
+                    <span class="widget-badge"><?php echo $cat_name; ?></span>
                   </div>
                   <div class="widget-body">
                     <div class="sidebar-articles-list">
                       <?php
-                      // Query 3 related posts (excluding current)
-                      $cat_ids = wp_get_post_categories(get_the_ID());
-                      $rel_args = array(
+                      $sidebar_rel_args = array(
                         'post_type'      => 'post',
                         'post_status'    => 'publish',
                         'posts_per_page' => 3,
-                        'post__not_in'   => array(get_the_ID()),
+                        'post__not_in'   => array($post_id),
                       );
                       if (!empty($cat_ids)) {
-                        $rel_args['category__in'] = $cat_ids;
+                        $sidebar_rel_args['category__in'] = $cat_ids;
                       }
-                      $sidebar_rel = new WP_Query($rel_args);
+                      $sidebar_rel = new WP_Query($sidebar_rel_args);
                       if (!$sidebar_rel->have_posts()) {
-                        unset($rel_args['category__in']);
-                        $sidebar_rel = new WP_Query($rel_args);
+                        unset($sidebar_rel_args['category__in']);
+                        $sidebar_rel = new WP_Query($sidebar_rel_args);
                       }
                       if ($sidebar_rel->have_posts()) :
                         while ($sidebar_rel->have_posts()) : $sidebar_rel->the_post();
@@ -300,7 +401,7 @@ get_header();
                       ?>
                         <a href="<?php the_permalink(); ?>" class="sidebar-article-item">
                           <div class="art-thumb">
-                            <img src="<?php echo esc_url($rel_thumb); ?>" alt="<?php the_title_attribute(); ?>" loading="lazy" />
+                            <img src="<?php echo esc_url($rel_thumb); ?>" alt="<?php the_title_attribute(); ?>" loading="lazy" class="art-thumb-img-16-9" />
                           </div>
                           <div class="art-info">
                             <h4 class="art-title"><?php the_title(); ?></h4>
@@ -327,7 +428,7 @@ get_header();
                   </div>
                 </div>
 
-                <!-- Widget 4: Box Tư Vấn Dự Án & Quà Tặng Doanh Nghiệp (HoReCa / B2B) -->
+                <!-- Widget 4: Box Tư Vấn & Hotline HoReCa B2B -->
                 <div class="editorial-widget-card consult-widget">
                   <div class="consult-widget-inner">
                     <div class="consult-badge">HoReCa & B2B</div>
@@ -361,25 +462,31 @@ get_header();
 </main>
 
 <style id="gomie-single-article-css">
-  /* CSS Single Post - Gomie Ceramic Editorial V11 2-Column Standard */
+  /* ==========================================================================
+     GOMIE CERAMIC EDITORIAL V11 SINGLE POST STYLES
+     - Standardized Editorial Typography
+     - Content-Level Aligned Sidebar Widgets
+     - Strict 16:9 Aspect Ratio Enforcement for all media
+     ========================================================================== */
+
   .gomie-single-article {
     width: 100%;
     margin: 0;
     padding: 0;
-    background-color: #fffdf9 !important;
+    background-color: #fffdfa !important;
     background-image: none !important;
     overflow-x: hidden !important;
   }
 
   .gomie-single-article .gomie-v11 {
-    background-color: #fffdf9 !important;
+    background-color: #fffdfa !important;
     background-image: none !important;
     min-height: 100vh;
     padding-bottom: 90px;
     overflow-x: hidden !important;
   }
 
-  /* Full Website Container Width (matches 1280px-1320px website standard) */
+  /* Full Website Container Width (matches 1280px standard) */
   .gomie-single-article-container {
     max-width: 1280px !important;
     width: 100% !important;
@@ -389,13 +496,29 @@ get_header();
     box-sizing: border-box !important;
   }
 
-  /* 1. Article Header */
-  .article-header {
-    padding-top: clamp(24px, 3.5vw, 42px);
-    padding-bottom: clamp(20px, 3vw, 32px);
-    text-align: left;
+  /* Reading Progress Bar */
+  .reading-progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3.5px;
+    width: 0%;
+    background: linear-gradient(90deg, #f47a20 0%, #db6109 50%, #f47a20 100%);
+    z-index: 999999;
+    transition: width 0.1s ease-out;
+    box-shadow: 0 1px 6px rgba(244, 122, 32, 0.4);
+  }
+
+  /* ═══════════════════════════════════════════════
+     1. TẦNG 1: EDITORIAL HERO HEADER
+     ════════════════════════════════════════════════ */
+  .article-hero-header {
+    padding-top: clamp(28px, 4vw, 44px);
+    padding-bottom: clamp(24px, 3.5vw, 36px);
     width: 100%;
     box-sizing: border-box;
+    border-bottom: 1px solid rgba(235, 222, 206, 0.6);
+    background: #fffdfa;
   }
 
   .article-breadcrumbs {
@@ -404,7 +527,7 @@ get_header();
     gap: 8px;
     font-size: 13px;
     color: #7b8893;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
     flex-wrap: wrap;
     justify-content: flex-start;
     max-width: 100%;
@@ -434,34 +557,30 @@ get_header();
 
   .article-tag-badge {
     display: inline-block;
-    padding: 6px 16px;
+    padding: 5px 15px;
     border-radius: 999px;
-    background: rgba(255, 255, 255, .95);
+    background: #ffffff;
     border: 1px solid rgba(235, 222, 206, .9);
-    box-shadow: 0 4px 12px rgba(45, 30, 15, .04);
+    box-shadow: 0 3px 10px rgba(45, 30, 15, .04);
     font-size: 11px;
-    font-weight: 850;
-    letter-spacing: .14em;
+    font-weight: 800;
+    letter-spacing: .12em;
     text-transform: uppercase;
     color: var(--orange-deep, #db6109);
-    margin-bottom: 18px;
-    max-width: 100%;
-    box-sizing: border-box;
-    word-break: break-word;
+    margin-bottom: 16px;
   }
 
+  /* Standardized H1 Typography */
   .article-headline {
-    font-size: clamp(24px, 3vw, 38px) !important;
+    font-size: clamp(24px, 3.2vw, 36px) !important;
     font-weight: 800 !important;
-    line-height: 1.3 !important;
+    line-height: 1.35 !important;
     letter-spacing: -.02em !important;
     color: #1e2830 !important;
     margin: 0 0 20px 0 !important;
-    max-width: 100%;
-    width: 100%;
+    max-width: 1000px;
     text-align: left;
     word-break: break-word;
-    box-sizing: border-box;
   }
 
   .article-meta-row {
@@ -472,9 +591,8 @@ get_header();
     flex-wrap: wrap;
     padding: 8px 20px;
     border-radius: 999px;
-    background: rgba(255, 255, 255, .85);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(238, 228, 214, .85);
+    background: #ffffff;
+    border: 1px solid rgba(238, 228, 214, .9);
     box-shadow: 0 4px 14px rgba(45, 30, 15, .03);
     max-width: 100%;
     box-sizing: border-box;
@@ -484,21 +602,20 @@ get_header();
     display: flex;
     align-items: center;
     gap: 10px;
-    text-align: left;
   }
 
   .author-avatar-seal {
-    width: 34px;
-    height: 34px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     background: linear-gradient(135deg, #f47a20 0%, #db6109 100%);
     color: #ffffff;
-    font-weight: 850;
-    font-size: 15px;
+    font-weight: 800;
+    font-size: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 10px rgba(244, 122, 32, .3);
+    box-shadow: 0 3px 8px rgba(244, 122, 32, .3);
   }
 
   .author-name {
@@ -518,7 +635,7 @@ get_header();
 
   .meta-divider {
     width: 1px;
-    height: 24px;
+    height: 22px;
     background: rgba(45, 30, 15, .12);
   }
 
@@ -543,13 +660,19 @@ get_header();
     line-height: 1.2;
   }
 
-  /* 2. Main Two-Column Layout Grid */
+  /* ═══════════════════════════════════════════════
+     2. TẦNG 2: TWO-COLUMN CONTENT & SIDEBAR LAYOUT
+     - Sidebar starts AT THE SAME LEVEL as the content
+     ════════════════════════════════════════════════ */
+  .article-content-section {
+    padding-top: clamp(28px, 3.5vw, 40px);
+  }
+
   .article-layout-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 360px;
+    grid-template-columns: minmax(0, 1fr) 340px;
     gap: clamp(28px, 3.2vw, 44px);
     align-items: start;
-    margin-top: 10px;
   }
 
   .article-main-content {
@@ -557,72 +680,121 @@ get_header();
     width: 100%;
   }
 
-  /* Reading Progress Bar */
-  .reading-progress-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 3.5px;
-    width: 0%;
-    background: linear-gradient(90deg, #e0592a 0%, #f59e0b 50%, #e0592a 100%);
-    z-index: 999999;
-    transition: width 0.1s ease-out;
-    box-shadow: 0 1px 6px rgba(224, 89, 42, 0.4);
-  }
-
-  /* Hero Media */
-  .article-hero-media {
-    margin-bottom: 28px;
-  }
-
-  .hero-image-stage {
-    position: relative;
+  /* Article Card Shell */
+  .article-card-shell {
+    background: #ffffff;
     border-radius: 22px;
+    border: 1px solid rgba(235, 222, 206, 0.85);
+    box-shadow: 0 4px 20px rgba(45, 30, 15, 0.04);
+    padding: clamp(24px, 3.5vw, 44px);
+    margin-bottom: 36px;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+  }
+
+  /* ═══════════════════════════════════════════════
+     STRICT 16:9 ASPECT RATIO ENFORCEMENT
+     - Regardless of original image size, display 16:9
+     ════════════════════════════════════════════════ */
+  .article-featured-image-stage {
+    position: relative;
+    width: 100% !important;
+    aspect-ratio: 16 / 9 !important;
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 16px 40px rgba(45, 30, 15, .08);
-    border: 1px solid rgba(255, 255, 255, .95);
-    background: #f2eee8;
+    margin-bottom: 28px;
+    background: #f4efe9;
+    box-shadow: 0 10px 28px rgba(45, 30, 15, 0.07);
+    border: 1px solid rgba(235, 222, 206, 0.8);
   }
 
-  .hero-image-stage img {
-    display: block;
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    max-height: 480px;
-    object-fit: cover;
-    object-position: center;
-    image-rendering: -webkit-optimize-contrast;
+  .article-featured-img-16-9 {
+    width: 100% !important;
+    height: 100% !important;
+    aspect-ratio: 16 / 9 !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    display: block !important;
   }
 
-  .hero-image-watermark {
+  .featured-image-watermark {
     position: absolute;
-    bottom: 18px;
-    right: 22px;
-    background: rgba(0, 0, 0, .48);
+    bottom: 14px;
+    right: 18px;
+    background: rgba(0, 0, 0, .52);
     backdrop-filter: blur(8px);
-    color: rgba(255, 255, 255, .92);
+    color: rgba(255, 255, 255, .95);
     font-size: 11px;
     font-weight: 700;
-    letter-spacing: .1em;
+    letter-spacing: .08em;
     text-transform: uppercase;
-    padding: 6px 14px;
+    padding: 5px 12px;
     border-radius: 999px;
+  }
+
+  /* All images inside article content must be 16:9 ratio */
+  .article-rich-text figure,
+  .article-rich-text .wp-block-image,
+  .article-rich-text figure.wp-block-image {
+    display: block !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 30px auto 20px auto !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .article-rich-text img,
+  .article-rich-text figure img,
+  .article-rich-text .wp-block-image img,
+  .article-rich-text p img {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    aspect-ratio: 16 / 9 !important;
+    height: auto !important;
+    object-fit: cover !important;
+    object-position: center !important;
+    margin: 0 auto !important;
+    border-radius: 14px !important;
+    box-shadow: 0 8px 24px rgba(45, 30, 15, 0.06) !important;
+    border: 1px solid rgba(235, 222, 206, 0.85) !important;
+    box-sizing: border-box !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .article-rich-text img:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(45, 30, 15, 0.1) !important;
+  }
+
+  .article-rich-text figcaption,
+  .article-rich-text .wp-element-caption {
+    display: block !important;
+    font-size: 13px !important;
+    line-height: 1.6 !important;
+    color: #7b8893 !important;
+    text-align: center !important;
+    margin-top: 10px !important;
+    font-style: italic !important;
   }
 
   /* Mobile TOC Accordion */
   .mobile-toc-accordion {
-    background: #ffffff;
+    background: #faf7f2;
     border: 1px solid rgba(235, 222, 206, 0.9);
-    border-radius: 16px;
+    border-radius: 14px;
     padding: 12px 18px;
     margin-bottom: 24px;
-    box-shadow: 0 4px 16px rgba(45, 30, 15, 0.04);
   }
   .btn-toggle-mobile-toc {
     width: 100%;
     background: none;
     border: none;
-    padding: 6px 0;
+    padding: 4px 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -657,65 +829,40 @@ get_header();
     color: var(--orange, #f47a20);
   }
 
-  /* Core Body Content Box */
-  .article-body-wrapper {
-    background: rgba(255, 255, 255, .98);
-    backdrop-filter: blur(18px);
-    border-radius: 26px;
-    border: 1px solid rgba(235, 222, 206, .7);
-    box-shadow: 0 16px 42px rgba(45, 30, 15, .05);
-    padding: clamp(28px, 4.2vw, 56px) clamp(22px, 3.8vw, 48px);
-    margin-bottom: 40px;
-    overflow: hidden !important;
-    box-sizing: border-box !important;
-    width: 100% !important;
-  }
-
+  /* ═══════════════════════════════════════════════
+     STANDARDIZED EDITORIAL TYPOGRAPHY
+     ════════════════════════════════════════════════ */
   .article-lead-paragraph {
-    font-size: clamp(17px, 1.8vw, 19.5px);
+    font-size: clamp(16.5px, 1.8vw, 18.5px);
     line-height: 1.85;
     color: #2b3640;
     font-weight: 500;
     font-style: italic;
     border-left: 4px solid var(--orange, #f47a20);
-    padding-left: 22px;
-    margin-bottom: 34px;
+    padding-left: 20px;
+    margin-bottom: 28px;
   }
 
   .article-rich-text {
-    font-size: 16px;
-    line-height: 1.95;
-    color: #48545e;
+    font-size: 16.5px;
+    line-height: 1.8;
+    color: #374151;
     max-width: 100% !important;
     width: 100% !important;
     box-sizing: border-box !important;
     overflow-wrap: break-word !important;
-    word-break: normal !important;
-  }
-
-  /* Drop Cap for first paragraph */
-  .article-rich-text > p:first-of-type::first-letter {
-    float: left;
-    font-size: 2.75rem;
-    line-height: 0.85;
-    font-weight: 700;
-    color: var(--orange, #f47a20);
-    padding-top: 3px;
-    padding-right: 10px;
-    padding-bottom: 2px;
-    font-family: inherit;
   }
 
   .article-rich-text p {
-    font-size: 15.5px;
-    line-height: 1.82;
-    color: #4b5563;
-    margin-bottom: 20px;
+    font-size: 16.5px;
+    line-height: 1.8;
+    color: #374151;
+    margin-bottom: 22px;
   }
 
   .article-rich-text strong {
     color: #1e2830;
-    font-weight: 650;
+    font-weight: 700;
   }
 
   .article-rich-text h2,
@@ -728,19 +875,19 @@ get_header();
   }
 
   .article-rich-text h2 {
-    font-size: clamp(20px, 2.1vw, 24px) !important;
+    font-size: clamp(20px, 2.2vw, 24px) !important;
     font-weight: 750 !important;
-    margin-top: 40px !important;
+    margin-top: 36px !important;
     margin-bottom: 16px !important;
     padding-left: 12px;
-    border-left: 3.5px solid var(--orange, #f47a20);
+    border-left: 4px solid var(--orange, #f47a20);
     position: relative;
   }
 
   .article-rich-text h3 {
-    font-size: clamp(16.5px, 1.7vw, 19px) !important;
-    font-weight: 650 !important;
-    margin-top: 28px !important;
+    font-size: clamp(17px, 1.8vw, 19.5px) !important;
+    font-weight: 700 !important;
+    margin-top: 26px !important;
     margin-bottom: 12px !important;
     display: flex;
     align-items: center;
@@ -756,73 +903,23 @@ get_header();
     flex-shrink: 0;
   }
 
-  /* Robust Gutenberg Images Layout */
-  .article-rich-text figure,
-  .article-rich-text .wp-block-image,
-  .article-rich-text figure.wp-block-image,
-  .article-rich-text .wp-block-image figure {
-    display: block !important;
-    max-width: 100% !important;
-    width: 100% !important;
-    margin: 32px auto 24px auto !important;
-    padding: 0 !important;
-    box-sizing: border-box !important;
-    float: none !important;
-    clear: both !important;
-  }
-
-  .article-rich-text img,
-  .article-rich-text figure img,
-  .article-rich-text .wp-block-image img,
-  .article-rich-text p img {
-    display: block !important;
-    max-width: 100% !important;
-    width: 100% !important;
-    height: auto !important;
-    margin: 0 auto !important;
-    border-radius: 18px !important;
-    box-shadow: 0 12px 32px rgba(45, 30, 15, 0.08) !important;
-    border: 1px solid rgba(235, 222, 206, 0.9) !important;
-    box-sizing: border-box !important;
-    object-fit: cover !important;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-
-  .article-rich-text img:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 16px 40px rgba(45, 30, 15, 0.12) !important;
-  }
-
-  .article-rich-text figcaption,
-  .article-rich-text .wp-element-caption {
-    display: block !important;
-    font-size: 13px !important;
-    line-height: 1.6 !important;
-    color: #7b8893 !important;
-    text-align: center !important;
-    margin-top: 10px !important;
-    font-style: italic !important;
-  }
-
-  /* Blockquote */
   .article-rich-text blockquote {
-    margin: 32px 0;
-    padding: 22px 28px;
-    background: #faf6f0;
+    margin: 28px 0;
+    padding: 20px 24px;
+    background: #faf7f2;
     border-left: 4px solid var(--orange, #f47a20);
-    border-radius: 0 18px 18px 0;
+    border-radius: 0 16px 16px 0;
     font-style: italic;
-    font-size: 1.05rem;
-    line-height: 1.8;
+    font-size: 16px;
+    line-height: 1.75;
     color: #2b3640;
-    box-shadow: 0 4px 16px rgba(45, 30, 15, 0.03);
+    box-shadow: 0 2px 10px rgba(45, 30, 15, 0.02);
   }
 
-  /* Lists inside article */
   .article-rich-text ul {
     list-style: none;
     padding-left: 0;
-    margin: 18px 0 26px 0;
+    margin: 18px 0 24px 0;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -830,8 +927,9 @@ get_header();
   .article-rich-text ul li {
     position: relative;
     padding-left: 28px;
-    line-height: 1.78;
+    line-height: 1.75;
     color: #3f4a54;
+    font-size: 16px;
   }
   .article-rich-text ul li::before {
     content: '✓';
@@ -840,7 +938,7 @@ get_header();
     top: 2px;
     width: 18px;
     height: 18px;
-    background: rgba(224, 89, 42, 0.12);
+    background: rgba(244, 122, 32, 0.12);
     color: var(--orange, #f47a20);
     border-radius: 50%;
     font-size: 11px;
@@ -852,13 +950,13 @@ get_header();
 
   /* Toolbar */
   .article-footer-toolbar {
-    margin-top: 40px;
-    padding-top: 24px;
+    margin-top: 36px;
+    padding-top: 22px;
     border-top: 1px solid rgba(235, 222, 206, .85);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 18px;
+    gap: 16px;
     flex-wrap: wrap;
   }
 
@@ -880,7 +978,7 @@ get_header();
 
   .tag-pill {
     display: inline-block;
-    padding: 5px 14px;
+    padding: 4px 12px;
     border-radius: 999px;
     background: #fdf6ed;
     border: 1px solid rgba(244, 122, 32, .2);
@@ -900,12 +998,12 @@ get_header();
   .article-share-strip {
     display: flex;
     align-items: center;
-    gap: 9px;
+    gap: 8px;
   }
 
   .share-btn {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
     background: #f7f3ee;
     border: 1px solid rgba(226, 214, 198, .85);
@@ -915,10 +1013,34 @@ get_header();
     color: #4b5862;
     text-decoration: none !important;
     cursor: pointer;
+    font-size: 13px;
     transition: all .25s ease;
   }
 
-  .share-btn:hover {
+  .share-btn.fb-share-btn:hover {
+    background: #1877f2;
+    border-color: #1877f2;
+    color: #ffffff;
+    transform: translateY(-2px);
+  }
+  .share-btn.zalo-share-btn {
+    font-size: 9.5px;
+    font-weight: 850;
+    letter-spacing: -0.02em;
+  }
+  .share-btn.zalo-share-btn:hover {
+    background: #0068ff;
+    border-color: #0068ff;
+    color: #ffffff;
+    transform: translateY(-2px);
+  }
+  .share-btn.twitter-share-btn:hover {
+    background: #1da1f2;
+    border-color: #1da1f2;
+    color: #ffffff;
+    transform: translateY(-2px);
+  }
+  .share-btn.copy-url-btn:hover {
     background: var(--orange, #f47a20);
     border-color: var(--orange, #f47a20);
     color: #ffffff;
@@ -929,116 +1051,299 @@ get_header();
   .article-author-card {
     display: flex;
     align-items: center;
-    gap: 22px;
-    margin-top: 36px;
-    padding: 24px 28px;
-    background: #faf6f0;
-    border-radius: 20px;
-    border: 1px solid rgba(235, 222, 206, .9);
+    gap: 20px;
+    margin-top: 32px;
+    padding: 22px 24px;
+    background: #faf7f2;
+    border-radius: 18px;
+    border: 1px solid rgba(235, 222, 206, .85);
   }
 
   .author-badge-large {
-    width: 60px;
-    height: 60px;
+    width: 54px;
+    height: 54px;
     border-radius: 50%;
     background: linear-gradient(135deg, #f47a20 0%, #db6109 100%);
     color: #ffffff;
-    font-size: 26px;
+    font-size: 24px;
     font-weight: 850;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    box-shadow: 0 8px 20px rgba(244, 122, 32, .3);
+    box-shadow: 0 6px 16px rgba(244, 122, 32, .25);
   }
 
   .author-details h4 {
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 800;
     color: #1e2830;
     margin: 0 0 6px;
   }
 
   .author-details p {
-    font-size: 14px;
-    line-height: 1.7;
+    font-size: 13.5px;
+    line-height: 1.65;
     color: #5d6a74;
-    margin: 0 0 10px;
+    margin: 0 0 8px;
   }
 
   .author-more-link {
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: 750;
-    color: var(--blue, #046bd2) !important;
+    color: var(--orange, #f47a20) !important;
     text-decoration: none !important;
     transition: color .2s;
   }
 
   .author-more-link:hover {
-    color: var(--orange, #f47a20) !important;
+    color: var(--orange-deep, #db6109) !important;
+  }
+
+  /* ═══════════════════════════════════════════════
+     LƯỚI BÀI VIẾT LIÊN QUAN (3 Card - Thumbnail 16:9)
+     ════════════════════════════════════════════════ */
+  .related-posts-section {
+    margin-top: 40px;
+    margin-bottom: 36px;
+  }
+
+  .related-section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .related-section-header .accent-bar {
+    width: 4px;
+    height: 20px;
+    border-radius: 999px;
+    background: var(--orange, #f47a20);
+  }
+
+  .related-section-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: #1e2830;
+    margin: 0;
+  }
+
+  .related-posts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .related-post-card {
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid rgba(235, 222, 206, 0.8);
+    box-shadow: 0 2px 10px rgba(45, 30, 15, 0.03);
+    overflow: hidden;
+    text-decoration: none !important;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+  }
+
+  .related-post-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(45, 30, 15, 0.08);
+    border-color: rgba(244, 122, 32, 0.4);
+  }
+
+  .related-post-card .card-thumb-wrap {
+    width: 100%;
+    aspect-ratio: 16 / 9 !important;
+    overflow: hidden;
+    background: #f4efe9;
+  }
+
+  .related-post-card .post-thumb-16-9 {
+    width: 100% !important;
+    height: 100% !important;
+    aspect-ratio: 16 / 9 !important;
+    object-fit: cover !important;
+    transition: transform 0.4s ease;
+  }
+
+  .related-post-card:hover .post-thumb-16-9 {
+    transform: scale(1.06);
+  }
+
+  .related-post-card .card-body {
+    padding: 14px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .card-cat-badge {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--orange, #f47a20);
+    margin-bottom: 6px;
+  }
+
+  .card-title {
+    font-size: 13.5px;
+    font-weight: 750;
+    line-height: 1.4;
+    color: #1e2830;
+    margin: 0 0 10px 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: color 0.2s;
+  }
+
+  .related-post-card:hover .card-title {
+    color: var(--orange, #f47a20);
+  }
+
+  .card-date {
+    font-size: 11px;
+    color: #8c97a0;
+    margin-top: auto;
+    margin-bottom: 0;
+  }
+
+  /* ═══════════════════════════════════════════════
+     CTA BANNER: TƯ VẤN DỰ ÁN HORECA & B2B
+     ════════════════════════════════════════════════ */
+  .editorial-cta-banner {
+    position: relative;
+    border-radius: 20px;
+    background: #0f172a;
+    color: #ffffff;
+    border: 1px solid #1e293b;
+    padding: clamp(24px, 3.5vw, 36px);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow: hidden;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.15);
+    margin-bottom: 30px;
+  }
+
+  @media (min-width: 768px) {
+    .editorial-cta-banner {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  .cta-glow-orb {
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: rgba(244, 122, 32, 0.18);
+    filter: blur(50px);
+    pointer-events: none;
+  }
+
+  .cta-content {
+    position: relative;
+    z-index: 2;
+    max-width: 580px;
+  }
+
+  .cta-eyebrow {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #f47a20;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .cta-headline {
+    font-size: clamp(17px, 2vw, 21px);
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.35;
+    margin: 0 0 8px 0;
+  }
+
+  .cta-subtext {
+    font-size: 13px;
+    color: #94a3b8;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .cta-actions {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+  }
+
+  .btn-cta-phone {
+    background: #f47a20;
+    color: #ffffff !important;
+    font-weight: 800;
+    font-size: 13.5px;
+    padding: 12px 22px;
+    border-radius: 12px;
+    text-decoration: none !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 6px 16px rgba(244, 122, 32, 0.35);
+    transition: all 0.25s ease;
+    white-space: nowrap;
+  }
+
+  .btn-cta-phone:hover {
+    background: #db6109;
+    transform: translateY(-2px);
+  }
+
+  .btn-cta-quote {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff !important;
+    font-weight: 750;
+    font-size: 13.5px;
+    padding: 12px 22px;
+    border-radius: 12px;
+    text-decoration: none !important;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+  }
+
+  .btn-cta-quote:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
   }
 
   /* Comments */
   .comments-card-box {
-    background: rgba(255, 255, 255, .95);
-    backdrop-filter: blur(16px);
-    border-radius: 24px;
-    border: 1px solid rgba(235, 222, 206, .7);
-    box-shadow: 0 14px 38px rgba(45, 30, 15, .05);
-    padding: clamp(28px, 4vw, 44px);
+    background: #ffffff;
+    border-radius: 20px;
+    border: 1px solid rgba(235, 222, 206, .8);
+    box-shadow: 0 4px 16px rgba(45, 30, 15, .03);
+    padding: clamp(24px, 3.5vw, 36px);
     margin-bottom: 30px;
   }
 
-  .comments-card-box .comment-respond h3 {
-    font-size: 22px;
-    font-weight: 800;
-    color: #1e2830;
-    margin-bottom: 16px;
-  }
-
-  .comments-card-box textarea,
-  .comments-card-box input[type="text"],
-  .comments-card-box input[type="email"],
-  .comments-card-box input[type="url"] {
-    width: 100%;
-    padding: 13px 16px;
-    border-radius: 12px;
-    border: 1px solid rgba(226, 214, 198, .9);
-    background: #faf7f2;
-    font-size: 14.5px;
-    color: #252e35;
-    outline: none;
-    transition: all .25s ease;
-  }
-
-  .comments-card-box textarea:focus,
-  .comments-card-box input:focus {
-    border-color: var(--orange, #f47a20);
-    background: #ffffff;
-    box-shadow: 0 0 0 3px rgba(244, 122, 32, .15);
-  }
-
-  .comments-card-box input[type="submit"] {
-    background: var(--orange, #f47a20);
-    color: #ffffff;
-    border: none;
-    border-radius: 999px;
-    padding: 12px 30px;
-    font-weight: 750;
-    font-size: 13.5px;
-    cursor: pointer;
-    box-shadow: 0 6px 18px rgba(244, 122, 32, .25);
-    transition: all .28s ease;
-  }
-
-  .comments-card-box input[type="submit"]:hover {
-    background: var(--orange-deep, #db6109);
-    transform: translateY(-2px);
-  }
-
-  /* ==========================================================================
-     3. RIGHT COLUMN: Sticky Multi-Widget Sidebar
-     ========================================================================== */
+  /* ═══════════════════════════════════════════════
+     3. CỘT PHẢI: STICKY MULTI-WIDGET SIDEBAR
+     - Nằm CÙNG TẦNG với nội dung bài viết
+     ════════════════════════════════════════════════ */
   .article-sidebar-widget {
     width: 100%;
     min-width: 0;
@@ -1064,19 +1369,18 @@ get_header();
     }
   }
 
-  /* Generic Editorial Widget Card */
   .editorial-widget-card {
     background: #ffffff;
-    border-radius: 20px;
+    border-radius: 18px;
     border: 1px solid rgba(235, 222, 206, 0.85);
-    box-shadow: 0 8px 24px rgba(45, 30, 15, 0.04);
-    padding: 20px 22px;
-    margin-bottom: 22px;
+    box-shadow: 0 4px 16px rgba(45, 30, 15, 0.03);
+    padding: 18px 20px;
+    margin-bottom: 20px;
     transition: box-shadow 0.25s ease, border-color 0.25s ease;
   }
 
   .editorial-widget-card:hover {
-    box-shadow: 0 12px 30px rgba(45, 30, 15, 0.07);
+    box-shadow: 0 8px 24px rgba(45, 30, 15, 0.06);
     border-color: rgba(244, 122, 32, 0.35);
   }
 
@@ -1090,7 +1394,7 @@ get_header();
   }
 
   .editorial-widget-card .widget-title {
-    font-size: 13.5px;
+    font-size: 13px;
     font-weight: 800;
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -1101,9 +1405,12 @@ get_header();
     gap: 8px;
   }
 
-  .editorial-widget-card .widget-title i {
-    color: var(--orange, #f47a20);
-    font-size: 14px;
+  .title-accent-pill {
+    width: 3.5px;
+    height: 14px;
+    border-radius: 999px;
+    background: var(--orange, #f47a20);
+    display: inline-block;
   }
 
   .editorial-widget-card .widget-badge {
@@ -1116,7 +1423,7 @@ get_header();
     letter-spacing: 0.02em;
   }
 
-  /* Widget 1: TOC in Sidebar */
+  /* Widget 1: TOC */
   .toc-widget {
     background: #faf7f2;
     border-color: #ebdcd0;
@@ -1129,9 +1436,7 @@ get_header();
     font-size: 12px;
     cursor: pointer;
     padding: 4px;
-    transition: color 0.2s;
   }
-
   .btn-toggle-toc:hover {
     color: var(--orange, #f47a20);
   }
@@ -1142,18 +1447,18 @@ get_header();
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
   }
 
   .sidebar-toc-list li a {
     color: #4a5568;
     text-decoration: none;
-    font-size: 13.5px;
-    line-height: 1.5;
+    font-size: 13px;
+    line-height: 1.45;
     display: flex;
     align-items: baseline;
     gap: 8px;
-    padding: 6px 10px;
+    padding: 5px 8px;
     border-radius: 8px;
     transition: all 0.2s ease;
   }
@@ -1178,13 +1483,13 @@ get_header();
   }
 
   .sidebar-toc-list li.toc-level-3 {
-    padding-left: 14px;
+    padding-left: 12px;
   }
   .sidebar-toc-list li.toc-level-3 a {
-    font-size: 12.5px;
+    font-size: 12px;
   }
 
-  /* Widget 2: Products List */
+  /* Widget 2: Ceramic Products */
   .sidebar-products-list {
     display: flex;
     flex-direction: column;
@@ -1194,9 +1499,9 @@ get_header();
   .sidebar-product-item {
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 10px;
-    border-radius: 14px;
+    gap: 12px;
+    padding: 8px;
+    border-radius: 12px;
     background: #faf7f2;
     border: 1px solid rgba(235, 222, 206, 0.7);
     text-decoration: none !important;
@@ -1206,18 +1511,17 @@ get_header();
   .sidebar-product-item:hover {
     background: #ffffff;
     border-color: rgba(244, 122, 32, 0.4);
-    box-shadow: 0 6px 16px rgba(45, 30, 15, 0.06);
+    box-shadow: 0 4px 14px rgba(45, 30, 15, 0.06);
     transform: translateY(-2px);
   }
 
   .sidebar-product-item .prod-thumb {
-    width: 72px;
-    height: 72px;
-    border-radius: 12px;
+    width: 64px;
+    height: 64px;
+    border-radius: 10px;
     overflow: hidden;
     flex-shrink: 0;
     background: #f2eee8;
-    border: 1px solid rgba(0, 0, 0, 0.04);
   }
 
   .sidebar-product-item .prod-thumb img {
@@ -1237,11 +1541,11 @@ get_header();
   }
 
   .sidebar-product-item .prod-title {
-    font-size: 13.5px;
+    font-size: 13px;
     font-weight: 750;
     color: #1e2830;
     line-height: 1.35;
-    margin: 0 0 4px 0;
+    margin: 0 0 3px 0;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -1254,37 +1558,22 @@ get_header();
   }
 
   .sidebar-product-item .prod-price {
-    font-size: 13.5px;
+    font-size: 13px;
     font-weight: 800;
     color: var(--orange-deep, #db6109);
-    margin-bottom: 3px;
-  }
-
-  .sidebar-product-item .prod-price ins {
-    text-decoration: none;
-    color: var(--orange-deep, #db6109);
-  }
-  .sidebar-product-item .prod-price del {
-    font-size: 11.5px;
-    color: #9aa4ae;
-    margin-right: 5px;
+    margin-bottom: 2px;
   }
 
   .sidebar-product-item .prod-cta {
-    font-size: 11.5px;
+    font-size: 11px;
     font-weight: 700;
-    color: var(--blue, #046bd2);
+    color: var(--orange, #f47a20);
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    transition: gap 0.2s;
   }
 
-  .sidebar-product-item:hover .prod-cta {
-    gap: 7px;
-  }
-
-  /* Widget 3: Articles List */
+  /* Widget 3: Sidebar Related Articles (Thumbnail 16:9) */
   .sidebar-articles-list {
     display: flex;
     flex-direction: column;
@@ -1307,22 +1596,24 @@ get_header();
   }
 
   .sidebar-article-item .art-thumb {
-    width: 74px;
-    height: 56px;
-    border-radius: 10px;
+    width: 80px;
+    aspect-ratio: 16 / 9 !important;
+    height: auto !important;
+    border-radius: 8px;
     overflow: hidden;
     flex-shrink: 0;
     background: #f2eee8;
   }
 
-  .sidebar-article-item .art-thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  .art-thumb-img-16-9 {
+    width: 100% !important;
+    height: 100% !important;
+    aspect-ratio: 16 / 9 !important;
+    object-fit: cover !important;
     transition: transform 0.35s ease;
   }
 
-  .sidebar-article-item:hover .art-thumb img {
+  .sidebar-article-item:hover .art-thumb-img-16-9 {
     transform: scale(1.06);
   }
 
@@ -1332,7 +1623,7 @@ get_header();
   }
 
   .sidebar-article-item .art-title {
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: 700;
     line-height: 1.35;
     color: #202b33;
@@ -1360,7 +1651,6 @@ get_header();
     color: #cbd5e1;
   }
 
-  /* Widget Footer Action Button */
   .widget-footer-action {
     margin-top: 14px;
     padding-top: 12px;
@@ -1369,7 +1659,7 @@ get_header();
   }
 
   .btn-widget-more {
-    font-size: 12.5px;
+    font-size: 12px;
     font-weight: 750;
     color: var(--orange-deep, #db6109) !important;
     text-decoration: none !important;
@@ -1389,7 +1679,7 @@ get_header();
     background: linear-gradient(135deg, #1e2830 0%, #2b3640 100%);
     border: 1px solid rgba(244, 122, 32, 0.35);
     color: #ffffff;
-    box-shadow: 0 12px 32px rgba(20, 26, 32, 0.15);
+    box-shadow: 0 10px 28px rgba(20, 26, 32, 0.15);
   }
 
   .consult-widget-inner {
@@ -1411,7 +1701,7 @@ get_header();
   }
 
   .consult-title {
-    font-size: 15px;
+    font-size: 14.5px;
     font-weight: 800;
     color: #ffffff;
     margin: 0 0 8px 0;
@@ -1419,10 +1709,10 @@ get_header();
   }
 
   .consult-desc {
-    font-size: 12.5px;
+    font-size: 12px;
     line-height: 1.6;
     color: #b0bac3;
-    margin: 0 0 16px 0;
+    margin: 0 0 14px 0;
   }
 
   .consult-hotline-strip {
@@ -1434,7 +1724,7 @@ get_header();
 
   .hotline-label {
     display: block;
-    font-size: 10.5px;
+    font-size: 10px;
     color: #94a3b8;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -1442,28 +1732,23 @@ get_header();
   }
 
   .hotline-number {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 850;
     color: #ff9d47 !important;
     text-decoration: none !important;
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    transition: transform 0.2s;
-  }
-
-  .hotline-number:hover {
-    transform: scale(1.04);
   }
 
   .btn-consult-quote {
     display: block;
     width: 100%;
-    padding: 11px 18px;
+    padding: 10px 16px;
     border-radius: 999px;
     background: linear-gradient(135deg, #f47a20 0%, #db6109 100%);
     color: #ffffff !important;
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: 800;
     text-decoration: none !important;
     box-shadow: 0 6px 18px rgba(244, 122, 32, 0.35);
@@ -1475,7 +1760,9 @@ get_header();
     box-shadow: 0 10px 24px rgba(244, 122, 32, 0.5);
   }
 
-  /* Responsive Breakpoints */
+  /* ═══════════════════════════════════════════════
+     RESPONSIVE BREAKPOINTS
+     ════════════════════════════════════════════════ */
   @media (max-width: 1040px) {
     .article-layout-grid {
       grid-template-columns: 1fr;
@@ -1487,18 +1774,20 @@ get_header();
     #sidebarTOCWidget {
       display: none !important;
     }
+    .related-posts-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 
   @media (max-width: 768px) {
-    .article-header {
-      padding-top: 24px;
+    .article-hero-header {
+      padding-top: 22px;
       padding-bottom: 20px;
-      text-align: center;
     }
     .article-breadcrumbs {
       font-size: 12px;
       gap: 6px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
     .article-headline {
       font-size: 22px !important;
@@ -1508,32 +1797,33 @@ get_header();
     .article-meta-row {
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: flex-start;
       width: 100%;
-      max-width: 100%;
       gap: 8px;
-      border-radius: 18px;
-      padding: 14px 18px;
-      box-sizing: border-box;
-    }
-    .meta-author {
-      justify-content: center;
+      border-radius: 16px;
+      padding: 12px 16px;
     }
     .meta-divider {
-      width: 40px;
-      height: 1px;
-      background: rgba(45, 30, 15, .08);
+      display: none;
     }
-    .meta-item {
-      text-align: center;
+    .article-card-shell {
+      padding: 18px 16px !important;
+      border-radius: 16px !important;
     }
-    .article-author-card {
+    .related-posts-grid {
+      grid-template-columns: 1fr;
+    }
+    .editorial-cta-banner {
+      padding: 20px 18px;
+    }
+    .cta-actions {
       flex-direction: column;
-      text-align: center;
+      width: 100%;
     }
-    .article-body-wrapper {
-      padding: 24px 18px !important;
-      border-radius: 20px !important;
+    .btn-cta-phone, .btn-cta-quote {
+      width: 100%;
+      text-align: center;
+      justify-content: center;
     }
   }
 </style>
