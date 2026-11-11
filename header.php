@@ -206,6 +206,9 @@
         </div>
     </header><!-- #masthead -->
 
+    <!-- Header Spacer to Prevent Layout Shift (0.00 CLS) -->
+    <div class="gomie-header-spacer" id="gomieHeaderSpacer" aria-hidden="true"></div>
+
     <!-- Search Modal -->
     <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">

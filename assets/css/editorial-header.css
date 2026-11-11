@@ -7,12 +7,50 @@
  */
 
 .gomie-editorial-header {
-  position: relative;
-  z-index: 1020;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1030;
   background: #ffffff !important;
   font-family: inherit;
   box-shadow: 0 4px 24px rgba(45, 30, 15, 0.04);
   border-bottom: none !important;
+  transform: translate3d(0, 0, 0);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s ease,
+              background-color 0.3s ease;
+  will-change: transform;
+}
+
+body.admin-bar .gomie-editorial-header {
+  top: 32px;
+}
+@media screen and (max-width: 782px) {
+  body.admin-bar .gomie-editorial-header {
+    top: 46px;
+  }
+}
+
+/* Spacer to prevent Layout Shift (0.00 CLS) */
+.gomie-header-spacer {
+  display: block;
+  width: 100%;
+  height: var(--header-initial-height, 208px);
+  pointer-events: none;
+  visibility: hidden;
+  flex-shrink: 0;
+}
+@media (max-width: 1199.98px) {
+  .gomie-header-spacer {
+    height: var(--header-initial-height, 92px);
+  }
+}
+@media (max-width: 575.98px) {
+  .gomie-header-spacer {
+    height: var(--header-initial-height, 86px);
+  }
 }
 
 .gomie-editorial-header .container {
@@ -458,31 +496,42 @@
 }
 
 /* ==========================================================================
-   6. Sticky Header Behavior
+   6. Sticky & Smart Auto-Hide Header Behavior (No Jitter, Zero CLS)
    ========================================================================== */
 
-.site-header.scrolled .header-top {
+/* Trạng thái trượt ẩn khi cuộn xuống (Scroll Down -> Hide) */
+.site-header.header--hidden {
+  transform: translate3d(0, -100%, 0) !important;
+  box-shadow: none !important;
+  pointer-events: none !important;
+}
+
+/* Trạng thái trượt hiện khi cuộn lên (Scroll Up -> Show) */
+.site-header.header--pinned {
+  transform: translate3d(0, 0, 0) !important;
+  background: rgba(255, 255, 255, 0.98) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 4px 20px rgba(39, 51, 62, 0.08) !important;
+  pointer-events: auto !important;
+}
+
+/* Thu gọn Compact Mode khi đã cuộn qua threshold (Desktop) */
+.site-header.header--scrolled .header-top {
   display: none !important;
 }
 
-.site-header.scrolled .header-branding-row {
+.site-header.header--scrolled .header-branding-row {
   display: none !important;
 }
 
-.site-header.scrolled .header-nav-row {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1030;
-  background: rgba(255, 255, 255, 0.96) !important;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  box-shadow: 0 6px 24px rgba(45, 30, 15, 0.08) !important;
+.site-header.header--scrolled .header-nav-row {
+  background: transparent !important;
   border-top: none !important;
+  padding: 8px 0 !important;
 }
 
-.site-header.scrolled .sticky-logo-pill {
+.site-header.header--scrolled .sticky-logo-pill {
   display: inline-flex !important;
   align-items: center;
   margin-right: 20px;
@@ -499,11 +548,11 @@
   transition: transform 0.2s ease;
 }
 
-.site-header.scrolled .sticky-logo-pill:hover .sticky-logo-img {
+.site-header.header--scrolled .sticky-logo-pill:hover .sticky-logo-img {
   transform: scale(1.03);
 }
 
-.site-header.scrolled .sticky-nav-actions {
+.site-header.header--scrolled .sticky-nav-actions {
   display: flex !important;
   flex-shrink: 0;
 }
@@ -513,6 +562,33 @@
   font-weight: 850;
   color: #f47a20;
   letter-spacing: -0.03em;
+}
+
+/* Responsive khi cuộn compact trên Mobile/Tablet (< 1200px) */
+@media (max-width: 1199.98px) {
+  .site-header.header--scrolled .header-top {
+    display: none !important;
+  }
+  .site-header.header--scrolled .header-branding-row {
+    display: block !important;
+    padding: 6px 0 !important;
+  }
+  .site-header.header--scrolled .header-nav-row {
+    display: none !important;
+  }
+}
+
+/* Đồng bộ vị trí trôi mượt mà của Sidebar bài viết theo trạng thái header */
+@media (min-width: 1041px) {
+  .article-sidebar-widget {
+    transition: top 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+  body.header-is-hidden .article-sidebar-widget {
+    top: 24px !important;
+  }
+  body.header-is-pinned .article-sidebar-widget {
+    top: 76px !important;
+  }
 }
 
 /* ==========================================================================

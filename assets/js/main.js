@@ -25,18 +25,99 @@
     initForms();
   });
 
-  // Header scroll effect
+  // Header Smart Auto-Hide Scroll Controller (Zero CLS, 60fps Smooth Transitions)
   function initHeaderScroll() {
-    var header = $(".site-header");
-    var scrollThreshold = 100;
+    var $header = $(".site-header");
+    var $spacer = $(".gomie-header-spacer");
+    var $body = $("body");
+
+    if (!$header.length) return;
+
+    var lastScrollTop = 0;
+    var scrollThreshold = 120; // Bắt đầu kích hoạt auto-hide
+    var tolerance = 8;         // Ngưỡng dung sai chống rung lắc khi scroll nhẹ
+    var isTicking = false;
+
+    // Đo và đồng bộ chiều cao ban đầu của Header vào Spacer
+    function syncHeaderHeight() {
+      // Khi ở trạng thái đầu trang (chưa compact), đo chiều cao chính xác
+      if (!$header.hasClass("header--scrolled")) {
+        var h = $header.outerHeight() || 208;
+        if (h > 60) {
+          document.documentElement.style.setProperty("--header-initial-height", h + "px");
+          if ($spacer.length) {
+            $spacer.css("height", h + "px");
+          }
+        }
+      }
+    }
+
+    // Đồng bộ ngay lập tức và khi resize, image load
+    syncHeaderHeight();
+    $(window).on("load resize orientationchange", function () {
+      syncHeaderHeight();
+    });
+
+    if (window.ResizeObserver && $header.length) {
+      try {
+        var headerRO = new ResizeObserver(function () {
+          syncHeaderHeight();
+        });
+        headerRO.observe($header[0]);
+      } catch (e) {}
+    }
+
+    function onScrollUpdate() {
+      var currentScroll = $(window).scrollTop();
+      if (currentScroll < 0) currentScroll = 0;
+
+      // 1. Nếu quay về đỉnh trang (<= 25px): Reset về trạng thái nguyên bản
+      if (currentScroll <= 25) {
+        $body.removeClass("header-is-scrolled header-is-hidden header-is-pinned");
+        $header.removeClass("header--scrolled header--hidden header--pinned scrolled");
+        lastScrollTop = currentScroll;
+        isTicking = false;
+        return;
+      }
+
+      // 2. Khi đã cuộn qua threshold (> 120px)
+      if (currentScroll > scrollThreshold) {
+        $body.addClass("header-is-scrolled");
+        $header.addClass("header--scrolled scrolled");
+
+        var delta = currentScroll - lastScrollTop;
+
+        // Chỉ chuyển trạng thái khi vuốt dứt khoát vượt tolerance
+        if (Math.abs(delta) >= tolerance) {
+          if (delta > 0) {
+            // Cuộn xuống: Ẩn êm ái để người dùng đọc toàn bộ nội dung
+            $body.addClass("header-is-hidden").removeClass("header-is-pinned");
+            $header.addClass("header--hidden").removeClass("header--pinned");
+          } else {
+            // Cuộn lên: Trượt hiện thanh compact mượt mà
+            $body.removeClass("header-is-hidden").addClass("header-is-pinned");
+            $header.removeClass("header--hidden").addClass("header--pinned");
+          }
+        }
+      } else {
+        // Trong khoảng 25px - 120px: Giữ hiển thị tự nhiên
+        $body.removeClass("header-is-hidden");
+        $header.removeClass("header--hidden");
+      }
+
+      lastScrollTop = currentScroll;
+      isTicking = false;
+    }
 
     $(window).on("scroll", function () {
-      if ($(this).scrollTop() > scrollThreshold) {
-        header.addClass("scrolled");
-      } else {
-        header.removeClass("scrolled");
+      if (!isTicking) {
+        window.requestAnimationFrame(onScrollUpdate);
+        isTicking = true;
       }
     });
+
+    // Chạy khởi tạo kiểm tra trạng thái
+    onScrollUpdate();
   }
 
   // Mobile menu

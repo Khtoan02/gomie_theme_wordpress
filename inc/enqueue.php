@@ -125,7 +125,7 @@ function gomie_enqueue_scripts() {
     
     // Main JS
     if (file_exists(get_template_directory() . '/assets/js/main.js')) {
-        wp_enqueue_script('gomie-main', get_template_directory_uri() . '/assets/js/main.js', array('jquery', 'bootstrap'), GOMIE_THEME_VERSION, true);
+        wp_enqueue_script('gomie-main', get_template_directory_uri() . '/assets/js/main.js', array('jquery', 'bootstrap'), filemtime(get_template_directory() . '/assets/js/main.js'), true);
     }
 
     // Custom Video Player JS
