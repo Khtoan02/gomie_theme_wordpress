@@ -208,26 +208,28 @@
 
     <!-- Search Modal -->
     <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header border-0 pb-0">
-                    <h5 class="modal-title" id="searchModalLabel">
-                        <i class="fas fa-search text-primary me-2"></i>
-                        Tìm kiếm sản phẩm
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 24px; overflow: hidden; background: #fffdf9;">
+                <div class="modal-header border-0 pb-0 pt-4 px-4">
+                    <h5 class="modal-title fw-bold" id="searchModalLabel" style="color: #1e2830; font-size: 18px;">
+                        <i class="fa-solid fa-magnifying-glass me-2" style="color: var(--orange, #f47a20);"></i>
+                        Tìm kiếm tác phẩm &amp; cẩm nang gốm sứ
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body pt-0">
+                <div class="modal-body p-4">
                     <div class="search-form-wrapper">
                         <?php get_search_form(); ?>
                     </div>
                     <div class="search-suggestions mt-3">
-                        <small class="text-muted">Từ khóa phổ biến:</small>
-                        <div class="mt-2">
-                            <span class="badge bg-light text-dark me-2">Bát đĩa</span>
-                            <span class="badge bg-light text-dark me-2">Ấm chén</span>
-                            <span class="badge bg-light text-dark me-2">Gốm nhà hàng</span>
-                            <span class="badge bg-light text-dark">Quà tặng gốm</span>
+                        <small class="text-muted fw-semibold d-block mb-2">Gợi ý từ khóa nổi bật:</small>
+                        <div class="d-flex flex-wrap gap-2">
+                            <a href="<?php echo esc_url(home_url('/?s=Bát+đĩa')); ?>" class="badge-suggestion-pill">Bát đĩa bàn tiệc</a>
+                            <a href="<?php echo esc_url(home_url('/?s=Ấm+chén')); ?>" class="badge-suggestion-pill">Bộ ấm chén trà</a>
+                            <a href="<?php echo esc_url(home_url('/?s=Men+hỏa+biến')); ?>" class="badge-suggestion-pill">Men hỏa biến 1.300°C</a>
+                            <a href="<?php echo esc_url(home_url('/?s=Men+sapphire')); ?>" class="badge-suggestion-pill">Men Sapphire</a>
+                            <a href="<?php echo esc_url(home_url('/?s=Quà+tặng')); ?>" class="badge-suggestion-pill">Quà tặng doanh nghiệp</a>
+                            <a href="<?php echo esc_url(home_url('/?s=Nhà+hàng')); ?>" class="badge-suggestion-pill">Gốm nhà hàng - khách sạn</a>
                         </div>
                     </div>
                 </div>

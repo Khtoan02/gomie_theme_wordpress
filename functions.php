@@ -163,22 +163,8 @@ function gomie_pagination() {
     }
 }
 
-// Custom search form
-add_filter('get_search_form', 'gomie_search_form');
-function gomie_search_form($form) {
-    $form = '<form role="search" method="get" class="search-form" action="' . home_url('/') . '">
-        <label>
-            <span class="screen-reader-text">' . _x('Search for:', 'label', 'gomie-theme') . '</span>
-            <input type="search" class="search-field" placeholder="' . esc_attr_x('Search &hellip;', 'placeholder', 'gomie-theme') . '" value="' . get_search_query() . '" name="s" />
-        </label>
-        <button type="submit" class="search-submit glass-button">
-            <span class="screen-reader-text">' . _x('Search', 'submit button', 'gomie-theme') . '</span>
-            <i class="fas fa-search"></i>
-        </button>
-    </form>';
-    
-    return $form;
-}
+// Custom search form: WordPress will use searchform.php template directly
+// (Legacy get_search_form filter removed to support modern Gomie search UI)
 
 // Add custom image sizes
 add_action('after_setup_theme', 'gomie_custom_image_sizes');
