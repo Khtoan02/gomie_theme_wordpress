@@ -213,6 +213,12 @@ function gomie_enqueue_scripts() {
             wp_enqueue_script('shop-page-js', get_template_directory_uri() . '/assets/js/shop-page.js', array('jquery'), GOMIE_THEME_VERSION, true);
             $wc_scripts[] = 'shop-page-js';
         }
+
+        // Shop Filter Engine (Instant client filter & 9-glaze harmony)
+        if (file_exists(get_template_directory() . '/assets/js/shop-filter.js')) {
+            wp_enqueue_script('gomie-shop-filter', get_template_directory_uri() . '/assets/js/shop-filter.js', array('jquery'), filemtime(get_template_directory() . '/assets/js/shop-filter.js'), true);
+            $wc_scripts[] = 'gomie-shop-filter';
+        }
     }
 
 

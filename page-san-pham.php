@@ -22,7 +22,8 @@ $args = array(
 $query_products = get_posts($args);
 
 $ceramic_products = array();
-$detected_glazes = array();
+$glaze_counts = array();
+$has_doc_ban = false;
 
 foreach ($query_products as $p) {
     $wc_prod = wc_get_product($p->ID);
@@ -55,16 +56,12 @@ foreach ($query_products as $p) {
         ? gomie_get_product_glaze_info($wc_prod) 
         : array('name' => 'Men Độc Bản', 'slug' => 'men-doc-ban', 'color' => '#e0592a');
 
-    // Aggregate unique glazes for filter chips
-    if (!isset($detected_glazes[$glaze_info['slug']])) {
-        $detected_glazes[$glaze_info['slug']] = array(
-            'name'  => $glaze_info['name'],
-            'slug'  => $glaze_info['slug'],
-            'color' => $glaze_info['color'],
-            'count' => 0,
-        );
+    // Aggregate counts for filter chips
+    $g_slug = $glaze_info['slug'];
+    $glaze_counts[$g_slug] = ($glaze_counts[$g_slug] ?? 0) + 1;
+    if ($g_slug === 'men-doc-ban') {
+        $has_doc_ban = true;
     }
-    $detected_glazes[$glaze_info['slug']]['count']++;
 
     $ceramic_products[] = array(
         'product'     => $wc_prod,
@@ -72,6 +69,19 @@ foreach ($query_products as $p) {
         'glaze_slug'  => $glaze_info['slug'],
         'glaze_color' => $glaze_info['color'],
         'cat_slugs'   => $cat_slugs,
+    );
+}
+
+// Hệ thống sắc men chuẩn từ WooCommerce attributes (pa_mau-sac)
+$system_glazes = function_exists('gomie_get_active_glazes') ? gomie_get_active_glazes() : array();
+if ($has_doc_ban) {
+    $system_glazes[] = array(
+        'id'        => 0,
+        'name'      => 'Men Độc Bản',
+        'slug'      => 'men-doc-ban',
+        'color'     => '#e0592a',
+        'img_url'   => '',
+        'count'     => $glaze_counts['men-doc-ban'] ?? 0,
     );
 }
 
@@ -320,7 +330,7 @@ $theme_uri = get_template_directory_uri();
                             <i class="fa-solid fa-sliders text-danger"></i>
                             <span>Bộ lọc sản phẩm</span>
                         </div>
-                        <button type="button" class="btn-clear-filters text-muted small border-0 bg-transparent" onclick="resetFilters()" title="Xóa tất cả lọc">
+                        <button type="button" class="btn-clear-filters text-muted small border-0 bg-transparent" title="Xóa tất cả lọc">
                             <i class="fa-solid fa-rotate-left me-1"></i>Đặt lại
                         </button>
                     </div>
@@ -336,13 +346,22 @@ $theme_uri = get_template_directory_uri();
                                 <span class="chip-title">Tất cả sắc men</span>
                             </button>
                             <div class="glaze-grid-items">
-                                <?php if (!empty($detected_glazes)) : ?>
-                                    <?php foreach ($detected_glazes as $slug => $glaze_item) : 
-                                        $short_name = trim(preg_replace('/^Men\s+/ui', '', $glaze_item['name']));
+                                <?php if (!empty($system_glazes)) : ?>
+                                    <?php foreach ($system_glazes as $glaze_item) : 
+                                        $slug = $glaze_item['slug'];
+                                        $short_name = trim(preg_replace('/^Men\s+(Xanh\s+)?/ui', '', $glaze_item['name']));
+                                        if ($glaze_item['name'] === 'Men Xanh Ngọc') {
+                                            $short_name = 'Xanh Ngọc';
+                                        } elseif ($glaze_item['name'] === 'Men Xanh Sóng Biển') {
+                                            $short_name = 'Sóng Biển';
+                                        } elseif ($glaze_item['name'] === 'Men Xanh Thiên Thanh') {
+                                            $short_name = 'Thiên Thanh';
+                                        }
+                                        $item_count = $glaze_counts[$slug] ?? 0;
                                     ?>
-                                        <button type="button" class="glaze-chip-widget" data-glaze="<?php echo esc_attr($slug); ?>" title="<?php echo esc_attr($glaze_item['name']); ?>">
-                                            <?php if (!empty($glaze_item['image'])) : ?>
-                                                <img src="<?php echo esc_url($glaze_item['image']); ?>" class="chip-img-avatar" alt="<?php echo esc_attr($glaze_item['name']); ?>" />
+                                        <button type="button" class="glaze-chip-widget" data-glaze="<?php echo esc_attr($slug); ?>" title="<?php echo esc_attr($glaze_item['name']); ?><?php echo $item_count > 0 ? ' (' . $item_count . ' tác phẩm)' : ''; ?>">
+                                            <?php if (!empty($glaze_item['img_url']) && strpos($glaze_item['img_url'], 'bo-mau-men-955x800.png') === false) : ?>
+                                                <img src="<?php echo esc_url($glaze_item['img_url']); ?>" class="chip-img-avatar" alt="<?php echo esc_attr($glaze_item['name']); ?>" />
                                             <?php else : ?>
                                                 <span class="chip-color" style="background-color: <?php echo esc_attr($glaze_item['color']); ?>;"></span>
                                             <?php endif; ?>
@@ -499,7 +518,8 @@ $theme_uri = get_template_directory_uri();
                      data-glaze="<?php echo esc_attr($glaze_slug); ?>" 
                      data-cat="<?php echo esc_attr($cat_data_attr); ?>"
                      data-price="<?php echo esc_attr($price_num); ?>"
-                     data-title="<?php echo esc_attr($display_title); ?>">
+                     data-title="<?php echo esc_attr($display_title); ?>"
+                     data-index="<?php echo $card_idx; ?>">
                     <div class="gomie-product-item h-100">
                         <div class="gomie-product-card apple-style">
                             <!-- Product Image Container -->
@@ -644,280 +664,6 @@ $theme_uri = get_template_directory_uri();
     </div>
 </div>
 
-<!-- Core shop styles loaded in <head> via assets/css/shop-page.css -->
-
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const glazeChips = document.querySelectorAll('#glazeFilter .glaze-chip-widget');
-    const catPills = document.querySelectorAll('#categoryFilter .cat-pill-widget, .gift-pill-widget');
-    const sortSelect = document.getElementById('shopSort');
-    const cards = Array.from(document.querySelectorAll('.product-card-col'));
-    const grid = document.getElementById('productGrid');
-    const countEl = document.getElementById('productCount');
-    const emptyAlert = document.getElementById('noProductsAlert');
-    const activeTagsContainer = document.getElementById('activeFilterTags');
-
-    let currentGlaze = 'all';
-    let currentCat = 'all';
-
-    function renderActiveTags() {
-        if (!activeTagsContainer) return;
-        activeTagsContainer.innerHTML = '';
-
-        if (currentGlaze !== 'all') {
-            const activeGlazeEl = document.querySelector('#glazeFilter .glaze-chip-widget.active');
-            const name = activeGlazeEl ? (activeGlazeEl.querySelector('.chip-title')?.textContent.trim() || currentGlaze) : currentGlaze;
-            const tag = document.createElement('span');
-            tag.className = 'active-tag';
-            tag.innerHTML = `${name} <i class="fa-solid fa-xmark"></i>`;
-            tag.title = 'Bỏ lọc men';
-            tag.addEventListener('click', () => {
-                const allBtn = document.querySelector('#glazeFilter .glaze-chip-widget[data-glaze="all"]');
-                if (allBtn) allBtn.click();
-            });
-            activeTagsContainer.appendChild(tag);
-        }
-
-        if (currentCat !== 'all') {
-            const activeCatEl = document.querySelector('#categoryFilter .cat-pill-widget.active, .gift-pill-widget.active');
-            const name = activeCatEl ? (activeCatEl.querySelector('.cat-name, .gift-name')?.textContent.trim() || currentCat) : currentCat;
-            const tag = document.createElement('span');
-            tag.className = 'active-tag';
-            tag.innerHTML = `${name} <i class="fa-solid fa-xmark"></i>`;
-            tag.title = 'Bỏ lọc danh mục';
-            tag.addEventListener('click', () => {
-                const allBtn = document.querySelector('.cat-pill-all');
-                if (allBtn) allBtn.click();
-            });
-            activeTagsContainer.appendChild(tag);
-        }
-    }
-
-    const pageSize = 16;
-    let currentlyVisibleLimit = 16;
-    const btnLoadMore = document.getElementById('btnLoadMore');
-    const loadMoreWrap = document.getElementById('loadMoreWrap');
-    const loadMoreBadge = document.getElementById('loadMoreBadge');
-
-    function applyFilters() {
-        let matchingCards = [];
-
-        cards.forEach(card => {
-            const cardGlaze = card.getAttribute('data-glaze');
-            const rawCats = card.getAttribute('data-cat') || '';
-            const cardCats = rawCats.split(/\s+/);
-
-            const glazeMatch = (currentGlaze === 'all' || cardGlaze === currentGlaze);
-            const catMatch = (currentCat === 'all' || cardCats.includes(currentCat) || rawCats.includes(currentCat));
-
-            if (glazeMatch && catMatch) {
-                matchingCards.push(card);
-            } else {
-                card.classList.add('d-none');
-            }
-        });
-
-        const totalMatches = matchingCards.length;
-        if (countEl) countEl.textContent = totalMatches;
-        const tbCount = document.getElementById('toolbarFilterCount');
-        if (tbCount) tbCount.textContent = totalMatches;
-
-        const isFiltered = (currentGlaze !== 'all' || currentCat !== 'all');
-        const activeLimit = isFiltered ? Math.max(currentlyVisibleLimit, pageSize) : currentlyVisibleLimit;
-
-        matchingCards.forEach((card, index) => {
-            if (index < activeLimit) {
-                card.classList.remove('d-none');
-            } else {
-                card.classList.add('d-none');
-            }
-        });
-
-        if (loadMoreWrap && btnLoadMore) {
-            const remaining = totalMatches - activeLimit;
-            if (remaining > 0) {
-                loadMoreWrap.classList.remove('d-none');
-                if (loadMoreBadge) loadMoreBadge.textContent = '+' + (remaining > pageSize ? pageSize : remaining);
-            } else {
-                loadMoreWrap.classList.add('d-none');
-            }
-        }
-
-        if (emptyAlert) {
-            if (totalMatches === 0) emptyAlert.classList.remove('d-none');
-            else emptyAlert.classList.add('d-none');
-        }
-
-        renderActiveTags();
-    }
-
-    if (btnLoadMore) {
-        btnLoadMore.addEventListener('click', function() {
-            currentlyVisibleLimit += pageSize;
-            applyFilters();
-        });
-    }
-
-    // Glaze chip clicks
-    glazeChips.forEach(chip => {
-        chip.addEventListener('click', function() {
-            glazeChips.forEach(c => c.classList.remove('active'));
-            this.classList.add('active');
-            currentGlaze = this.getAttribute('data-glaze');
-            applyFilters();
-        });
-    });
-
-    // Category pill clicks
-    catPills.forEach(pill => {
-        pill.addEventListener('click', function() {
-            catPills.forEach(p => p.classList.remove('active'));
-            this.classList.add('active');
-            currentCat = this.getAttribute('data-cat');
-            applyFilters();
-        });
-    });
-
-    // Tự động nhận diện bộ lọc từ URL (hỗ trợ chuyển từ trang Màu Men & Danh mục)
-    try {
-        const urlParams = new URLSearchParams(window.location.search);
-        const urlGlaze = urlParams.get('glaze') || urlParams.get('pa_mau-sac') || urlParams.get('mau-sac');
-        const urlCat = urlParams.get('cat') || urlParams.get('category') || urlParams.get('product_cat');
-
-        if (urlGlaze) {
-            const targetChip = Array.from(glazeChips).find(c => {
-                const dg = c.getAttribute('data-glaze');
-                return dg === urlGlaze || dg === 'men-' + urlGlaze || ('men-' + dg) === urlGlaze;
-            });
-            if (targetChip) {
-                glazeChips.forEach(c => c.classList.remove('active'));
-                targetChip.classList.add('active');
-                currentGlaze = targetChip.getAttribute('data-glaze');
-            }
-        }
-
-        if (urlCat) {
-            const targetPill = Array.from(catPills).find(p => p.getAttribute('data-cat') === urlCat);
-            if (targetPill) {
-                catPills.forEach(p => p.classList.remove('active'));
-                targetPill.classList.add('active');
-                currentCat = targetPill.getAttribute('data-cat');
-            }
-        }
-
-        // Kích hoạt bộ lọc ban đầu
-        applyFilters();
-    } catch(err) {
-        console.error('Filter URL init error:', err);
-    }
-
-    // Sort
-    if (sortSelect) {
-        sortSelect.addEventListener('change', function() {
-            const val = this.value;
-            cards.sort((a, b) => {
-                if (val === 'price-asc') {
-                    return parseFloat(a.dataset.price || 0) - parseFloat(b.dataset.price || 0);
-                } else if (val === 'price-desc') {
-                    return parseFloat(b.dataset.price || 0) - parseFloat(a.dataset.price || 0);
-                } else if (val === 'title-asc') {
-                    return (a.dataset.title || '').localeCompare(b.dataset.title || '');
-                }
-                return 0;
-            });
-            cards.forEach(c => grid.appendChild(c));
-        });
-    }
-
-    // Mobile Filter Toggle Trigger
-    const sidebarEl = document.getElementById('shopFilterSidebar');
-    const btnToggleMobile = document.getElementById('btnToggleMobileFilter');
-
-    if (btnToggleMobile && sidebarEl) {
-        btnToggleMobile.addEventListener('click', function() {
-            sidebarEl.classList.toggle('show-mobile');
-            if (sidebarEl.classList.contains('show-mobile')) {
-                sidebarEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        });
-    }
-
-    window.resetFilters = function() {
-        glazeChips.forEach(c => c.classList.remove('active'));
-        const allGlaze = document.querySelector('#glazeFilter .glaze-chip-widget[data-glaze="all"]');
-        if (allGlaze) allGlaze.classList.add('active');
-
-        catPills.forEach(p => p.classList.remove('active'));
-        const allCat = document.querySelector('.cat-pill-all');
-        if (allCat) allCat.classList.add('active');
-
-        currentGlaze = 'all';
-        currentCat = 'all';
-        currentlyVisibleLimit = pageSize;
-        applyFilters();
-    };
-
-    // AJAX Add to Cart
-    const addButtons = document.querySelectorAll('.btn-add-cart-v11');
-    const toast = document.getElementById('cartToast');
-    let toastTimer;
-
-    addButtons.forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const pid = this.getAttribute('data-product-id');
-            const originalHtml = this.innerHTML;
-            this.classList.add('loading');
-            this.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang thêm...';
-
-            const formData = new FormData();
-            formData.append('product_id', pid);
-            formData.append('quantity', 1);
-
-            fetch('<?php echo esc_url(wc_get_cart_url()); ?>?add-to-cart=' + pid, {
-                method: 'POST',
-                credentials: 'same-origin'
-            })
-            .then(res => {
-                this.classList.remove('loading');
-                this.innerHTML = '<i class="fa-solid fa-check"></i> Đã thêm';
-                
-                // Show toast
-                if (toast) {
-                    toast.classList.add('show');
-                    clearTimeout(toastTimer);
-                    toastTimer = setTimeout(() => {
-                        toast.classList.remove('show');
-                    }, 4000);
-                }
-
-                setTimeout(() => {
-                    this.innerHTML = originalHtml;
-                }, 2000);
-
-                // Update cart count in header if exists
-                fetch('<?php echo esc_url(home_url("/?wc-ajax=get_refreshed_fragments")); ?>', {
-                    method: 'POST'
-                })
-                .then(r => r.json())
-                .then(data => {
-                    if (data && data.fragments) {
-                        for (const key in data.fragments) {
-                            const el = document.querySelector(key);
-                            if (el) el.outerHTML = data.fragments[key];
-                        }
-                    }
-                }).catch(() => {});
-            })
-            .catch(err => {
-                this.classList.remove('loading');
-                this.innerHTML = originalHtml;
-                alert('Có lỗi xảy ra khi thêm vào giỏ hàng. Vui lòng thử lại!');
-            });
-        });
-    });
-});
-</script>
+<!-- Core shop styles and filter engine loaded via inc/enqueue.php (assets/js/shop-filter.js) -->
 
 <?php get_footer(); ?>

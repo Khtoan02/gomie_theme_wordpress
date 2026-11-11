@@ -491,6 +491,29 @@ class Gomie_Glaze_Attribute_Meta {
             }
         }
 
+        // Sắp xếp các sắc men theo thứ tự chuẩn nghệ thuật Gomie Ceramic
+        $curated_order = array(
+            'men-sapphire'          => 1,
+            'men-canh-gian'         => 2,
+            'men-gam-vang'          => 3,
+            'men-xanh-song-bien'    => 4,
+            'men-reu'               => 5,
+            'men-xanh-ngoc'         => 6,
+            'men-hong-tuyet'        => 7,
+            'men-nau-tuyet'         => 8,
+            'men-xanh-thien-thanh'  => 9,
+            'men-doc-ban'           => 10,
+        );
+
+        usort($glazes, function($a, $b) use ($curated_order) {
+            $order_a = $curated_order[$a['slug']] ?? 99;
+            $order_b = $curated_order[$b['slug']] ?? 99;
+            if ($order_a === $order_b) {
+                return strcmp($a['name'], $b['name']);
+            }
+            return $order_a - $order_b;
+        });
+
         return $glazes;
     }
 

@@ -120,13 +120,13 @@
       }
     });
 
-    // Thêm các thẻ script bên ngoài mới trong <head>
-    const currentScripts = new Set(Array.from(document.querySelectorAll('head script[src]')).map((s) => s.src));
-    newDoc.querySelectorAll('head script[src]').forEach((script) => {
+    // Thêm các thẻ script bên ngoài mới trong <head> và <body>
+    const currentScripts = new Set(Array.from(document.querySelectorAll('script[src]')).map((s) => s.src));
+    newDoc.querySelectorAll('script[src]').forEach((script) => {
       if (script.src && !currentScripts.has(script.src)) {
         const newScript = document.createElement('script');
         Array.from(script.attributes).forEach((attr) => newScript.setAttribute(attr.name, attr.value));
-        document.head.appendChild(newScript);
+        document.body.appendChild(newScript);
       }
     });
   }

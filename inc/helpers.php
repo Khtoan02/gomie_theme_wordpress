@@ -1951,29 +1951,57 @@ function gomie_get_product_glaze_info($product) {
 
     // 4. Phân tích tiêu đề sản phẩm
     if (empty($glaze_name)) {
-        if (stripos($title, 'thanh') !== false || stripos($title, 'thiên thanh') !== false) { $glaze_name = 'Men Xanh Thiên Thanh'; $glaze_slug = 'men-xanh-thien-thanh'; }
-        elseif (stripos($title, 'sapphire') !== false) { $glaze_name = 'Men Sapphire'; $glaze_slug = 'men-sapphire'; }
-        elseif (stripos($title, 'cánh gián') !== false) { $glaze_name = 'Men Cánh Gián'; $glaze_slug = 'men-canh-gian'; }
-        elseif (stripos($title, 'gấm vàng') !== false) { $glaze_name = 'Men Gấm Vàng'; $glaze_slug = 'men-gam-vang'; }
-        elseif (stripos($title, 'sóng biển') !== false) { $glaze_name = 'Men Xanh Sóng Biển'; $glaze_slug = 'men-xanh-song-bien'; }
-        elseif (stripos($title, 'hỏa biến') !== false) { $glaze_name = 'Men Xanh Hỏa Biến'; $glaze_slug = 'men-xanh-hoa-bien'; }
-        elseif (stripos($title, 'rêu') !== false) { $glaze_name = 'Men Rêu'; $glaze_slug = 'men-reu'; }
-        elseif (stripos($title, 'ngọc trai') !== false || stripos($title, 'bích ngọc') !== false || stripos($title, 'xanh ngọc') !== false) { $glaze_name = 'Men Xanh Ngọc'; $glaze_slug = 'men-xanh-ngoc'; }
-        elseif (stripos($title, 'hồng tuyết') !== false) { $glaze_name = 'Men Hồng Tuyết'; $glaze_slug = 'men-hong-tuyet'; }
-        elseif (stripos($title, 'nâu tuyết') !== false) { $glaze_name = 'Men Nâu Tuyết'; $glaze_slug = 'men-nau-tuyet'; }
-        elseif (stripos($title, 'men rạn') !== false || stripos($title, 'rạn') !== false) { $glaze_name = 'Men Rạn'; $glaze_slug = 'men-ran'; }
-        elseif (stripos($title, 'men lam') !== false || stripos($title, 'lam') !== false) { $glaze_name = 'Men Lam'; $glaze_slug = 'men-lam'; }
-        elseif (stripos($title, 'men tro') !== false || stripos($title, 'tro') !== false) { $glaze_name = 'Men Tro'; $glaze_slug = 'men-tro'; }
-        elseif (stripos($title, 'bạch ngọc') !== false || stripos($title, 'trắng') !== false) { $glaze_name = 'Men Bạch Ngọc'; $glaze_slug = 'men-bach-ngoc'; }
-        else { $glaze_name = 'Men Độc Bản'; $glaze_slug = 'men-doc-ban'; }
+        if (stripos($title, 'thiên thanh') !== false || stripos($title, 'thien thanh') !== false) { 
+            $glaze_name = 'Men Xanh Thiên Thanh'; 
+            $glaze_slug = 'men-xanh-thien-thanh'; 
+        } elseif (stripos($title, 'sapphire') !== false || stripos($title, 'saphire') !== false) { 
+            $glaze_name = 'Men Sapphire'; 
+            $glaze_slug = 'men-sapphire'; 
+        } elseif (stripos($title, 'cánh gián') !== false || stripos($title, 'canh gian') !== false) { 
+            $glaze_name = 'Men Cánh Gián'; 
+            $glaze_slug = 'men-canh-gian'; 
+        } elseif (stripos($title, 'gấm vàng') !== false || stripos($title, 'gam vang') !== false) { 
+            $glaze_name = 'Men Gấm Vàng'; 
+            $glaze_slug = 'men-gam-vang'; 
+        } elseif (stripos($title, 'sóng biển') !== false || stripos($title, 'hỏa biến') !== false || stripos($title, 'hoa bien') !== false || stripos($title, 'lá biển') !== false) { 
+            $glaze_name = 'Men Xanh Sóng Biển'; 
+            $glaze_slug = 'men-xanh-song-bien'; 
+        } elseif (stripos($title, 'rêu') !== false || stripos($title, 'reu') !== false) { 
+            $glaze_name = 'Men Rêu'; 
+            $glaze_slug = 'men-reu'; 
+        } elseif (stripos($title, 'ngọc trai') !== false || stripos($title, 'bích ngọc') !== false || stripos($title, 'xanh ngọc') !== false || stripos($title, 'ngoc trai') !== false) { 
+            $glaze_name = 'Men Xanh Ngọc'; 
+            $glaze_slug = 'men-xanh-ngoc'; 
+        } elseif (stripos($title, 'hồng tuyết') !== false || stripos($title, 'hong tuyet') !== false) { 
+            $glaze_name = 'Men Hồng Tuyết'; 
+            $glaze_slug = 'men-hong-tuyet'; 
+        } elseif (stripos($title, 'nâu tuyết') !== false || stripos($title, 'nau tuyet') !== false) { 
+            $glaze_name = 'Men Nâu Tuyết'; 
+            $glaze_slug = 'men-nau-tuyet'; 
+        } else { 
+            $glaze_name = 'Men Độc Bản'; 
+            $glaze_slug = 'men-doc-ban'; 
+        }
     }
 
-    // Chuẩn hóa tên và slug để không bị trùng lặp
+    // Chuẩn hóa tên và slug để đồng nhất 100% với 9 sắc men hệ thống
     $clean_slug = sanitize_title(str_replace('men-', '', $glaze_slug));
-    if (strpos($glaze_slug, 'men-') !== 0) {
-        $glaze_slug = 'men-' . $clean_slug;
+    if ($clean_slug === 'hoa-bien' || $clean_slug === 'xanh-hoa-bien' || $clean_slug === 'song-bien') {
+        $glaze_slug = 'men-xanh-song-bien';
+        $glaze_name = 'Men Xanh Sóng Biển';
+    } elseif ($clean_slug === 'ngoc-trai' || $clean_slug === 'bich-ngoc') {
+        $glaze_slug = 'men-xanh-ngoc';
+        $glaze_name = 'Men Xanh Ngọc';
+    } elseif ($clean_slug === 'thien-thanh') {
+        $glaze_slug = 'men-xanh-thien-thanh';
+        $glaze_name = 'Men Xanh Thiên Thanh';
+    } else {
+        if (strpos($glaze_slug, 'men-') !== 0) {
+            $glaze_slug = 'men-' . $clean_slug;
+        }
     }
-    // Chuẩn hóa tên có chữ Men đứng đầu
+
+    // Chuẩn hóa tên có chữ Men đứng đầu và Title Case
     if (stripos($glaze_name, 'men') !== 0) {
         $glaze_name = 'Men ' . $glaze_name;
     }
