@@ -499,23 +499,78 @@ body.mobile-menu-active .mobile-menu-overlay {
   display: flex !important;
   flex-direction: column !important;
   flex: 1 1 auto !important;
+  padding: 12px 14px 14px !important;
+  gap: 7px !important;
+  background: #ffffff !important;
 }
 
 .gomie-product-card.apple-style .product-title {
-  height: 40px !important;
-  min-height: 40px !important;
-  max-height: 40px !important;
+  height: 36px !important;
+  min-height: 36px !important;
+  max-height: 36px !important;
   display: -webkit-box !important;
   -webkit-line-clamp: 2 !important;
   -webkit-box-orient: vertical !important;
   overflow: hidden !important;
-  margin-bottom: 6px !important;
+  margin: 0 0 2px 0 !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  line-height: 1.32 !important;
+  letter-spacing: -0.01em !important;
+}
+
+.gomie-product-card.apple-style .product-stats {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  gap: 5px !important;
+}
+
+.gomie-product-card.apple-style .stat-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 3px !important;
+  flex: 1 !important;
+  justify-content: center !important;
+  padding: 3px 4px !important;
+  background: rgba(0, 0, 0, 0.03) !important;
+  border-radius: 6px !important;
+  border: none !important;
+}
+
+.gomie-product-card.apple-style .stat-item i {
+  font-size: 9.5px !important;
+  color: #e0592a !important;
+}
+
+.gomie-product-card.apple-style .stat-value {
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  color: #475569 !important;
+  line-height: 1 !important;
+}
+
+.gomie-product-card.apple-style .star-rating {
+  display: flex !important;
+  align-items: center !important;
+  gap: 1px !important;
+}
+
+.gomie-product-card.apple-style .star-rating i {
+  font-size: 8.5px !important;
+  color: #f59e0b !important;
+}
+
+.gomie-product-card.apple-style .star-rating i.empty {
+  color: #cbd5e1 !important;
 }
 
 .gomie-product-card.apple-style .product-price-section {
   margin-top: auto !important;
-  margin-bottom: 10px !important;
-  min-height: 38px !important;
+  margin-bottom: 4px !important;
+  min-height: 24px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -523,18 +578,20 @@ body.mobile-menu-active .mobile-menu-overlay {
 }
 
 .gomie-product-card.apple-style .product-price {
-  font-size: 16.5px !important;
-  font-weight: 800 !important;
+  font-size: 14.5px !important;
+  font-weight: 700 !important;
   white-space: nowrap !important;
   display: inline-flex !important;
   align-items: baseline !important;
   justify-content: center !important;
   gap: 3px !important;
   max-width: 100% !important;
+  color: #e0592a !important;
+  line-height: 1.2 !important;
 }
 
 .gomie-product-card.apple-style .product-price > .woocommerce-Price-amount:only-child {
-  font-size: 18.5px !important;
+  font-size: 16px !important;
 }
 
 .gomie-product-card.apple-style .product-price .woocommerce-Price-currencySymbol {
@@ -610,18 +667,19 @@ body.mobile-menu-active .mobile-menu-overlay {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 8px !important;
+  gap: 6px !important;
   width: 100% !important;
-  padding: 10px 18px !important;
+  padding: 7px 14px !important;
+  min-height: 34px !important;
   background: linear-gradient(135deg, #f47a20 0%, #e0592a 100%) !important;
   color: #ffffff !important;
   border-radius: 999px !important;
   font-weight: 700 !important;
-  font-size: 13.5px !important;
+  font-size: 12.5px !important;
   text-decoration: none !important;
   border: none !important;
   cursor: pointer !important;
-  box-shadow: 0 4px 14px rgba(224, 89, 42, 0.22) !important;
+  box-shadow: 0 3px 10px rgba(224, 89, 42, 0.2) !important;
   transition: all 0.25s ease !important;
   letter-spacing: 0.01em !important;
   line-height: 1.2 !important;
@@ -631,12 +689,12 @@ body.mobile-menu-active .mobile-menu-overlay {
 .gomie-product-card.apple-style .btn-card-detail:hover {
   background: linear-gradient(135deg, #e0592a 0%, #c4471b 100%) !important;
   transform: translateY(-2px) !important;
-  box-shadow: 0 6px 20px rgba(224, 89, 42, 0.35) !important;
+  box-shadow: 0 5px 16px rgba(224, 89, 42, 0.32) !important;
   color: #ffffff !important;
 }
 
 .btn-card-detail:active,
 .gomie-product-card.apple-style .btn-card-detail:active {
   transform: translateY(0) !important;
-  box-shadow: 0 2px 8px rgba(224, 89, 42, 0.2) !important;
+  box-shadow: 0 2px 6px rgba(224, 89, 42, 0.18) !important;
 }
