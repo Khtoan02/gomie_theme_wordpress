@@ -250,14 +250,7 @@ get_header();
                 </div>
               </div>
 
-              <!-- Comments Section (nếu có) -->
-              <?php if (comments_open() || get_comments_number()) : ?>
-                <section class="article-comments-section">
-                  <div class="comments-card-box">
-                    <?php comments_template(); ?>
-                  </div>
-                </section>
-              <?php endif; ?>
+
 
             </div><!-- /.article-main-content -->
 

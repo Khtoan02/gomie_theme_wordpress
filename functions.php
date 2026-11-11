@@ -920,3 +920,37 @@ function gomie_standardize_price_range($price, $from, $to) {
     $to_price = is_numeric($to) ? wc_price($to) : $to;
     return '<span class="price-range-wrapper"><span class="price-from">' . $from_price . '</span><span class="price-range-sep">&nbsp;&ndash;&nbsp;</span><span class="price-to">' . $to_price . '</span></span>';
 }
+
+/**
+ * Vô hiệu hoá hoàn toàn tính năng bình luận (Bảo mật, chống spam & hack)
+ */
+// 1. Đóng comment và pingback trên toàn bộ bài viết, trang và post types
+add_filter('comments_open', '__return_false', 20, 2);
+add_filter('pings_open', '__return_false', 20, 2);
+add_filter('comments_array', '__return_empty_array', 10, 2);
+
+// 2. Chặn direct POST request tới wp-comments-post.php để ngăn bot spam/hack
+add_action('init', function() {
+    if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], 'wp-comments-post.php') !== false) {
+        wp_die(__('Chức năng bình luận đã bị vô hiệu hóa vì lý do bảo mật.', 'gomie-theme'), 403);
+    }
+});
+
+// 3. Ẩn menu Comments trong WP Admin
+add_action('admin_menu', function() {
+    remove_menu_page('edit-comments.php');
+});
+
+// 4. Xóa Comments icon trên Admin Bar
+add_action('wp_before_admin_bar_render', function() {
+    global $wp_admin_bar;
+    if ($wp_admin_bar) {
+        $wp_admin_bar->remove_menu('comments');
+    }
+});
+
+// 5. Gỡ bỏ comment-reply script và comment feed
+add_action('wp_enqueue_scripts', function() {
+    wp_deregister_script('comment-reply');
+}, 99);
+add_filter('feed_links_show_comments_feed', '__return_false');
