@@ -32,11 +32,23 @@ class Gomie_Glaze_Attribute_Meta {
             add_filter("manage_{$taxonomy}_custom_column", array(__CLASS__, 'render_column_content'), 10, 3);
         }
 
+        // Tự động đồng bộ thuộc tính màu men khi lưu sản phẩm
+        add_action('save_post_product', array(__CLASS__, 'on_product_save'), 20, 2);
+
         // Enqueue media uploader & color picker trong trang quản lý thuộc tính
         add_action('admin_enqueue_scripts', array(__CLASS__, 'admin_scripts'));
 
         // Khởi tạo giá trị mặc định nếu term chưa có meta
         add_action('admin_init', array(__CLASS__, 'init_default_term_meta'));
+    }
+
+    /**
+     * Hook tự động đồng bộ thuộc tính khi lưu sản phẩm
+     */
+    public static function on_product_save($post_id, $post = null) {
+        if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+        if ($post && $post->post_status !== 'publish') return;
+        self::sync_single_product_glaze($post_id);
     }
 
     /**
@@ -64,6 +76,12 @@ class Gomie_Glaze_Attribute_Meta {
      */
     public static function add_form_fields($taxonomy) {
         ?>
+        <div class="form-field term-glaze-storyline-wrap">
+            <label for="glaze_storyline"><?php esc_html_e('Câu chuyện / Thông điệp nổi bật', 'gomie'); ?></label>
+            <input type="text" name="glaze_storyline" id="glaze_storyline" value="" placeholder="Ví dụ: Một khoảng xanh sâu thẳm và kiêu hãnh" />
+            <p><?php esc_html_e('Dòng tagline 1 câu xuất hiện nổi bật dưới tên sắc men trên trang Màu Men và Trang chủ.', 'gomie'); ?></p>
+        </div>
+
         <div class="form-field term-glaze-color-wrap">
             <label for="glaze_color"><?php esc_html_e('Mã màu đại diện (HEX)', 'gomie'); ?></label>
             <input type="text" name="glaze_color" id="glaze_color" class="gomie-color-picker" value="#e0592a" data-default-color="#e0592a" />
@@ -96,12 +114,26 @@ class Gomie_Glaze_Attribute_Meta {
             $color = self::get_fallback_color($term->slug);
         }
 
+        $storyline = get_term_meta($term->term_id, 'glaze_storyline', true);
+        if (empty($storyline)) {
+            $curated = self::get_curated_text_info($term->slug);
+            $storyline = $curated['storyline'];
+        }
+
         $image_id = get_term_meta($term->term_id, 'glaze_image_id', true);
         $image_url = $image_id ? wp_get_attachment_image_url($image_id, 'thumbnail') : '';
         if (empty($image_url)) {
             $image_url = get_term_meta($term->term_id, 'glaze_image_url', true);
         }
         ?>
+        <tr class="form-field term-glaze-storyline-wrap">
+            <th scope="row"><label for="glaze_storyline"><?php esc_html_e('Câu chuyện / Thông điệp nổi bật', 'gomie'); ?></label></th>
+            <td>
+                <input type="text" name="glaze_storyline" id="glaze_storyline" value="<?php echo esc_attr($storyline); ?>" class="regular-text" style="width: 100%; max-width: 500px;" />
+                <p class="description"><?php esc_html_e('Dòng tagline ngắn 1 câu xuất hiện nổi bật dưới tên sắc men trên trang Màu Men và Trang chủ.', 'gomie'); ?></p>
+            </td>
+        </tr>
+
         <tr class="form-field term-glaze-color-wrap">
             <th scope="row"><label for="glaze_color"><?php esc_html_e('Mã màu đại diện (HEX)', 'gomie'); ?></label></th>
             <td>
@@ -133,6 +165,11 @@ class Gomie_Glaze_Attribute_Meta {
      * Lưu term meta
      */
     public static function save_term_fields($term_id, $tt_id) {
+        if (isset($_POST['glaze_storyline'])) {
+            $storyline = sanitize_text_field($_POST['glaze_storyline']);
+            update_term_meta($term_id, 'glaze_storyline', $storyline);
+        }
+
         if (isset($_POST['glaze_color'])) {
             $color = sanitize_hex_color($_POST['glaze_color']);
             if ($color) {
@@ -518,28 +555,80 @@ class Gomie_Glaze_Attribute_Meta {
     }
 
     /**
-     * Khởi tạo giá trị mặc định cho các term nếu chưa có meta
+     * Khởi tạo giá trị mặc định cho các term nếu chưa có meta và đồng bộ sản phẩm
      */
     public static function init_default_term_meta() {
-        if (get_option('gomie_glaze_meta_initialized_v1')) {
-            return;
-        }
+        if (!get_option('gomie_glaze_meta_initialized_v3')) {
+            foreach (self::$taxonomies as $tax) {
+                if (!taxonomy_exists($tax)) continue;
+                $terms = get_terms(array('taxonomy' => $tax, 'hide_empty' => false));
+                if (!is_wp_error($terms) && !empty($terms)) {
+                    foreach ($terms as $t) {
+                        $slug = $t->slug;
+                        $curated = self::get_curated_text_info($slug);
 
-        foreach (self::$taxonomies as $tax) {
-            if (!taxonomy_exists($tax)) continue;
-            $terms = get_terms(array('taxonomy' => $tax, 'hide_empty' => false));
-            if (!is_wp_error($terms) && !empty($terms)) {
-                foreach ($terms as $t) {
-                    $color = get_term_meta($t->term_id, 'glaze_color', true);
-                    if (empty($color)) {
-                        $fallback = self::get_fallback_color($t->slug);
-                        update_term_meta($t->term_id, 'glaze_color', $fallback);
+                        // Mã màu
+                        $color = get_term_meta($t->term_id, 'glaze_color', true);
+                        if (empty($color)) {
+                            $fallback = self::get_fallback_color($slug);
+                            update_term_meta($t->term_id, 'glaze_color', $fallback);
+                        }
+
+                        // Câu chuyện / Storyline
+                        $storyline = get_term_meta($t->term_id, 'glaze_storyline', true);
+                        if (empty($storyline) && !empty($curated['storyline'])) {
+                            update_term_meta($t->term_id, 'glaze_storyline', $curated['storyline']);
+                        }
+
+                        // Mô tả chuẩn (Description)
+                        if (empty($t->description) && !empty($curated['desc'])) {
+                            wp_update_term($t->term_id, $tax, array('description' => $curated['desc']));
+                        }
                     }
                 }
             }
-        }
 
-        update_option('gomie_glaze_meta_initialized_v1', 1);
+            // Đồng bộ taxonomy pa_mau-sac cho toàn bộ sản phẩm
+            self::sync_all_products_glaze();
+
+            update_option('gomie_glaze_meta_initialized_v3', 1);
+        }
+    }
+
+    /**
+     * Đồng bộ thuộc tính màu men cho 1 sản phẩm
+     */
+    public static function sync_single_product_glaze($product_id) {
+        if (!function_exists('gomie_get_product_glaze_info')) return;
+        $wc = wc_get_product($product_id);
+        if (!$wc) return;
+        $g = gomie_get_product_glaze_info($wc);
+        if (!empty($g['slug']) && $g['slug'] !== 'men-doc-ban' && taxonomy_exists('pa_mau-sac')) {
+            $term = get_term_by('slug', $g['slug'], 'pa_mau-sac');
+            if (!$term) {
+                $clean = sanitize_title(str_replace('men-', '', $g['slug']));
+                $term = get_term_by('slug', $clean, 'pa_mau-sac');
+            }
+            if ($term) {
+                wp_set_object_terms($product_id, (int)$term->term_id, 'pa_mau-sac', true);
+            }
+        }
+    }
+
+    /**
+     * Đồng bộ tất cả sản phẩm vào term thuộc tính pa_mau-sac
+     */
+    public static function sync_all_products_glaze() {
+        if (!taxonomy_exists('pa_mau-sac')) return;
+        $products = get_posts(array(
+            'post_type'      => 'product',
+            'posts_per_page' => -1,
+            'post_status'    => 'publish',
+            'fields'         => 'ids',
+        ));
+        foreach ($products as $pid) {
+            self::sync_single_product_glaze($pid);
+        }
     }
 }
 

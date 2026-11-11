@@ -148,10 +148,16 @@
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
 
-    const canonicalTag = doc.querySelector('link[rel="canonical"]');
-    if (canonicalTag && canonicalTag.href) {
-      canonicalUrl = canonicalTag.href;
-    }
+    // Giữ nguyên query parameters nếu target URL có params (như ?glaze=men-canh-gian hoặc ?cat=...)
+    try {
+      const parsedUrl = new URL(canonicalUrl, window.location.href);
+      if (!parsedUrl.search) {
+        const canonicalTag = doc.querySelector('link[rel="canonical"]');
+        if (canonicalTag && canonicalTag.href) {
+          canonicalUrl = canonicalTag.href;
+        }
+      }
+    } catch(e) {}
 
     const currentMain = document.getElementById('main-content') || document.getElementById('content');
     const newMain = doc.getElementById('main-content') || doc.getElementById('content');

@@ -10,10 +10,10 @@ if (!defined('ABSPATH')) {
 
 $glaze_shop_base = function_exists('wc_get_page_permalink') && wc_get_page_permalink('shop')
     ? wc_get_page_permalink('shop')
-    : home_url('/san-pham-2/');
+    : home_url('/san-pham/');
 
 $gomie_get_glaze_url = function ($slug) use ($glaze_shop_base) {
-    return esc_url(add_query_arg(array('swoof' => '1', 'pa_mau-sac' => $slug), $glaze_shop_base));
+    return esc_url(add_query_arg('glaze', $slug, $glaze_shop_base));
 };
 
 // Danh sách sắc men: Ưu tiên lấy ĐỘNG từ hệ sinh thái thuộc tính WooCommerce (pa_mau-sac)
@@ -296,13 +296,25 @@ if (!defined('GOMIE_GLAZE_GRID_COMPONENT_STYLE_LOADED')) :
           <img alt="Bát gốm sứ <?php echo esc_attr($glaze_name); ?> Gomie Ceramic" decoding="async" loading="lazy" src="<?php echo esc_url($glaze_img_url); ?>" />
         </div>
         <div class="details">
-          <h3 class="name"><?php echo esc_html($glaze_name); ?></h3>
+          <div class="glaze-head-meta d-flex align-items-center justify-content-between w-100 mb-2">
+            <h3 class="name mb-0"><?php echo esc_html($glaze_name); ?></h3>
+            <?php if (!empty($glaze['color'])) : ?>
+              <span class="glaze-color-badge d-inline-flex align-items-center gap-1 px-2 py-1 rounded-pill" title="Mã màu đại diện: <?php echo esc_attr($glaze['color']); ?>" style="background: rgba(0,0,0,0.04); font-size: 11px; font-weight: 600; color: #4b5563;">
+                <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background-color: <?php echo esc_attr($glaze['color']); ?>; border: 1px solid rgba(0,0,0,0.15);"></span>
+                <span class="hex-text" style="font-family: monospace; font-size: 10px;"><?php echo esc_html($glaze['color']); ?></span>
+              </span>
+            <?php endif; ?>
+          </div>
           <?php if (!empty($glaze['storyline'])) : ?>
             <p class="storyline"><?php echo esc_html($glaze['storyline']); ?></p>
           <?php endif; ?>
           <?php if (!empty($glaze['desc'])) : ?>
             <p class="description"><?php echo esc_html($glaze['desc']); ?></p>
           <?php endif; ?>
+          <div class="card-footer-meta mt-3 pt-2 border-top d-flex align-items-center justify-content-between w-100" style="border-color: rgba(0,0,0,0.06) !important; font-size: 12.5px;">
+            <span class="text-muted"><i class="fa-solid fa-palette text-danger me-1"></i><?php echo (!empty($glaze['count']) && $glaze['count'] > 0) ? ($glaze['count'] . ' tác phẩm') : 'Bộ sưu tập'; ?></span>
+            <span class="btn-explore-glaze text-danger fw-bold">Xem sản phẩm <i class="fa-solid fa-arrow-right ms-1"></i></span>
+          </div>
         </div>
       </a>
     </article>
