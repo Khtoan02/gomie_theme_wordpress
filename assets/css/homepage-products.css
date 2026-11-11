@@ -163,21 +163,23 @@
 }
 
 .gomie-display {
-  font-size: clamp(2.2rem, 5.5vw, 4.2rem);
-  font-weight: 800;
-  line-height: 1.15;
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 3.8vw, 2.75rem);
+  font-weight: 750;
+  line-height: 1.3;
   color: var(--gomie-dark);
-  margin-bottom: 1.8rem;
-  letter-spacing: -0.02em;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.018em;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
   animation: fadeInUp 0.8s ease 0.4s both;
 }
 
 .gomie-lead {
-  font-size: 1.2rem;
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 1.2vw, 1.1rem);
   line-height: 1.75;
   color: var(--gomie-gray);
-  margin-bottom: 2.5rem;
+  margin-bottom: 2.2rem;
   max-width: 650px;
   font-weight: 400;
   animation: fadeInUp 0.8s ease 0.6s both;
@@ -339,8 +341,11 @@
 }
 
 .section-heading .title {
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 800;
+  font-family: var(--font-heading);
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 750;
+  line-height: 1.34;
+  letter-spacing: -0.015em;
   color: var(--gomie-dark);
   margin-bottom: 1rem;
   position: relative;
@@ -1639,7 +1644,7 @@
   }
 
   .gomie-display {
-    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-size: clamp(1.85rem, 3.5vw, 2.35rem);
   }
 
   .gomie-lead {
@@ -1671,9 +1676,9 @@
   }
 
   .gomie-display {
-    font-size: clamp(1.8rem, 6vw, 2.8rem);
+    font-size: clamp(1.65rem, 4.5vw, 2rem);
     margin-bottom: 1.2rem;
-    line-height: 1.2;
+    line-height: 1.32;
   }
 
   .gomie-lead {
@@ -1759,7 +1764,7 @@
   }
 
   .section-heading .title {
-    font-size: clamp(1.75rem, 5vw, 2.5rem);
+    font-size: clamp(1.35rem, 3vw, 1.75rem);
   }
 
   .gomie-spirit {
@@ -1848,9 +1853,9 @@
   }
 
   .gomie-display {
-    font-size: clamp(1.6rem, 7vw, 2.4rem);
+    font-size: clamp(1.5rem, 5.5vw, 1.85rem);
     margin-bottom: 1rem;
-    line-height: 1.25;
+    line-height: 1.32;
   }
 
   .gomie-lead {

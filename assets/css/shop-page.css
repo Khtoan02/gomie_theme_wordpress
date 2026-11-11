@@ -62,12 +62,12 @@
 }
 
 .shop-hero-title {
-    font-size: clamp(1.5rem, 4.2vw, 3rem);
-    font-weight: 800;
-    color: #1a1f2c;
-    letter-spacing: -0.5px;
-    line-height: 1.25;
-    margin-bottom: 1rem;
+    font-size: clamp(1.6rem, 2.8vw, 2.25rem);
+    font-weight: 750;
+    color: #0f172a;
+    letter-spacing: -0.015em;
+    line-height: 1.34;
+    margin-bottom: 0.85rem;
     word-break: keep-all;
     overflow-wrap: break-word;
 }
@@ -78,9 +78,9 @@
 
 .shop-hero-desc {
     max-width: 780px;
-    font-size: 1.05rem;
-    line-height: 1.8;
-    color: #5c554e;
+    font-size: 15.5px;
+    line-height: 1.75;
+    color: #475569;
 }
 
 /* Trust Bar */

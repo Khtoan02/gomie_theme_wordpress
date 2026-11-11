@@ -324,10 +324,11 @@ if (!function_exists('gomie_get_product_category')) {
   }
 
   .gomie-v11 .intro h2 {
-    font-size: clamp(32px, 3.8vw, 50px) !important;
-    font-weight: 740 !important;
-    line-height: 1.18 !important;
-    letter-spacing: -.045em !important;
+    font-family: var(--font-heading);
+    font-size: clamp(23px, 2.8vw, 34px) !important;
+    font-weight: 750 !important;
+    line-height: 1.34 !important;
+    letter-spacing: -.015em !important;
     color: var(--ink) !important;
     margin: 0 !important;
   }
@@ -382,10 +383,11 @@ if (!function_exists('gomie_get_product_category')) {
   }
 
   .gomie-v11 .catalog-head h2 {
-    font-size: clamp(32px, 3.8vw, 50px) !important;
-    font-weight: 740 !important;
-    line-height: 1.2 !important;
-    letter-spacing: -.045em !important;
+    font-family: var(--font-heading);
+    font-size: clamp(23px, 2.8vw, 34px) !important;
+    font-weight: 750 !important;
+    line-height: 1.34 !important;
+    letter-spacing: -.015em !important;
     color: var(--ink) !important;
     margin: 0 !important;
   }
@@ -446,10 +448,11 @@ if (!function_exists('gomie_get_product_category')) {
   }
 
   .gomie-v11 .knowledge h2 {
-    font-size: clamp(32px, 3.8vw, 50px) !important;
-    font-weight: 740 !important;
-    line-height: 1.18 !important;
-    letter-spacing: -.045em !important;
+    font-family: var(--font-heading);
+    font-size: clamp(23px, 2.8vw, 34px) !important;
+    font-weight: 750 !important;
+    line-height: 1.34 !important;
+    letter-spacing: -.015em !important;
     margin: 0 !important;
     color: #252c32 !important;
   }
@@ -691,10 +694,11 @@ if (!function_exists('gomie_get_product_category')) {
   }
 
   .gomie-v11 .faq h2 {
-    font-size: clamp(31px, 4vw, 46px) !important;
-    font-weight: 740 !important;
-    line-height: 1.2 !important;
-    letter-spacing: -.03em !important;
+    font-family: var(--font-heading);
+    font-size: clamp(23px, 2.8vw, 34px) !important;
+    font-weight: 750 !important;
+    line-height: 1.34 !important;
+    letter-spacing: -.015em !important;
     color: #252c32 !important;
     margin: 0 !important;
   }
@@ -760,10 +764,11 @@ if (!function_exists('gomie_get_product_category')) {
   }
 
   .gomie-v11 .final-cta h2 {
-    font-size: clamp(26px, 3.4vw, 43px) !important;
-    font-weight: 740 !important;
-    line-height: 1.25 !important;
-    letter-spacing: -.03em !important;
+    font-family: var(--font-heading);
+    font-size: clamp(21px, 2.5vw, 30px) !important;
+    font-weight: 750 !important;
+    line-height: 1.34 !important;
+    letter-spacing: -.015em !important;
     color: #27343b !important;
     margin: 0 0 24px !important;
   }
@@ -898,11 +903,12 @@ if (!function_exists('gomie_get_product_category')) {
   }
   
   .gomie-display { 
-    color: #1e293b !important; 
-    font-weight: 850 !important; 
-    line-height: 1.22 !important; 
-    font-size: clamp(1.65rem, 3.6vw, 3.25rem) !important;
-    letter-spacing: -0.028em !important;
+    font-family: var(--font-heading) !important;
+    color: #0f172a !important; 
+    font-weight: 750 !important; 
+    line-height: 1.3 !important; 
+    font-size: clamp(1.85rem, 3.2vw, 2.65rem) !important;
+    letter-spacing: -0.018em !important;
     margin-bottom: 1.25rem !important;
     text-align: center;
     word-break: keep-all;

@@ -150,12 +150,13 @@ $collection_schema = array(
 }
 .gomie-v11 .eyebrow:before { content: ""; width: 38px; height: 3px; background: var(--orange); }
 .gomie-v11 .hero h1 {
+  font-family: var(--font-heading);
   color: white !important;
   font-weight: 750;
-  font-size: clamp(46px, 7vw, 91px);
-  line-height: 1.06;
-  letter-spacing: -.055em;
-  margin: 0 0 23px !important;
+  font-size: clamp(30px, 4.2vw, 48px);
+  line-height: 1.25;
+  letter-spacing: -.02em;
+  margin: 0 0 20px !important;
 }
 .gomie-v11 .hero-sub {
   font-size: clamp(15px, 1.65vw, 18px);
@@ -201,10 +202,11 @@ $collection_schema = array(
   margin: 0 0 16px;
 }
 .gomie-v11 .intro h2 {
-  font-size: clamp(33px, 4vw, 57px);
-  font-weight: 740;
-  line-height: 1.17;
-  letter-spacing: -.045em;
+  font-family: var(--font-heading);
+  font-size: clamp(23px, 2.8vw, 34px);
+  font-weight: 750;
+  line-height: 1.34;
+  letter-spacing: -.015em;
   color: var(--ink) !important;
   margin: 0 !important;
 }
@@ -234,9 +236,10 @@ $collection_schema = array(
   gap: 30px;
 }
 .gomie-v11 .catalog-head h2 {
-  font-size: clamp(32px, 4vw, 52px);
-  line-height: 1.2;
-  letter-spacing: -.045em;
+  font-family: var(--font-heading);
+  font-size: clamp(23px, 2.8vw, 34px);
+  line-height: 1.34;
+  letter-spacing: -.015em;
   color: var(--ink) !important;
   margin: 0 !important;
 }
@@ -273,11 +276,12 @@ $collection_schema = array(
   padding-bottom: clamp(40px, 6vw, 80px);
 }
 .gomie-v11 .knowledge h2 {
-  font-size: clamp(33px, 4.25vw, 54px);
-  line-height: 1.18;
-  letter-spacing: -.04em;
+  font-family: var(--font-heading);
+  font-size: clamp(23px, 2.8vw, 34px);
+  line-height: 1.34;
+  letter-spacing: -.015em;
   margin: 0 !important;
-  color: #252c32 !important;
+  color: #0f172a !important;
 }
 .gomie-v11 .knowledge h2 em { font-style: normal; color: var(--orange); }
 .gomie-v11 .knowledge p { font-size: 15px; line-height: 1.95; color: #56636c; margin: 0 0 17px; }
@@ -309,11 +313,12 @@ $collection_schema = array(
 }
 .gomie-v11 .editorial-tile:nth-child(2) .tile-tag { color: var(--blue-deep); }
 .gomie-v11 .editorial-tile h3 {
-  font-size: clamp(21px, 2.25vw, 29px);
-  line-height: 1.3;
-  letter-spacing: -.025em;
-  color: #26323a !important;
-  margin: 0 0 20px !important;
+  font-family: var(--font-heading);
+  font-size: clamp(17.5px, 1.8vw, 21.5px);
+  line-height: 1.38;
+  letter-spacing: -.01em;
+  color: #0f172a !important;
+  margin: 0 0 16px !important;
 }
 .gomie-v11 .editorial-tile p:last-child { margin-bottom: 0; }
 .gomie-v11 .editorial-tile a { color: var(--blue-deep) !important; text-decoration: underline !important; text-underline-offset: 3px; }
@@ -329,10 +334,11 @@ $collection_schema = array(
   gap: clamp(32px, 7vw, 105px);
 }
 .gomie-v11 .faq h2 {
-  font-size: clamp(31px, 4vw, 46px);
-  line-height: 1.2;
-  letter-spacing: -.03em;
-  color: #252c32 !important;
+  font-family: var(--font-heading);
+  font-size: clamp(23px, 2.8vw, 34px);
+  line-height: 1.34;
+  letter-spacing: -.015em;
+  color: #0f172a !important;
   margin: 0 !important;
 }
 .gomie-v11 .faq-intro {
@@ -378,11 +384,12 @@ $collection_schema = array(
   text-align: center;
 }
 .gomie-v11 .final-cta h2 {
-  font-size: clamp(26px, 3.4vw, 43px);
-  line-height: 1.25;
-  letter-spacing: -.03em;
-  color: #27343b !important;
-  margin: 0 0 22px !important;
+  font-family: var(--font-heading);
+  font-size: clamp(21px, 2.5vw, 30px);
+  line-height: 1.34;
+  letter-spacing: -.015em;
+  color: #0f172a !important;
+  margin: 0 0 20px !important;
 }
 .gomie-v11 .final-cta a {
   display: inline-flex;

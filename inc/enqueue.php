@@ -25,8 +25,13 @@ function gomie_enqueue_scripts() {
     // Theme stylesheet
     wp_enqueue_style('gomie-style', get_stylesheet_uri(), array('bootstrap'), GOMIE_THEME_VERSION);
 
-    // Google Fonts
-    wp_enqueue_style('gomie-google-fonts', 'https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap', array(), null);
+    // Google Fonts (Plus Jakarta Sans, Montserrat & Inter)
+    wp_enqueue_style(
+        'gomie-google-fonts', 
+        'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap', 
+        array(), 
+        null
+    );
 
     // Font Awesome
     wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css', array(), '6.4.0');
@@ -449,8 +454,8 @@ add_filter('script_loader_tag', 'gomie_script_loader_tag', 10, 3);
  */
 function gomie_preload_resources() {
     // Preload fonts
-    echo '<link rel="preload" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@300;400;600;700&display=swap" as="style">';
-    echo '<link rel="preconnect" href="https://fonts.googleapis.com">';
-    echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>';
+    echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
+    echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
+    echo '<link rel="preload" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700&display=swap" as="style">' . "\n";
 }
 add_action('wp_head', 'gomie_preload_resources', 1);
