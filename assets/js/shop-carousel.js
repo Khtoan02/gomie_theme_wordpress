@@ -125,12 +125,12 @@
       }
     });
 
-    // Enhanced add to cart for carousel products
-    $(document).on("click", ".btn-add-to-cart-apple", function (e) {
+    // Enhanced add to cart for carousel products - chỉ áp dụng cho nút button mua hàng trực tiếp có data-product-id
+    $(document).on("click", "button.btn-add-to-cart-apple[data-product-id]", function (e) {
+      var $button = $(this);
+
       e.preventDefault();
       e.stopPropagation();
-
-      var $button = $(this);
 
       // Handle view cart state
       if ($button.hasClass("wc-forward")) {

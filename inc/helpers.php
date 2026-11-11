@@ -462,9 +462,9 @@ if (!function_exists('gomie_render_product_card')) {
                         <?php endif; ?>
                     </div>
                     
-                    <!-- Add to Cart Button -->
+                    <!-- Detail Product Link Button -->
                     <div class="product-actions">
-                        <a href="<?php echo esc_url($permalink); ?>" class="btn-add-to-cart-apple">
+                        <a href="<?php echo esc_url($permalink); ?>" class="btn-card-detail" title="<?php echo esc_attr($title); ?>">
                             <span class="button-text">Chi tiết</span>
                             <i class="fa-solid fa-arrow-right"></i>
                         </a>
@@ -1655,9 +1655,9 @@ if (!function_exists('gomie_render_product_card')) {
                         <?php endif; ?>
                     </div>
                     
-                    <!-- Add to Cart Button -->
+                    <!-- Detail Product Link Button -->
                     <div class="product-actions">
-                        <a href="<?php echo esc_url($permalink); ?>" class="btn-add-to-cart-apple">
+                        <a href="<?php echo esc_url($permalink); ?>" class="btn-card-detail" title="<?php echo esc_attr($title); ?>">
                             <span class="button-text">Chi tiết</span>
                             <i class="fa-solid fa-arrow-right"></i>
                         </a>
@@ -1827,9 +1827,9 @@ if (!function_exists('gomie_render_product_card')) {
                         <?php endif; ?>
                     </div>
                     
-                    <!-- Add to Cart Button -->
+                    <!-- Detail Product Link Button -->
                     <div class="product-actions">
-                        <a href="<?php echo esc_url($permalink); ?>" class="btn-add-to-cart-apple">
+                        <a href="<?php echo esc_url($permalink); ?>" class="btn-card-detail" title="<?php echo esc_attr($title); ?>">
                             <span class="button-text">Chi tiết</span>
                             <i class="fa-solid fa-arrow-right"></i>
                         </a>

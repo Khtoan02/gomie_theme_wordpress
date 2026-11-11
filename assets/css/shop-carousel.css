@@ -7,9 +7,10 @@
 
 /* Category Products Carousel */
 .category-products-carousel {
-  margin-top: 1.5rem;
+  margin-top: calc(1.5rem - 8px);
+  padding-top: 8px;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 
@@ -18,7 +19,8 @@
   display: grid !important;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1rem;
-  padding: 0 !important;
+  padding: 8px 0 0 0 !important;
+  overflow: visible !important;
 }
 
 .swiper-fallback .swiper-wrapper {
@@ -31,7 +33,11 @@
 
 .category-products-carousel .swiper {
   overflow: visible;
-  padding: 0 50px; /* Space for navigation buttons */
+  padding: 8px 50px; /* Space for navigation buttons & hover lift */
+}
+
+.category-products-carousel .swiper-wrapper {
+  padding-top: 6px;
 }
 
 .category-products-carousel .swiper-slide {

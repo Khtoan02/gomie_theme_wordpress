@@ -118,10 +118,10 @@ if (!function_exists('gomie_render_product_card_shop')) {
                     </div>
                     
                     <div class="product-actions">
-                        <button class="btn-add-to-cart-apple" type="button" data-product-id="<?php echo esc_attr($product_id); ?>" data-product-url="<?php echo esc_url($permalink); ?>">
-                            <span class="button-text">Thêm vào giỏ</span>
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
+                        <a href="<?php echo esc_url($permalink); ?>" class="btn-card-detail" title="<?php echo esc_attr($title); ?>">
+                            <span class="button-text">Chi tiết</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
             </div>

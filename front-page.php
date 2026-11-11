@@ -174,12 +174,12 @@ if (!function_exists('gomie_render_product_card')) {
                         <?php endif; ?>
                     </div>
                     
-                    <!-- Add to Cart Button -->
+                    <!-- Detail Product Link Button -->
                     <div class="product-actions">
-                        <button class="btn-add-to-cart-apple" type="button" data-product-id="<?php echo esc_attr($product_id); ?>" data-product-url="<?php echo esc_url($permalink); ?>">
-                            <span class="button-text">Thêm vào giỏ</span>
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
+                        <a href="<?php echo esc_url($permalink); ?>" class="btn-card-detail" title="<?php echo esc_attr($title); ?>">
+                            <span class="button-text">Chi tiết</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -620,21 +620,46 @@ if (!function_exists('gomie_get_product_category')) {
   }
 
   /* V11 Product Card Harmonization */
+  .gomie-v11 .gomie-product-grid {
+    padding-top: 8px !important;
+    margin-top: -8px !important;
+    overflow: visible !important;
+  }
+
+  .gomie-v11 .gomie-product-item {
+    padding-top: 6px !important;
+    overflow: visible !important;
+  }
+
   .gomie-v11 .gomie-product-card.apple-style {
-    background: rgba(255, 255, 255, .86) !important;
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, .94) !important;
-    border-radius: 22px !important;
-    box-shadow: 0 12px 32px rgba(45, 30, 15, .06), inset 0 1px 1px rgba(255, 255, 255, .9) !important;
-    transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s cubic-bezier(.2,.8,.2,1), border-color .35s ease !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, .06) !important;
+    border-radius: 20px !important;
+    overflow: hidden !important;
+    isolation: isolate !important;
+    -webkit-mask-image: -webkit-radial-gradient(white, black) !important;
+    mask-image: radial-gradient(white, black) !important;
+    -webkit-backface-visibility: hidden !important;
+    backface-visibility: hidden !important;
+    transform: translateZ(0) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, .06) !important;
+    transition: transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s cubic-bezier(.2,.8,.2,1), border-color .3s ease !important;
+    will-change: transform, box-shadow !important;
   }
 
   .gomie-v11 .gomie-product-card.apple-style:hover {
     transform: translateY(-4px) !important;
-    background: rgba(255, 255, 255, .96) !important;
-    box-shadow: 0 22px 46px rgba(45, 30, 15, .12) !important;
-    border-color: rgba(244, 122, 32, .45) !important;
+    background: #ffffff !important;
+    box-shadow: 0 16px 36px rgba(224, 89, 42, .14) !important;
+    border-color: rgba(224, 89, 42, .35) !important;
+  }
+
+  .gomie-v11 .gomie-product-card.apple-style::before,
+  .gomie-v11 .gomie-product-card.apple-style:hover::before {
+    display: none !important;
+    opacity: 0 !important;
+    content: none !important;
+    pointer-events: none !important;
   }
 
   /* V11 Partners Grid */

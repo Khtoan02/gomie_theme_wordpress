@@ -582,7 +582,7 @@ $theme_uri = get_template_directory_uri();
 
                                 <!-- Action Button -->
                                 <div class="product-actions">
-                                    <a href="<?php echo esc_url($permalink); ?>" class="btn-add-to-cart-apple">
+                                    <a href="<?php echo esc_url($permalink); ?>" class="btn-card-detail">
                                         <span class="button-text">Chi tiết</span>
                                         <i class="fa-solid fa-arrow-right ms-1"></i>
                                     </a>

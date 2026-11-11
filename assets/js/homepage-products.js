@@ -177,12 +177,12 @@
   }
 
   function initAddToCartEnhancement() {
-    // Optimized add to cart handling with single event listener
-    $document.on("click", ".btn-add-to-cart-apple", function (e) {
+    // Add to cart handling - chỉ áp dụng cho nút button mua hàng trực tiếp có data-product-id
+    $document.on("click", "button.btn-add-to-cart-apple[data-product-id]", function (e) {
+      const $button = $(this);
+
       e.preventDefault();
       e.stopPropagation();
-
-      const $button = $(this);
 
       // Handle view cart state
       if ($button.hasClass("wc-forward")) {
