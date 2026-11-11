@@ -184,6 +184,10 @@ function gomie_handle_contact_form_ajax() {
     $email    = isset($_POST['email']) ? sanitize_email($_POST['email']) : '';
     $company  = isset($_POST['company']) ? sanitize_text_field($_POST['company']) : '';
     $type     = isset($_POST['interest_type']) ? sanitize_text_field($_POST['interest_type']) : '';
+    $product  = isset($_POST['product']) ? sanitize_text_field($_POST['product']) : '';
+    if (!empty($product)) {
+        $type = !empty($type) ? "{$type} - [Sản phẩm/Men: {$product}]" : "Sản phẩm/Men: {$product}";
+    }
     $quantity = isset($_POST['quantity_range']) ? sanitize_text_field($_POST['quantity_range']) : '';
     $message  = isset($_POST['message']) ? sanitize_textarea_field($_POST['message']) : '';
 

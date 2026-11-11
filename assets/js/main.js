@@ -506,8 +506,8 @@
 
   // Forms
   function initForms() {
-    // Contact form validation
-    $(".contact-form").on("submit", function (e) {
+    // Contact form validation (exclude dedicated AJAX quote & contact forms)
+    $(".contact-form").not("#contact-popup form, .quote-popup-form, .quote-form").on("submit", function (e) {
       e.preventDefault();
 
       var form = $(this);
