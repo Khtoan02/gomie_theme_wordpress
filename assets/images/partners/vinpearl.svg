@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" fill="none">
+  <!-- VINPEARL RESORTS Vector -->
+  <g fill="#2B3640">
+    <!-- Iconic Vinpearl Wing / V Emblem -->
+    <path d="M12 20c8 3 14 10 16 19 2-9 8-16 16-19-6 9-10 16-16 23-6-7-10-14-16-23z" fill="#C59B27"/>
+    <!-- Wordmark VINPEARL -->
+    <text x="52" y="31" font-family="'Cinzel', 'Optima', 'Georgia', serif" font-size="20" font-weight="700" letter-spacing="3.5" fill="#1E2830">VINPEARL</text>
+    <!-- Subtitle HOTELS & RESORTS -->
+    <text x="54" y="44" font-family="'Montserrat', 'Helvetica Neue', sans-serif" font-size="7.5" font-weight="600" letter-spacing="3.2" fill="#7B8893">HOTELS &amp; RESORTS</text>
+  </g>
+</svg>

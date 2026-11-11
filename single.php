@@ -74,7 +74,7 @@ get_header();
 
         <!-- 2. Hero Featured Photography -->
         <?php if (!empty($hero_img_url)) : ?>
-          <div class="article-hero-media wrap-wide">
+          <div class="article-hero-media wrap-narrow">
             <div class="hero-image-stage">
               <img src="<?php echo $hero_img_url; ?>" alt="<?php the_title_attribute(); ?>" />
               <div class="hero-image-watermark">Gomie Ceramic · Bát Tràng</div>
@@ -219,33 +219,31 @@ get_header();
     width: 100%;
     margin: 0;
     padding: 0;
-    background: #fffdf9;
+    background-color: #fffdf9 !important;
+    background-image: none !important;
   }
 
   .gomie-single-article .gomie-v11 {
     background-color: #fffdf9 !important;
-    background-image: url('<?php echo esc_url(get_template_directory_uri() . "/assets/images/glazes/Background-1.png"); ?>') !important;
-    background-position: top center !important;
-    background-size: 100% auto !important;
-    background-repeat: no-repeat !important;
+    background-image: none !important;
     min-height: 100vh;
     padding-bottom: 90px;
   }
 
   .wrap-narrow {
-    max-width: 860px !important;
+    max-width: 840px !important;
     width: 100% !important;
     margin-inline: auto !important;
-    padding-left: clamp(20px, 3vw, 36px) !important;
-    padding-right: clamp(20px, 3vw, 36px) !important;
+    padding-left: clamp(18px, 3vw, 32px) !important;
+    padding-right: clamp(18px, 3vw, 32px) !important;
   }
 
   .wrap-wide {
-    max-width: 1240px !important;
+    max-width: 1080px !important;
     width: 100% !important;
     margin-inline: auto !important;
-    padding-left: clamp(20px, 3vw, 36px) !important;
-    padding-right: clamp(20px, 3vw, 36px) !important;
+    padding-left: clamp(18px, 3vw, 32px) !important;
+    padding-right: clamp(18px, 3vw, 32px) !important;
   }
 
   /* 1. Article Header */
@@ -301,12 +299,12 @@ get_header();
   }
 
   .article-headline {
-    font-size: clamp(32px, 3.8vw, 50px) !important;
-    font-weight: 850 !important;
-    line-height: 1.22 !important;
-    letter-spacing: -.03em !important;
+    font-size: clamp(26px, 3.2vw, 40px) !important;
+    font-weight: 800 !important;
+    line-height: 1.3 !important;
+    letter-spacing: -.02em !important;
     color: #1e2830 !important;
-    margin: 0 0 28px !important;
+    margin: 0 0 24px !important;
     text-align: center;
   }
 
@@ -393,9 +391,9 @@ get_header();
 
   .hero-image-stage {
     position: relative;
-    border-radius: 28px;
+    border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 24px 60px rgba(45, 30, 15, .12);
+    box-shadow: 0 16px 42px rgba(45, 30, 15, .08);
     border: 1px solid rgba(255, 255, 255, .95);
     background: #f2eee8;
   }

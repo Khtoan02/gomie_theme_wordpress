@@ -32,7 +32,7 @@ function gomie_enqueue_scripts() {
     wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css', array(), '6.4.0');
 
     // Global flags for optimization
-    $is_woocommerce_page = (is_shop() || is_product_category() || is_product_tag() || is_product_taxonomy() || is_page('san-pham') || is_page_template('page-san-pham.php'));
+    $is_woocommerce_page = (is_shop() || is_product_category() || is_product_tag() || is_product_taxonomy() || is_page('san-pham') || is_page_template('page-san-pham.php') || is_page('mau-men') || is_page_template('page-mau-men.php'));
     $is_category_page = (is_product_category() && (is_product_category('nha-hang') || is_product_category('khach-san') || is_product_category('qua-tang')));
     $aos_loaded = false;
 

@@ -321,7 +321,7 @@ $theme_uri = get_template_directory_uri();
 
     <!-- Main Content Area: Sidebar Widget Outside Left + Products in Container-Width -->
     <div class="shop-body-section py-5">
-        <div class="shop-canvas-wrapper d-flex justify-content-center align-items-start gap-4">
+        <div class="shop-canvas-wrapper">
             <!-- WIDGET BỘ LỌC NẰM BÊN NGOÀI CONTAINER-WIDTH (LỀ TRÁI CỦA SẢN PHẨM) -->
             <aside class="shop-outside-sidebar" id="shopFilterSidebar">
                 <div class="filter-widget-card rounded-4 shadow-sm bg-white" id="filterWidgetCard">
@@ -330,9 +330,14 @@ $theme_uri = get_template_directory_uri();
                             <i class="fa-solid fa-sliders text-danger"></i>
                             <span>Bộ lọc sản phẩm</span>
                         </div>
-                        <button type="button" class="btn-clear-filters text-muted small border-0 bg-transparent" title="Xóa tất cả lọc">
-                            <i class="fa-solid fa-rotate-left me-1"></i>Đặt lại
-                        </button>
+                        <div class="d-flex align-items-center gap-2">
+                            <button type="button" class="btn-clear-filters text-muted small border-0 bg-transparent" title="Xóa tất cả lọc">
+                                <i class="fa-solid fa-rotate-left me-1"></i>Đặt lại
+                            </button>
+                            <button type="button" class="btn-close-filter-mobile d-xl-none border-0 bg-transparent text-muted ms-1" id="btnCloseFilterMobile" aria-label="Đóng bộ lọc">
+                                <i class="fa-solid fa-xmark fs-5"></i>
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Widget Block 1: Sắc Men Gốm Bát Tràng (Lưới 2 cột gọn nhẹ) -->
@@ -415,6 +420,13 @@ $theme_uri = get_template_directory_uri();
                         </div>
                     </div>
                     <?php endif; ?>
+
+                    <!-- Mobile Apply Button -->
+                    <div class="filter-mobile-footer d-xl-none mt-3 pt-3 border-top">
+                        <button type="button" class="btn btn-danger w-100 rounded-pill py-2 fw-bold" id="btnApplyMobileFilter">
+                            <span>Áp dụng bộ lọc</span> (<span id="toolbarFilterCountMobile"><?php echo count($ceramic_products); ?></span>)
+                        </button>
+                    </div>
                 </div>
             </aside>
 

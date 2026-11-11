@@ -518,7 +518,8 @@ if (!function_exists('gomie_get_product_category')) {
   .gomie-v11 .editorial-tile-media {
     position: relative;
     width: 100%;
-    height: 250px;
+    height: 230px;
+    aspect-ratio: 16 / 10;
     overflow: hidden;
     background: #f2eee8;
   }
@@ -642,37 +643,39 @@ if (!function_exists('gomie_get_product_category')) {
   }
 
   .gomie-v11 .partner-item {
-    background: rgba(255, 255, 255, .82);
+    background: rgba(255, 255, 255, .88);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     border-radius: 18px;
-    padding: 1.45rem 1.25rem;
-    box-shadow: 0 10px 28px rgba(45, 30, 15, .05);
-    border: 1px solid rgba(255, 255, 255, .92);
+    padding: 1.25rem 1.15rem;
+    box-shadow: 0 8px 24px rgba(45, 30, 15, .05);
+    border: 1px solid rgba(255, 255, 255, .95);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all .3s ease;
+    transition: all .3s cubic-bezier(.2,.8,.2,1);
+    min-height: 80px;
   }
 
   .gomie-v11 .partner-item:hover {
-    transform: translateY(-3px);
-    background: rgba(255, 255, 255, .95);
-    box-shadow: 0 16px 36px rgba(45, 30, 15, .09);
-    border-color: rgba(244, 122, 32, .4);
+    transform: translateY(-4px);
+    background: #ffffff;
+    box-shadow: 0 16px 36px rgba(45, 30, 15, .1);
+    border-color: rgba(244, 122, 32, .45);
   }
 
   .gomie-v11 .partner-item img {
-    height: 30px;
-    max-width: 120px;
+    height: 38px;
+    max-width: 145px;
     width: auto;
     object-fit: contain;
-    filter: grayscale(100%) opacity(0.72);
-    transition: filter .3s ease;
+    filter: grayscale(100%) opacity(0.75);
+    transition: filter .3s ease, transform .3s ease;
   }
 
   .gomie-v11 .partner-item:hover img {
     filter: grayscale(0%) opacity(1);
+    transform: scale(1.04);
   }
 
   /* V11 FAQ Section (Semantic Details & 2-Column Layout) */
@@ -1864,13 +1867,18 @@ if (!function_exists('gomie_get_product_category')) {
             if ($blog->have_posts()) :
               while ($blog->have_posts()) : $blog->the_post();
                 $custom_tag = get_post_meta(get_the_ID(), '_gomie_editorial_tag', true);
-                $tile_tag   = !empty($custom_tag) ? $custom_tag : (get_the_date() . ' · CẨM NANG GOMIE');
+                $tile_tag   = !empty($custom_tag) ? $custom_tag : (get_the_date('d/m/Y') . ' · CẨM NANG GOMIE');
                 $custom_img = get_post_meta(get_the_ID(), '_gomie_editorial_img', true);
-                if (empty($custom_img) && isset($fallback_images[$img_counter])) {
-                  $custom_img = $fallback_images[$img_counter];
+                
+                $img_url = '';
+                if (has_post_thumbnail()) {
+                  $img_url = get_the_post_thumbnail_url(get_the_ID(), 'large');
+                } elseif (!empty($custom_img)) {
+                  $img_url = esc_url(get_template_directory_uri() . '/assets/images/stories/' . $custom_img);
+                } elseif (isset($fallback_images[$img_counter])) {
+                  $img_url = esc_url(get_template_directory_uri() . '/assets/images/stories/' . $fallback_images[$img_counter]);
                 }
                 $img_counter++;
-                $img_url = !empty($custom_img) ? esc_url(get_template_directory_uri() . '/assets/images/stories/' . $custom_img) : '';
               ?>
                 <article class="editorial-tile">
                   <?php if (!empty($img_url)) : ?>

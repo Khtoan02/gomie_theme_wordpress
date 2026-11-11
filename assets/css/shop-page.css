@@ -160,24 +160,60 @@
     padding: 0;
 }
 
-/* Responsive cho màn hình nhỏ hơn 1200px */
+/* Responsive cho màn hình nhỏ hơn 1200px (Mobile & Tablet) */
 @media (max-width: 1199.98px) {
     .shop-canvas-wrapper {
-        display: block;
-        padding: 0 16px;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        justify-content: flex-start !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 16px !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        overflow: visible !important;
     }
     .shop-outside-sidebar {
         display: none;
-        width: 100%;
-        position: static;
-        margin-bottom: 24px;
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 0 0 100% !important;
+        position: static !important;
+        margin: 0 0 24px 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+        z-index: 50;
     }
     .shop-outside-sidebar.show-mobile {
-        display: block;
+        display: block !important;
         animation: fadeInDown 0.3s ease;
     }
+    .filter-widget-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        border-radius: 20px !important;
+        border: 1px solid rgba(224, 89, 42, 0.25) !important;
+        box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08) !important;
+    }
     .shop-products-container {
-        max-width: 100%;
+        width: 100% !important;
+        max-width: 100% !important;
+        flex: 0 0 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+    }
+    .btn-close-filter-mobile {
+        cursor: pointer;
+        padding: 4px 8px;
+        border-radius: 8px;
+        transition: background 0.2s;
+    }
+    .btn-close-filter-mobile:hover {
+        background: #f1ece5;
+        color: #e0592a !important;
     }
 }
 

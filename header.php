@@ -43,9 +43,16 @@
                         </div>
                         <span class="top-pipe d-none d-md-inline">·</span>
                         <div class="social-links-minimal d-none d-md-flex align-items-center gap-1">
-                            <a href="<?php echo esc_url(gomie_get_option('facebook_url', '#')); ?>" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-                            <a href="<?php echo esc_url(gomie_get_option('youtube_url', '#')); ?>" target="_blank" rel="noopener" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
-                            <a href="<?php echo esc_url(gomie_get_option('zalo_url', '#')); ?>" target="_blank" rel="noopener" aria-label="Zalo"><i class="fa-solid fa-comment-dots"></i></a>
+                            <?php
+                            $fb_url = gomie_get_option('facebook_url', 'https://www.facebook.com/gomieceramic');
+                            $yt_url = gomie_get_option('youtube_url', 'https://www.youtube.com/@gomieceramic');
+                            $msg_url = gomie_get_option('messenger_url', 'https://m.me/gomieceramic');
+                            $zl_url = gomie_get_option('zalo_url', 'https://zalo.me/0335059889');
+                            ?>
+                            <a href="<?php echo esc_url($fb_url); ?>" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="<?php echo esc_url($yt_url); ?>" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                            <a href="<?php echo esc_url($msg_url); ?>" target="_blank" rel="noopener noreferrer" aria-label="Messenger"><i class="fa-brands fa-facebook-messenger"></i></a>
+                            <a href="<?php echo esc_url($zl_url); ?>" target="_blank" rel="noopener noreferrer" aria-label="Zalo"><i class="fa-solid fa-comment-dots"></i></a>
                         </div>
                     </div>
 
@@ -285,10 +292,16 @@
                 <div class="offcanvas-section border-top p-3">
                     <h6 class="text-uppercase text-muted mb-2">Kết nối với chúng tôi</h6>
                     <div class="offcanvas-social social-icons d-flex gap-2">
-                        <a href="<?php echo esc_url(gomie_get_option('facebook_url', '#')); ?>" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="<?php echo esc_url(gomie_get_option('youtube_url', '#')); ?>" target="_blank" rel="noopener" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-                        <a href="<?php echo esc_url(gomie_get_option('linkedin_url', '#')); ?>" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="<?php echo esc_url(gomie_get_option('zalo_url', '#')); ?>" target="_blank" rel="noopener" aria-label="Zalo"><i class="fas fa-comments"></i></a>
+                        <?php
+                        $fb_url = gomie_get_option('facebook_url', 'https://www.facebook.com/gomieceramic');
+                        $yt_url = gomie_get_option('youtube_url', 'https://www.youtube.com/@gomieceramic');
+                        $msg_url = gomie_get_option('messenger_url', 'https://m.me/gomieceramic');
+                        $zl_url = gomie_get_option('zalo_url', 'https://zalo.me/0335059889');
+                        ?>
+                        <a href="<?php echo esc_url($fb_url); ?>" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="<?php echo esc_url($yt_url); ?>" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="<?php echo esc_url($msg_url); ?>" target="_blank" rel="noopener noreferrer" aria-label="Messenger"><i class="fab fa-facebook-messenger"></i></a>
+                        <a href="<?php echo esc_url($zl_url); ?>" target="_blank" rel="noopener noreferrer" aria-label="Zalo"><i class="fas fa-comments"></i></a>
                     </div>
                 </div>
             <div class="p-3 border-top mt-3">

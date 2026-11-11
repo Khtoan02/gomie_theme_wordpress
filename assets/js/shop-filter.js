@@ -98,6 +98,9 @@
         var tbCount = document.getElementById('toolbarFilterCount');
         if (tbCount) tbCount.textContent = totalMatches;
 
+        var tbCountMobile = document.getElementById('toolbarFilterCountMobile');
+        if (tbCountMobile) tbCountMobile.textContent = totalMatches;
+
         var isFiltered = (currentGlaze !== 'all' || currentCat !== 'all');
         var activeLimit = isFiltered ? Math.max(currentlyVisibleLimit, pageSize) : currentlyVisibleLimit;
 
@@ -358,6 +361,18 @@
         }
     });
 
+    $(document).on('click', '#btnCloseFilterMobile, #btnApplyMobileFilter', function(e) {
+        e.preventDefault();
+        var sidebarEl = document.getElementById('shopFilterSidebar');
+        if (sidebarEl) {
+            sidebarEl.classList.remove('show-mobile');
+            var toolbarEl = document.querySelector('.shop-toolbar');
+            if (toolbarEl) {
+                toolbarEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    });
+
     // 8. AJAX Add to Cart Button (V11)
     $(document).on('click', '.btn-add-cart-v11', function(e) {
         e.preventDefault();
@@ -417,5 +432,9 @@
     window.addEventListener('DOMContentLoaded', initShopFilters);
     window.addEventListener('wp:page-transitioned', initShopFilters);
     window.addEventListener('popstate', initShopFilters);
+
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        setTimeout(initShopFilters, 20);
+    }
 
 })(jQuery);

@@ -1718,6 +1718,44 @@ if (!function_exists('gomie_get_product_image_url')) {
 }
 
 /**
+ * Lấy số liệu thống kê sản phẩm sinh động, tự nhiên theo ID (không trùng lặp ảo)
+ *
+ * @param int $product_id
+ * @return array
+ */
+if (!function_exists('gomie_get_product_stats')) {
+    function gomie_get_product_stats($product_id = 0) {
+        $product_id = (int) $product_id;
+        if ($product_id <= 0) {
+            $product_id = get_the_ID() ?: 100;
+        }
+
+        // Tạo số liệu xác định dựa trên hash của product_id để mỗi sản phẩm khác biệt nhưng cố định qua các lần tải
+        $hash = (int) sprintf('%u', crc32('gomie_ceramic_stats_' . $product_id));
+
+        // Views: 1.250 đến 4.860
+        $views = 1250 + (($hash % 360) * 10) + ($hash % 9);
+
+        // Sales: 75 đến 485
+        $sales = 75 + (($hash * 7) % 410);
+
+        // Rating: 4.8, 4.9 hoặc 5.0
+        $rating_seed = ($hash % 3);
+        $rating = ($rating_seed === 0) ? 5 : (($rating_seed === 1) ? 4.9 : 4.8);
+
+        // Reviews count: 28 đến 165
+        $reviews_count = 28 + (($hash % 138));
+
+        return array(
+            'views'         => $views,
+            'sales'         => $sales,
+            'rating'        => $rating,
+            'reviews_count' => $reviews_count,
+        );
+    }
+}
+
+/**
  * Render product card with enhanced Gomie Apple style
  */
 if (!function_exists('gomie_render_product_card')) {

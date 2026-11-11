@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" fill="none">
+  <!-- GOLDEN GATE RESTAURANT GROUP Vector -->
+  <g fill="#2B3640">
+    <!-- Stylized Triple-G Monogram Emblem -->
+    <rect x="12" y="15" width="28" height="28" rx="6" fill="#F47A20" opacity="0.15"/>
+    <path d="M32 23h-8c-3.3 0-6 2.7-6 6s2.7 6 6 6h6c1.1 0 2-.9 2-2v-4h-5v3h-3c-1.7 0-3-1.3-3-3s1.3-3 3-3h8v-3z" fill="#E0592A"/>
+    <!-- Wordmark GOLDEN GATE -->
+    <text x="50" y="29" font-family="'Montserrat', 'Arial Black', sans-serif" font-size="16.5" font-weight="800" letter-spacing="1.5" fill="#1E2830">GOLDEN GATE</text>
+    <!-- Subtitle RESTAURANT GROUP -->
+    <text x="51" y="43" font-family="'Montserrat', 'Helvetica Neue', sans-serif" font-size="7.5" font-weight="700" letter-spacing="2.2" fill="#7B8893">RESTAURANT GROUP</text>
+  </g>
+</svg>

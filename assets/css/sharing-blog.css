@@ -7,11 +7,8 @@
    1. Canvas & Layout
    ========================================================================== */
 .gomie-sharing-page-canvas {
-  background-color: #fffdf9;
-  background-image: url('../images/glazes/Background-1.png');
-  background-position: top center;
-  background-size: 100% auto;
-  background-repeat: no-repeat;
+  background-color: #fffdf9 !important;
+  background-image: none !important;
   min-height: 100vh;
   padding-bottom: 90px;
 }

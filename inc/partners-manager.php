@@ -316,15 +316,42 @@ function gomie_get_partners($args = array()) {
         }
     }
 
-    // Fallback dự phòng nếu chưa có bài post nào
+    $theme_uri = get_template_directory_uri();
+    $theme_dir = get_template_directory();
+
+    // Map logo SVG cho bất kỳ partner nào chưa có ảnh tải lên
+    $svg_brand_map = array(
+        'lotte'            => 'lotte-hotels.svg',
+        'marriott'         => 'marriott.svg',
+        'hyatt'            => 'hyatt-regency.svg',
+        'golden-gate'      => 'golden-gate.svg',
+        'golden'           => 'golden-gate.svg',
+        'intercontinental' => 'intercontinental.svg',
+        'vinpearl'         => 'vinpearl.svg',
+    );
+
+    foreach ($partners as &$partner_item) {
+        if (empty($partner_item['logo_url'])) {
+            $clean_slug = sanitize_title($partner_item['title'] . ' ' . $partner_item['text']);
+            foreach ($svg_brand_map as $key => $filename) {
+                if (strpos($clean_slug, $key) !== false && file_exists($theme_dir . '/assets/images/partners/' . $filename)) {
+                    $partner_item['logo_url'] = $theme_uri . '/assets/images/partners/' . $filename;
+                    break;
+                }
+            }
+        }
+    }
+    unset($partner_item);
+
+    // Fallback dự phòng nếu chưa có bài post nào trong DB
     if (empty($partners)) {
         $fallbacks = array(
-            array('title' => 'Lotte Hotels & Resorts', 'text' => 'LOTTE HOTELS', 'url' => '', 'logo_url' => '', 'target' => '_self'),
-            array('title' => 'Marriott International', 'text' => 'MARRIOTT', 'url' => '', 'logo_url' => '', 'target' => '_self'),
-            array('title' => 'Hyatt Regency', 'text' => 'HYATT REGENCY', 'url' => '', 'logo_url' => '', 'target' => '_self'),
-            array('title' => 'Golden Gate Restaurant Group', 'text' => 'GOLDEN GATE', 'url' => '', 'logo_url' => '', 'target' => '_self'),
-            array('title' => 'InterContinental', 'text' => 'INTERCONTINENTAL', 'url' => '', 'logo_url' => '', 'target' => '_self'),
-            array('title' => 'Vinpearl Resort & Spa', 'text' => 'VINPEARL', 'url' => '', 'logo_url' => '', 'target' => '_self'),
+            array('title' => 'Lotte Hotels & Resorts', 'text' => 'LOTTE HOTELS', 'url' => '', 'logo_url' => $theme_uri . '/assets/images/partners/lotte-hotels.svg', 'target' => '_self'),
+            array('title' => 'Marriott International', 'text' => 'MARRIOTT', 'url' => '', 'logo_url' => $theme_uri . '/assets/images/partners/marriott.svg', 'target' => '_self'),
+            array('title' => 'Hyatt Regency', 'text' => 'HYATT REGENCY', 'url' => '', 'logo_url' => $theme_uri . '/assets/images/partners/hyatt-regency.svg', 'target' => '_self'),
+            array('title' => 'Golden Gate Restaurant Group', 'text' => 'GOLDEN GATE', 'url' => '', 'logo_url' => $theme_uri . '/assets/images/partners/golden-gate.svg', 'target' => '_self'),
+            array('title' => 'InterContinental Hotels & Resorts', 'text' => 'INTERCONTINENTAL', 'url' => '', 'logo_url' => $theme_uri . '/assets/images/partners/intercontinental.svg', 'target' => '_self'),
+            array('title' => 'Vinpearl Resort & Spa', 'text' => 'VINPEARL', 'url' => '', 'logo_url' => $theme_uri . '/assets/images/partners/vinpearl.svg', 'target' => '_self'),
         );
         return $fallbacks;
     }
