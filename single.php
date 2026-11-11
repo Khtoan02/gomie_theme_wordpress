@@ -106,83 +106,78 @@ get_header();
             <!-- CỘT TRÁI: Main Article Content (Bắt đầu từ nội dung luôn, không đóng khối hộp) -->
             <div class="article-main-content">
 
-              <!-- Article Body Shell (Không đóng khối hộp, nền thoáng rộng rãi) -->
-              <div class="article-body-wrapper">
-
-                <!-- 1. Mobile Table of Contents Accordion (<= 1040px) -->
-                <div id="mobileTOCBox" class="mobile-toc-accordion d-none">
-                  <button type="button" class="btn-toggle-mobile-toc" id="btnToggleMobileTOC" aria-expanded="false">
-                    <span><i class="fa-solid fa-list-ul me-2" style="color: var(--orange, #f47a20);"></i> Mục lục bài viết</span>
-                    <i class="fa-solid fa-chevron-down chevron-icon"></i>
-                  </button>
-                  <div class="mobile-toc-content d-none" id="mobileTocContent">
-                    <ul class="mobile-toc-list" id="mobileTocList"></ul>
-                  </div>
+              <!-- 1. Mobile Table of Contents Accordion (<= 1040px) -->
+              <div id="mobileTOCBox" class="mobile-toc-accordion d-none">
+                <button type="button" class="btn-toggle-mobile-toc" id="btnToggleMobileTOC" aria-expanded="false">
+                  <span><i class="fa-solid fa-list-ul me-2" style="color: var(--orange, #f47a20);"></i> Mục lục bài viết</span>
+                  <i class="fa-solid fa-chevron-down chevron-icon"></i>
+                </button>
+                <div class="mobile-toc-content d-none" id="mobileTocContent">
+                  <ul class="mobile-toc-list" id="mobileTocList"></ul>
                 </div>
+              </div>
 
-                <!-- 2. Lead Paragraph (nếu có excerpt) -->
-                <?php if (has_excerpt()) : ?>
-                  <div class="article-lead-paragraph">
-                    <?php echo get_the_excerpt(); ?>
-                  </div>
-                <?php endif; ?>
-
-                <!-- 3. Core Body Rich Text with Standardized Typography & 16:9 Media -->
-                <div class="article-rich-text gomie-prose">
-                  <?php the_content(); ?>
+              <!-- 2. Lead Paragraph (nếu có excerpt) -->
+              <?php if (has_excerpt()) : ?>
+                <div class="article-lead-paragraph">
+                  <?php echo get_the_excerpt(); ?>
                 </div>
+              <?php endif; ?>
 
-                <!-- 4. Tags & Social Share Strip (Facebook, Zalo, Twitter, Copy Link) -->
-                <footer class="article-footer-toolbar">
-                  <div class="article-tags-cluster">
-                    <span class="tags-title">Chủ đề:</span>
-                    <?php
-                    if ($tags) {
-                      foreach ($tags as $tag) {
-                        echo '<a href="' . esc_url(get_tag_link($tag->term_id)) . '" class="tag-pill">#' . esc_html($tag->name) . '</a>';
-                      }
-                    } else {
-                      echo '<span class="tag-pill">#Gốm Bát Tràng</span><span class="tag-pill">#Men Hỏa Biến</span><span class="tag-pill">#Bàn Tiệc Đương Đại</span>';
+              <!-- 3. Core Body Rich Text with Standardized Typography & 16:9 Media -->
+              <div class="article-rich-text gomie-prose">
+                <?php the_content(); ?>
+              </div>
+
+              <!-- 4. Tags & Social Share Strip (Facebook, Zalo, Twitter, Copy Link) -->
+              <footer class="article-footer-toolbar">
+                <div class="article-tags-cluster">
+                  <span class="tags-title">Chủ đề:</span>
+                  <?php
+                  if ($tags) {
+                    foreach ($tags as $tag) {
+                      echo '<a href="' . esc_url(get_tag_link($tag->term_id)) . '" class="tag-pill">#' . esc_html($tag->name) . '</a>';
                     }
-                    ?>
-                  </div>
-
-                  <div class="article-share-strip">
-                    <span class="share-title">Chia sẻ:</span>
-                    <!-- Facebook Share -->
-                    <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode(get_permalink()); ?>" target="_blank" rel="noopener noreferrer" class="share-btn fb-share-btn" aria-label="Chia sẻ lên Facebook" title="Chia sẻ Facebook">
-                      <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <!-- Zalo Share -->
-                    <a href="https://sp.zalo.me/share_button?url=<?php echo urlencode(get_permalink()); ?>" target="_blank" rel="noopener noreferrer" class="share-btn zalo-share-btn" aria-label="Chia sẻ qua Zalo" title="Chia sẻ Zalo">
-                      Zalo
-                    </a>
-                    <!-- Twitter/X Share -->
-                    <a href="https://twitter.com/intent/tweet?url=<?php echo urlencode(get_permalink()); ?>&text=<?php echo urlencode(get_the_title()); ?>" target="_blank" rel="noopener noreferrer" class="share-btn twitter-share-btn" aria-label="Chia sẻ lên Twitter" title="Chia sẻ Twitter">
-                      <i class="fab fa-twitter"></i>
-                    </a>
-                    <!-- Copy Link -->
-                    <button type="button" class="share-btn copy-url-btn" onclick="navigator.clipboard.writeText(window.location.href); alert('Đã sao chép liên kết bài viết vào bộ nhớ tạm!');" aria-label="Sao chép link" title="Sao chép liên kết">
-                      <i class="fas fa-link"></i>
-                    </button>
-                  </div>
-                </footer>
-
-                <!-- 6. Author Bio Card -->
-                <div class="article-author-card">
-                  <div class="author-badge-large">G</div>
-                  <div class="author-details">
-                    <h4>Gomie Ceramic · Tinh Hoa Bát Tràng</h4>
-                    <p>
-                      Được nuôi dưỡng từ làng gốm Bát Tràng hơn 500 năm tuổi, Gomie kết hợp kỹ nghệ vuốt nặn thủ công truyền thống với thiết kế đương đại và chuẩn an toàn quốc tế HoReCa nung ở 1.300°C.
-                    </p>
-                    <a href="<?php echo esc_url(home_url('/cau-chuyen/')); ?>" class="author-more-link">
-                      Tìm hiểu câu chuyện thương hiệu Gomie <i class="fa-solid fa-arrow-right ms-1"></i>
-                    </a>
-                  </div>
+                  } else {
+                    echo '<span class="tag-pill">#Gốm Bát Tràng</span><span class="tag-pill">#Men Hỏa Biến</span><span class="tag-pill">#Bàn Tiệc Đương Đại</span>';
+                  }
+                  ?>
                 </div>
 
-              </div><!-- /.article-body-wrapper -->
+                <div class="article-share-strip">
+                  <span class="share-title">Chia sẻ:</span>
+                  <!-- Facebook Share -->
+                  <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode(get_permalink()); ?>" target="_blank" rel="noopener noreferrer" class="share-btn fb-share-btn" aria-label="Chia sẻ lên Facebook" title="Chia sẻ Facebook">
+                    <i class="fab fa-facebook-f"></i>
+                  </a>
+                  <!-- Zalo Share -->
+                  <a href="https://sp.zalo.me/share_button?url=<?php echo urlencode(get_permalink()); ?>" target="_blank" rel="noopener noreferrer" class="share-btn zalo-share-btn" aria-label="Chia sẻ qua Zalo" title="Chia sẻ Zalo">
+                    Zalo
+                  </a>
+                  <!-- Twitter/X Share -->
+                  <a href="https://twitter.com/intent/tweet?url=<?php echo urlencode(get_permalink()); ?>&text=<?php echo urlencode(get_the_title()); ?>" target="_blank" rel="noopener noreferrer" class="share-btn twitter-share-btn" aria-label="Chia sẻ lên Twitter" title="Chia sẻ Twitter">
+                    <i class="fab fa-twitter"></i>
+                  </a>
+                  <!-- Copy Link -->
+                  <button type="button" class="share-btn copy-url-btn" onclick="navigator.clipboard.writeText(window.location.href); alert('Đã sao chép liên kết bài viết vào bộ nhớ tạm!');" aria-label="Sao chép link" title="Sao chép liên kết">
+                    <i class="fas fa-link"></i>
+                  </button>
+                </div>
+              </footer>
+
+              <!-- 5. Author Bio Card -->
+              <div class="article-author-card">
+                <div class="author-badge-large">G</div>
+                <div class="author-details">
+                  <h4>Gomie Ceramic · Tinh Hoa Bát Tràng</h4>
+                  <p>
+                    Được nuôi dưỡng từ làng gốm Bát Tràng hơn 500 năm tuổi, Gomie kết hợp kỹ nghệ vuốt nặn thủ công truyền thống với thiết kế đương đại và chuẩn an toàn quốc tế HoReCa nung ở 1.300°C.
+                  </p>
+                  <a href="<?php echo esc_url(home_url('/cau-chuyen/')); ?>" class="author-more-link">
+                    Tìm hiểu câu chuyện thương hiệu Gomie <i class="fa-solid fa-arrow-right ms-1"></i>
+                  </a>
+                </div>
+              </div>
 
               <!-- ═══════════════════════════════════════════════
                    BÀI VIẾT LIÊN QUAN CUỐI BÀI (Lưới 3 Card - Ảnh 16:9)
@@ -697,57 +692,10 @@ get_header();
     width: 100%;
   }
 
-  /* Article Body Wrapper (Không đóng khối hộp, nền thoáng rộng rãi theo đúng yêu cầu) */
-  .article-body-wrapper {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    margin-bottom: 36px;
-    border-radius: 0 !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-  }
-
   /* ═══════════════════════════════════════════════
      STRICT 16:9 ASPECT RATIO ENFORCEMENT
      - Regardless of original image size, display 16:9
      ════════════════════════════════════════════════ */
-  .article-featured-image-stage {
-    position: relative;
-    width: 100% !important;
-    aspect-ratio: 16 / 9 !important;
-    border-radius: 16px;
-    overflow: hidden;
-    margin-bottom: 28px;
-    background: #f4efe9;
-    box-shadow: 0 10px 28px rgba(45, 30, 15, 0.07);
-    border: 1px solid rgba(235, 222, 206, 0.8);
-  }
-
-  .article-featured-img-16-9 {
-    width: 100% !important;
-    height: 100% !important;
-    aspect-ratio: 16 / 9 !important;
-    object-fit: cover !important;
-    object-position: center !important;
-    display: block !important;
-  }
-
-  .featured-image-watermark {
-    position: absolute;
-    bottom: 14px;
-    right: 18px;
-    background: rgba(0, 0, 0, .52);
-    backdrop-filter: blur(8px);
-    color: rgba(255, 255, 255, .95);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    padding: 5px 12px;
-    border-radius: 999px;
-  }
 
   /* All images inside article content must be 16:9 ratio */
   .article-rich-text figure,
@@ -846,25 +794,25 @@ get_header();
   }
 
   /* ═══════════════════════════════════════════════
-     STANDARDIZED EDITORIAL TYPOGRAPHY (Tavaled Standard)
+     STANDARDIZED EDITORIAL TYPOGRAPHY (Quiet Luxury & Harmonious Spacing)
      ════════════════════════════════════════════════ */
   .article-lead-paragraph {
     font-family: var(--font-body), 'Plus Jakarta Sans', sans-serif;
-    font-size: clamp(16px, 1.4vw, 17px);
-    line-height: 1.78;
-    color: #334155;
-    font-weight: 450;
+    font-size: clamp(16px, 1.3vw, 17px);
+    line-height: 1.7;
+    color: #2b3640;
+    font-weight: 500;
     font-style: normal;
-    border-left: 3.5px solid var(--orange, #f47a20);
-    padding: 4px 0 4px 18px;
-    margin-bottom: 24px;
+    border-left: 3px solid var(--orange, #f47a20);
+    padding: 2px 0 2px 14px;
+    margin-bottom: 20px;
   }
 
   .article-rich-text {
     font-family: var(--font-body), 'Plus Jakarta Sans', sans-serif !important;
-    font-size: 15.5px;
-    line-height: 1.78;
-    color: #334155;
+    font-size: 16px;
+    line-height: 1.68;
+    color: #1e2830;
     max-width: 100% !important;
     width: 100% !important;
     box-sizing: border-box !important;
@@ -873,10 +821,10 @@ get_header();
 
   .article-rich-text p {
     font-family: var(--font-body), 'Plus Jakarta Sans', sans-serif !important;
-    font-size: 15.5px !important;
-    line-height: 1.78 !important;
-    color: #334155 !important;
-    margin-bottom: 20px !important;
+    font-size: 16px !important;
+    line-height: 1.68 !important;
+    color: #1e2830 !important;
+    margin-bottom: 14px !important;
   }
 
   .article-rich-text strong,
@@ -894,111 +842,92 @@ get_header();
   }
 
   .article-rich-text h2 {
-    font-size: clamp(19.5px, 2vw, 23px) !important;
-    font-weight: 700 !important;
-    line-height: 1.4 !important;
+    font-size: clamp(20px, 2.2vw, 24px) !important;
+    font-weight: 750 !important;
+    line-height: 1.35 !important;
     letter-spacing: -.012em !important;
-    margin-top: 36px !important;
-    margin-bottom: 16px !important;
-    padding-left: 12px !important;
-    border-left: 3.5px solid var(--orange, #f47a20) !important;
+    margin-top: 28px !important;
+    margin-bottom: 12px !important;
+    padding-left: 10px !important;
+    border-left: 3px solid var(--orange, #f47a20) !important;
     position: relative;
   }
 
   .article-rich-text h3 {
-    font-size: clamp(17px, 1.6vw, 19px) !important;
+    font-size: clamp(17px, 1.7vw, 19px) !important;
     font-weight: 700 !important;
-    line-height: 1.42 !important;
+    line-height: 1.38 !important;
     letter-spacing: -.008em !important;
-    margin-top: 26px !important;
-    margin-bottom: 12px !important;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .article-rich-text h3::before {
-    content: '';
-    display: inline-block;
-    width: 7px;
-    height: 7px;
-    background: var(--orange, #f47a20);
-    border-radius: 50%;
-    flex-shrink: 0;
+    margin-top: 22px !important;
+    margin-bottom: 10px !important;
   }
 
   .article-rich-text h4 {
     font-size: 16px !important;
     font-weight: 650 !important;
-    line-height: 1.48 !important;
+    line-height: 1.45 !important;
     color: #1e293b !important;
-    margin-top: 22px !important;
-    margin-bottom: 10px !important;
+    margin-top: 20px !important;
+    margin-bottom: 8px !important;
   }
 
   .article-rich-text blockquote {
-    margin: 24px 0 !important;
-    padding: 16px 20px !important;
+    margin: 20px 0 !important;
+    padding: 14px 18px !important;
     background: #fff9f6 !important;
-    border-left: 3.5px solid var(--orange, #f47a20) !important;
-    border-radius: 0 12px 12px 0 !important;
+    border-left: 3px solid var(--orange, #f47a20) !important;
+    border-radius: 0 10px 10px 0 !important;
     font-style: italic !important;
     font-size: 15.5px !important;
-    line-height: 1.75 !important;
+    line-height: 1.68 !important;
     color: #334155 !important;
-    box-shadow: 0 2px 10px rgba(45, 30, 15, 0.02) !important;
+    box-shadow: 0 2px 8px rgba(45, 30, 15, 0.02) !important;
   }
 
   .article-rich-text ul {
     list-style: none;
     padding-left: 0;
-    margin: 16px 0 22px 0;
+    margin: 10px 0 16px 0;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
   }
   .article-rich-text ul li {
     position: relative;
-    padding-left: 26px;
-    line-height: 1.75;
-    color: #334155;
-    font-size: 15.5px;
-    margin-bottom: 4px;
+    padding-left: 18px;
+    line-height: 1.65;
+    color: #1e2830;
+    font-size: 16px;
+    margin-bottom: 0;
   }
   .article-rich-text ul li::before {
-    content: '✓';
+    content: '';
     position: absolute;
-    left: 0;
-    top: 2px;
-    width: 17px;
-    height: 17px;
-    background: rgba(244, 122, 32, 0.12);
-    color: var(--orange, #f47a20);
+    left: 4px;
+    top: 10px;
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
-    font-size: 10.5px;
-    font-weight: 800;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    background: var(--orange, #f47a20);
   }
-    left: 0;
-    top: 2px;
-    width: 18px;
-    height: 18px;
-    background: rgba(244, 122, 32, 0.12);
-    color: var(--orange, #f47a20);
-    border-radius: 50%;
-    font-size: 11px;
-    font-weight: 800;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+
+  .article-rich-text ol {
+    padding-left: 22px;
+    margin: 10px 0 16px 0;
+  }
+  .article-rich-text ol li {
+    line-height: 1.65;
+    color: #1e2830;
+    font-size: 16px;
+    margin-bottom: 6px;
+    padding-left: 4px;
   }
 
   /* Toolbar */
   .article-footer-toolbar {
-    margin-top: 36px;
-    padding-top: 22px;
-    border-top: 1px solid rgba(235, 222, 206, .85);
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(226, 214, 198, 0.7);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1870,9 +1799,6 @@ get_header();
     }
     .meta-divider {
       display: none;
-    }
-    .article-body-wrapper {
-      padding: 0 !important;
     }
     .related-posts-grid {
       grid-template-columns: 1fr;
