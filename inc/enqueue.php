@@ -422,8 +422,29 @@ function gomie_enqueue_scripts() {
 /**
  * Enqueue admin scripts and styles
  */
-function gomie_admin_scripts() {
-    wp_enqueue_style('gomie-admin', get_template_directory_uri() . '/assets/css/admin.css', array(), GOMIE_THEME_VERSION);
+function gomie_admin_scripts($hook) {
+    if (file_exists(get_template_directory() . '/assets/css/admin.css')) {
+        wp_enqueue_style('gomie-admin', get_template_directory_uri() . '/assets/css/admin.css', array(), GOMIE_THEME_VERSION);
+    }
+
+    // Tải script xử lý an toàn chống lỗi trắng trơn cho trang chỉnh sửa sản phẩm trong Admin
+    if (in_array($hook, array('post.php', 'post-new.php'))) {
+        global $post_type, $post;
+        $is_product = false;
+        if ($post_type === 'product') {
+            $is_product = true;
+        } elseif (isset($_GET['post_type']) && $_GET['post_type'] === 'product') {
+            $is_product = true;
+        } elseif ($post && get_post_type($post) === 'product') {
+            $is_product = true;
+        } elseif (isset($_GET['post']) && get_post_type((int)$_GET['post']) === 'product') {
+            $is_product = true;
+        }
+
+        if ($is_product && file_exists(get_template_directory() . '/assets/js/admin.js')) {
+            wp_enqueue_script('gomie-admin-js', get_template_directory_uri() . '/assets/js/admin.js', array('jquery'), GOMIE_THEME_VERSION, true);
+        }
+    }
 }
 add_action('admin_enqueue_scripts', 'gomie_admin_scripts');
 

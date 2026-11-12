@@ -210,23 +210,6 @@ if (function_exists('acf_add_options_page')) {
     ));
 }
 
-// WooCommerce: AJAX update cart count in header
-add_filter('woocommerce_add_to_cart_fragments', function($fragments) {
-    ob_start();
-    ?>
-    <span class="cart-count badge bg-light text-dark"><?php echo WC()->cart->get_cart_contents_count(); ?></span>
-    <?php
-    $fragments['#cart-header-btn .cart-count'] = ob_get_clean();
-    
-    // Also update mobile cart count
-    ob_start();
-    ?>
-    <span class="badge bg-light text-dark"><?php echo WC()->cart->get_cart_contents_count(); ?></span>
-    <?php
-    $fragments['.offcanvas-body .btn-primary .badge'] = ob_get_clean();
-    
-    return $fragments;
-});
 
 // AJAX endpoint to get cart count
 add_action('wp_ajax_get_cart_count', 'gomie_get_cart_count');

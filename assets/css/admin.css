@@ -1,0 +1,66 @@
+/* ==========================================================================
+   Gomie Theme - WordPress & WooCommerce Admin Hardening & Styling
+   Khắc phục triệt để lỗi trắng trơn tab dữ liệu & thuộc tính sản phẩm
+   ========================================================================== */
+
+/* 1. Đảm bảo khung Product Data luôn có chiều cao tối thiểu, không bị co xẹp */
+#woocommerce-product-data .panel-wrap {
+    min-height: 260px !important;
+    position: relative !important;
+    background: #ffffff !important;
+}
+
+/* 2. Hiển thị panel được chọn một cách chuẩn xác */
+#woocommerce-product-data .panel.woocommerce_options_panel,
+#woocommerce-product-data #product_attributes.panel,
+#woocommerce-product-data #variable_product_options.panel {
+    transition: opacity 0.15s ease-in-out;
+}
+
+/* Khi panel đang được chọn (không có style display:none và được active) */
+#woocommerce-product-data .panel:not([style*="display: none"]):not([style*="display:none"]) {
+    display: block;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* 3. Đảm bảo Toolbar của tab Thuộc tính và Nút Thêm mới luôn hiển thị rõ ràng */
+#product_attributes .toolbar {
+    padding: 12px 14px !important;
+    background: #fbfbfb !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    display: flex !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+}
+
+#product_attributes .toolbar .actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin-left: auto !important;
+}
+
+#product_attributes .toolbar button.add_custom_attribute,
+#product_attributes .toolbar button.button {
+    background: #2271b1 !important;
+    color: #ffffff !important;
+    border-color: #2271b1 !important;
+    font-weight: 600 !important;
+    padding: 2px 12px !important;
+    height: 32px !important;
+    line-height: 28px !important;
+    border-radius: 4px !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08) !important;
+}
+
+#product_attributes .toolbar button.add_custom_attribute:hover {
+    background: #135e96 !important;
+    border-color: #135e96 !important;
+}
+
+/* 4. Khắc phục sự cố overlay BlockUI treo vĩnh viễn làm trắng màn hình */
+#woocommerce-product-data .blockUI.blockOverlay {
+    pointer-events: none !important;
+}
