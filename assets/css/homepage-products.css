@@ -1901,74 +1901,10 @@
     margin-top: 1rem;
   }
 
-  /* Product Grid */
+  /* Product Grid Mobile (Chuẩn 2 Cột E-Commerce) */
   .gomie-product-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .gomie-product-card {
-    max-width: 350px;
-    margin: 0 auto;
-  }
-
-  .gomie-product-card .product-info {
-    padding: 20px 18px 18px;
-  }
-
-  .product-title {
-    font-size: 15px;
-    min-height: 44px;
-    margin-bottom: 16px;
-  }
-
-  .product-price {
-    font-size: 16px;
-    margin-bottom: 18px;
-  }
-
-  .stat-row {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .stat-item-info {
-    width: 100%;
-    padding: 10px 8px;
-  }
-
-  .stat-item-info .stat-value {
-    font-size: 11px;
-  }
-
-  .stat-item-info .stat-label {
-    font-size: 9px;
-  }
-
-  /* Sections */
-  :root {
-    --section-padding: 2.5rem 0;
-  }
-
-  .gomie-spirit {
-    padding: 1.5rem;
-  }
-
-  .spirit-badge {
-    padding: 0.6rem 1.2rem;
-    font-size: 0.75rem;
-  }
-
-  /* CTA */
-  .cta-final {
-    padding: 2rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .gomie-product-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
   }
 
   .gomie-product-item {
@@ -1976,7 +1912,78 @@
   }
 
   .gomie-product-card {
-    max-width: 320px;
+    max-width: 100% !important;
+    margin: 0 auto;
+    border-radius: 14px !important;
+  }
+
+  .gomie-product-card .product-content {
+    padding: 10px 10px 12px !important;
+    gap: 6px !important;
+  }
+
+  .gomie-product-card .product-title {
+    font-size: 12.5px !important;
+    height: 33px !important;
+    line-height: 1.32 !important;
+    margin-bottom: 0 !important;
+  }
+
+  .gomie-product-card .product-price-box {
+    margin: 2px 0 !important;
+  }
+
+  .gomie-product-card .price-current {
+    font-size: 13.5px !important;
+  }
+
+  .gomie-product-card .product-micro-stats {
+    gap: 4px !important;
+  }
+
+  .gomie-product-card .micro-badge {
+    font-size: 10px !important;
+    padding: 1px 5px !important;
+  }
+
+  .gomie-product-card .btn-detail-pill {
+    height: 30px !important;
+    font-size: 11px !important;
+    padding: 0 10px !important;
+  }
+
+  /* Sections */
+  :root {
+    --section-padding: 2rem 0;
+  }
+
+  .gomie-spirit {
+    padding: 1.25rem;
+  }
+
+  .spirit-badge {
+    padding: 0.5rem 1rem;
+    font-size: 0.72rem;
+  }
+
+  /* CTA */
+  .cta-final {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .gomie-product-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .gomie-product-item {
+    margin: 0;
+  }
+
+  .gomie-product-card {
+    max-width: 100% !important;
     margin: 0 auto;
   }
 

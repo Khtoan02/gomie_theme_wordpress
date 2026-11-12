@@ -698,3 +698,182 @@ body.mobile-menu-active .mobile-menu-overlay {
   transform: translateY(0) !important;
   box-shadow: 0 2px 6px rgba(224, 89, 42, 0.18) !important;
 }
+
+
+/* ==========================================================================
+   MOBILE RESPONSIVE & LAYOUT PERFECTION (Gomie Mobile Audit V11)
+   ========================================================================== */
+html {
+  overflow-x: hidden !important;
+  width: 100%;
+  max-width: 100%;
+}
+
+body {
+  overflow-x: hidden !important;
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#page,
+.site,
+.site-content {
+  overflow-x: hidden !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Ẩn hoàn toàn offcanvas khi chưa mở để không gây tràn layout ngang */
+.offcanvas:not(.show) {
+  visibility: hidden !important;
+  pointer-events: none !important;
+  display: none !important;
+}
+
+.woocommerce-cart-form,
+.woocommerce-checkout {
+  overflow-x: hidden !important;
+  max-width: 100% !important;
+}
+
+@media (max-width: 767.98px) {
+  /* 1. Ngăn vỡ breadcrumb, cho phép vuốt ngang êm ái trên màn hình nhỏ */
+  .breadcrumb,
+  .b2b-breadcrumb .breadcrumb,
+  .contact-breadcrumb .breadcrumb,
+  .shop-breadcrumb .breadcrumb,
+  .single-breadcrumb .breadcrumb {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    white-space: nowrap !important;
+    scrollbar-width: none !important;
+    padding-bottom: 2px !important;
+  }
+
+  .breadcrumb::-webkit-scrollbar,
+  .b2b-breadcrumb .breadcrumb::-webkit-scrollbar,
+  .contact-breadcrumb .breadcrumb::-webkit-scrollbar,
+  .shop-breadcrumb .breadcrumb::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .breadcrumb-item {
+    display: inline-flex !important;
+    align-items: center !important;
+    font-size: 11.5px !important;
+  }
+
+  /* 2. Tiêu chuẩn Typography Hero & H1 Mobile chống ngắt gãy chữ */
+  .b2b-hero-title,
+  .contact-hero-title,
+  .page-hero-title,
+  .shop-header-title {
+    font-size: clamp(20px, 5.5vw, 25px) !important;
+    line-height: 1.3 !important;
+    letter-spacing: -0.3px !important;
+    margin-bottom: 0.75rem !important;
+  }
+
+  .b2b-section-title,
+  .contact-form-section .form-title,
+  .section-title {
+    font-size: clamp(17px, 4.5vw, 21px) !important;
+    line-height: 1.35 !important;
+  }
+
+  /* 3. Subtitles & Descriptions Mobile */
+  .b2b-hero-desc,
+  .contact-hero-desc,
+  .hero-subtitle,
+  .shop-header-desc {
+    font-size: 13.5px !important;
+    line-height: 1.6 !important;
+    padding: 0 4px !important;
+  }
+
+  /* 4. Trust Bars & Badges Mobile */
+  .b2b-trust-bar,
+  .contact-trust-bar {
+    gap: 6px !important;
+    margin-top: 1rem !important;
+  }
+
+  .b2b-trust-item,
+  .contact-trust-item {
+    font-size: 11px !important;
+    padding: 4px 10px !important;
+    border-radius: 999px !important;
+  }
+
+  .b2b-pill-badge,
+  .contact-pill-badge {
+    font-size: 10.5px !important;
+    padding: 3px 10px !important;
+    letter-spacing: 0.8px !important;
+  }
+
+  /* 5. Khối Lưới Sản Phẩm 2 Cột Chuẩn E-Commerce Mobile */
+  .product-card-col {
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .gomie-product-card {
+    border-radius: 14px !important;
+  }
+
+  .gomie-product-card.apple-style .product-content {
+    padding: 10px 10px 12px !important;
+    gap: 6px !important;
+  }
+
+  .gomie-product-card.apple-style .product-title {
+    font-size: 12.5px !important;
+    height: 33px !important;
+    line-height: 1.32 !important;
+  }
+
+  .gomie-product-card.apple-style .product-price-box {
+    margin: 2px 0 !important;
+  }
+
+  .gomie-product-card.apple-style .price-current {
+    font-size: 13.5px !important;
+  }
+
+  .gomie-product-card.apple-style .product-micro-stats {
+    gap: 4px !important;
+  }
+
+  .gomie-product-card.apple-style .micro-badge {
+    font-size: 10px !important;
+    padding: 1px 5px !important;
+    height: 18px !important;
+  }
+
+  .btn-card-detail,
+  .gomie-product-card.apple-style .btn-card-detail {
+    min-height: 30px !important;
+    padding: 5px 10px !important;
+    font-size: 11.5px !important;
+  }
+
+  /* 6. Form và Input Mobile */
+  .contact-form-box,
+  .b2b-form-card {
+    padding: 1.25rem 1rem !important;
+    border-radius: 16px !important;
+  }
+
+  .custom-input,
+  .form-control,
+  .form-select {
+    font-size: 14px !important;
+  }
+}

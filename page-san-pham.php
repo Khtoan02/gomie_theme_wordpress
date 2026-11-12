@@ -457,8 +457,8 @@ $theme_uri = get_template_directory_uri();
                     </div>
                 </div>
 
-                <!-- Product Grid (Full container width: 4 columns on desktop!) -->
-                <div class="row g-4 shop-product-grid" id="productGrid">
+                <!-- Product Grid (Full container width: 4 columns on desktop, 2 columns on mobile) -->
+                <div class="row g-2 g-sm-3 g-xl-4 shop-product-grid" id="productGrid">
             <?php 
             $card_idx = 0;
             foreach ($ceramic_products as $item) : 
@@ -526,7 +526,7 @@ $theme_uri = get_template_directory_uri();
                     else $img_url = $theme_uri . '/assets/images/glazes/bo-mau-men-955x800.png';
                 }
             ?>
-                <div class="col-12 col-sm-6 col-lg-4 col-xl-3 product-card-col" 
+                <div class="col-6 col-md-4 col-xl-3 product-card-col px-1 px-sm-2 mb-2 mb-sm-3" 
                      data-glaze="<?php echo esc_attr($glaze_slug); ?>" 
                      data-cat="<?php echo esc_attr($cat_data_attr); ?>"
                      data-price="<?php echo esc_attr($price_num); ?>"
