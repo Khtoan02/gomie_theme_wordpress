@@ -31,6 +31,10 @@ class Gomie_Product_Content_Styler {
      * Refine và cấu trúc hóa nội dung sản phẩm
      */
     public function refine_product_content($content) {
+        if (is_admin()) {
+            return $content;
+        }
+
         // Chỉ chạy trên trang sản phẩm đơn của WooCommerce
         $is_product_context = (is_singular('product') || (function_exists('is_product') && is_product()) || get_post_type() === 'product');
         if (!$is_product_context) {
