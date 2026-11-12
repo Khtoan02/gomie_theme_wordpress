@@ -5,21 +5,18 @@
 
 /* 1. Đảm bảo khung Product Data luôn có chiều cao tối thiểu, không bị co xẹp */
 #woocommerce-product-data .panel-wrap {
-    min-height: 260px !important;
+    min-height: 280px !important;
     position: relative !important;
     background: #ffffff !important;
 }
 
-/* 2. Hiển thị panel được chọn một cách chuẩn xác */
-#woocommerce-product-data .panel.woocommerce_options_panel,
-#woocommerce-product-data #product_attributes.panel,
-#woocommerce-product-data #variable_product_options.panel {
-    transition: opacity 0.15s ease-in-out;
+/* 2. Hiển thị / Ẩn panel theo class .hidden một cách chuẩn xác */
+#woocommerce-product-data .panel.hidden {
+    display: none !important;
 }
 
-/* Khi panel đang được chọn (không có style display:none và được active) */
-#woocommerce-product-data .panel:not([style*="display: none"]):not([style*="display:none"]) {
-    display: block;
+#woocommerce-product-data .panel:not(.hidden) {
+    display: block !important;
     visibility: visible !important;
     opacity: 1 !important;
 }
@@ -60,7 +57,11 @@
     border-color: #135e96 !important;
 }
 
-/* 4. Khắc phục sự cố overlay BlockUI treo vĩnh viễn làm trắng màn hình */
-#woocommerce-product-data .blockUI.blockOverlay {
+/* 4. Khắc phục triệt để overlay BlockUI treo vĩnh viễn làm trắng màn hình */
+#woocommerce-product-data .blockUI.blockOverlay,
+#product_attributes .blockUI.blockOverlay {
+    display: none !important;
     pointer-events: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
 }
